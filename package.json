@@ -15,5 +15,15 @@
   "bugs": {
     "url": "https://github.com/ChrisLetter/BookSwap/issues"
   },
-  "homepage": "https://github.com/ChrisLetter/BookSwap#readme"
+  "homepage": "https://github.com/ChrisLetter/BookSwap#readme",
+  "devDependencies": {
+    "@react-native-community/eslint-config": "^3.0.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^7.32.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }

@@ -1,13 +1,35 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+import Login from './screens/Authentication/Login';
+import Register from './screens/Authentication/Register';
+import UserLibrary from './screens/Library/UserLibrary';
+import WhishList from './screens/WhishList/WhishList';
+
+const Stack = createStackNavigator();
 
 export default function App() {
+  const isSignedIn = false;
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      {isSignedIn ? (
+        <Stack.Navigator>
+          <Stack.Screen name="UserLibrary" component={UserLibrary} />
+          <Stack.Screen name="WhishList" component={WhishList} />
+        </Stack.Navigator>
+      ) : (
+        <>
+          <Stack.Navigator>
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Register" component={Register} />
+          </Stack.Navigator>
+        </>
+      )}
+    </NavigationContainer>
   );
 }
 

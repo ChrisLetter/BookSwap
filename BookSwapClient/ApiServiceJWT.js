@@ -28,8 +28,4 @@ apiServiceJWT.login = (user) => {
     .catch((err) => console.log(err));
 };
 
-// apiServiceJWT.logout = (tokenName) => {
-//   localStorage.removeItem(tokenName);
-// };
-
 export default apiServiceJWT;

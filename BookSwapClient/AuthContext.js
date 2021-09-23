@@ -1,26 +1,27 @@
 import React, { useState, createContext, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const UserContext = createContext({
-  name: '',
+const initialState = {
+  id: '',
+  token: '',
   auth: false,
-});
+};
+
+const UserContext = createContext(initialState);
 
 const UserProvider = ({ children }) => {
-  const [user, setUser] = useState({ name: '', auth: false });
+  const [user, setUser] = useState(initialState);
 
-  const login = (name) => {
-    setUser((user) => ({
-      name: name,
+  const login = (id, token) => {
+    setUser((userId, Accesstoken) => ({
+      id: userId,
+      token: Accesstoken,
       auth: true,
     }));
   };
 
   const logout = () => {
-    setUser((user) => ({
-      name: '',
-      auth: false,
-    }));
+    setUser(initialState);
   };
 
   return (

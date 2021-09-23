@@ -23,7 +23,7 @@ const create = async (req, res) => {
     const { _id } = await newUser.save();
     const id = _id.toString();
     const accessToken = jwt.sign({ data: id }, SECRET_KEY, { expiresIn: '6h' });
-    res.status(201).send({ accessToken });
+    res.status(201).send({ accessToken, id });
   } catch (error) {
     res.status(400).send({ error, message: 'Could not create user' });
   }
@@ -37,8 +37,9 @@ const login = async (req, res) => {
     if (!validatedPass) {
       throw new Error();
     }
-    const accessToken = jwt.sign({ _id: user._id }, SECRET_KEY);
-    res.status(200).send({ accessToken });
+    const id = user._id;
+    const accessToken = jwt.sign({ _id: id }, SECRET_KEY);
+    res.status(200).send({ accessToken, id });
   } catch (error) {
     res
       .status(401)

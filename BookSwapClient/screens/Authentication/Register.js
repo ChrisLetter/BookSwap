@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import apiServiceJWT from '../../ApiServiceJWT';
+import { UserContext } from '../../AuthContext';
 
 const Register = () => {
+  const { login } = useContext(UserContext);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -10,13 +12,14 @@ const Register = () => {
   const handleSubmit = async (e) => {
     const user = { username, email, password };
     const res = await apiServiceJWT.register(user);
+    setUsername('');
+    setEmail('');
+    setPassword('');
     if (res.error) {
       alert(`${res.message}`);
-      setUsername('');
-      setEmail('');
-      setPassword('');
     } else {
-      const { accessToken } = res;
+      const { accessToken, id } = res;
+      login(id);
     }
   };
 

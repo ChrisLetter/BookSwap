@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-const WhishList = () => {
+const SingleUserChat = () => {
   return (
     <View>
-      <Text>WhishList Working</Text>
+      <Text>SingleUserChat Working</Text>
     </View>
   );
 };
 
-export default WhishList;
+export default SingleUserChat;

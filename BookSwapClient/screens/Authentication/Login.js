@@ -17,8 +17,8 @@ const Login = ({ navigation }) => {
       setEmail('');
       setPassword('');
     } else {
-      const { accessToken } = res;
-      console.log(res);
+      const { accessToken, id } = res;
+      login(id);
     }
   };
 

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { UserContext } from '../../AuthContext';
 
-const UserLibrary = () => {
+const AddBookToLibrary = () => {
   const { logout } = useContext(UserContext);
 
   return (
@@ -15,4 +15,4 @@ const UserLibrary = () => {
   );
 };
 
-export default UserLibrary;
+export default AddBookToLibrary;

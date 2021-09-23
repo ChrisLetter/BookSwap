@@ -1,9 +1,11 @@
-import { BASE_URL } from '../config';
+// import { dbname } from '/../config';
+
+// TODO set a config file
 
 const apiServiceJWT = {};
 
 apiServiceJWT.register = (user) => {
-  return fetch(`${BASE_URL}/register`, {
+  return fetch(`http://192.168.1.14:3000/register`, {
     method: 'POST',
     credentials: 'include',
     mode: 'cors',
@@ -15,7 +17,7 @@ apiServiceJWT.register = (user) => {
 };
 
 apiServiceJWT.login = (user) => {
-  return fetch(`${BASE_URL}/login`, {
+  return fetch(`http://192.168.1.14:3000/login`, {
     method: 'POST',
     credentials: 'include',
     mode: 'cors',

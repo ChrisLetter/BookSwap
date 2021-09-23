@@ -1,7 +1,5 @@
-const config = {
-  dbName: 'BookSwap',
-  dbPort: 27017,
-  BASE_URL: 'http://192.168.1.14:3000',
-};
+const dbName = 'BookSwap';
+const dbPort = '27017';
+const BASE_URL = 'http://192.168.1.14:3000';
 
-export default config;
+module.exports = { dbName, dbPort, BASE_URL };

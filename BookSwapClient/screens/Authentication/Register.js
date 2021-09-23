@@ -17,7 +17,6 @@ const Register = () => {
       setPassword('');
     } else {
       const { accessToken } = res;
-      localStorage.setItem('accessToken', accessToken);
     }
   };
 

@@ -1,9 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('./../models/user');
-const ignoredFile = require('../../ignoredFile');
-
-const SECRET_KEY = ignoredFile.SECRET_KEY;
+const User = require('./../models/users');
+const { SECRET_KEY } = require('../../ignoredFile');
 
 const create = async (req, res) => {
   const { email, password } = req.body;
@@ -11,7 +9,7 @@ const create = async (req, res) => {
   if (user) {
     return res
       .status(409)
-      .send({ error: '409', message: 'Could not create user' });
+      .send({ error: '409', message: 'Could not create an user' });
   }
   try {
     if (password === '') {
@@ -23,7 +21,8 @@ const create = async (req, res) => {
       password: hash,
     });
     const { _id } = await newUser.save();
-    const accessToken = jwt.sign({ _id }, SECRET_KEY);
+    const id = _id.toString();
+    const accessToken = jwt.sign({ data: id }, SECRET_KEY, { expiresIn: '1h' });
     res.status(201).send({ accessToken });
   } catch (error) {
     res.status(400).send({ error, message: 'Could not create user' });

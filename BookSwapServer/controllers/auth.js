@@ -22,7 +22,7 @@ const create = async (req, res) => {
     });
     const { _id } = await newUser.save();
     const id = _id.toString();
-    const accessToken = jwt.sign({ data: id }, SECRET_KEY, { expiresIn: '1h' });
+    const accessToken = jwt.sign({ data: id }, SECRET_KEY, { expiresIn: '6h' });
     res.status(201).send({ accessToken });
   } catch (error) {
     res.status(400).send({ error, message: 'Could not create user' });

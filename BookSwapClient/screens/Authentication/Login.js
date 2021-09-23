@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, TextInput } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import apiServiceJWT from '../../ApiServiceJWT';
+import { UserContext } from '../../AuthContext';
 
 const Login = ({ navigation }) => {
+  const { login } = useContext(UserContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -44,6 +46,12 @@ const Login = ({ navigation }) => {
         onPress={() => navigation.navigate('Register')}
       >
         <Text>Don't have an account? Register</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{ paddingBottom: 30, paddingTop: 30 }}
+        onPress={() => login('mario')}
+      >
+        <Text>Loggin in</Text>
       </TouchableOpacity>
     </View>
   );

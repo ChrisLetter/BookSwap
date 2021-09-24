@@ -19,7 +19,7 @@ const UserLibrary = ({ navigation }) => {
   const isFocused = useIsFocused();
 
   function fetchBookFromDb() {
-    fetch(`${BASE_URL}/books/${user.id}`)
+    fetch(`${BASE_URL}/books/${user.id}/library`)
       .then((data) => data.json())
       .then((res) => setBooks(res))
       .catch((err) => console.log(err));
@@ -29,17 +29,17 @@ const UserLibrary = ({ navigation }) => {
     if (isFocused) fetchBookFromDb();
   }, [isFocused]);
 
-  function removeBook(isbn) {
-    fetch(`${BASE_URL}/books/${user.id}/${isbn}/sell`, {
-      method: 'DELETE',
-    })
-      .then(() =>
-        fetch(`${BASE_URL}/isbn/${user.id}/${isbn}/sell`, {
-          method: 'DELETE',
-        }),
-      )
-      .then(() => fetchBookFromDb());
-  }
+  // function removeBook(isbn) {
+  //   fetch(`${BASE_URL}/books/${user.id}/${isbn}/sell`, {
+  //     method: 'DELETE',
+  //   })
+  //     .then(() =>
+  //       fetch(`${BASE_URL}/isbn/${user.id}/${isbn}/sell`, {
+  //         method: 'DELETE',
+  //       }),
+  //     )
+  //     .then(() => fetchBookFromDb());
+  // }
 
   return (
     <View style={styles.container}>
@@ -69,7 +69,6 @@ const UserLibrary = ({ navigation }) => {
           </View>
         )}
       />
-      {/* {console.log(user)} */}
       <IconButton
         style={styles.plusButton}
         icon="plus-circle"

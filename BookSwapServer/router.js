@@ -6,9 +6,9 @@ const isbn = require('./controllers/isbn');
 router.post('/register', auth.create);
 router.post('/login', auth.login);
 
-router.get('/books/:userId', books.getAllBooks);
-router.post('/books/:userId/library', books.addBookToLibrary);
+router.get('/books/:userId/:source', books.getAllBooks);
+router.post('/books/:userId/:source', books.addOneBook);
 
-router.post('/isbn/:userId/:ISBN/sell', isbn.addUserToTheSellingList);
+router.post('/isbn/:userId/:ISBN/:source', isbn.addUserToTheIsbnList);
 
 module.exports = router;

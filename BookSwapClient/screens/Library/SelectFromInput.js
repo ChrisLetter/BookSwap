@@ -56,7 +56,6 @@ const SelectFromInput = ({ route, navigation }) => {
   }
 
   function InsertBookInDb(item) {
-    // console.log(user.id);
     const BookInfo = {
       title: item.title,
       authors: item.authors,

@@ -20,7 +20,7 @@ import BASE_URL from '../../configClient';
 const AddDetailsToRequest = ({ route, navigation }) => {
   const { user } = useContext(UserContext);
 
-  const { matchesFromWhishList, matchesFromLibraryToSell, UserMatch } =
+  const { matchesFromWishList, matchesFromLibraryToSell, UserMatch } =
     route.params;
   const [monetaryCompensationYesOrNo, setMonetaryCompensationYesOrNo] =
     useState(false);
@@ -34,7 +34,7 @@ const AddDetailsToRequest = ({ route, navigation }) => {
       userTo: UserMatch,
       hasBeenViewed: false,
       booksOffered: matchesFromLibraryToSell,
-      booksAsked: matchesFromWhishList,
+      booksAsked: matchesFromWishList,
       monetaryCompensation: monetaryCompensationYesOrNo,
       monetaryCompensationValue: monetaryCompensationValue,
       askingMoney: AskOrGiveMoney,
@@ -42,6 +42,7 @@ const AddDetailsToRequest = ({ route, navigation }) => {
       status: 'pending',
       timeStamp: Date.now(),
     };
+    console.log(requestFromUser);
     fetch(`${BASE_URL}/requests/${user.id}`, {
       method: 'POST',
       headers: {

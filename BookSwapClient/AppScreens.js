@@ -118,7 +118,7 @@ export default function AppScreens() {
                 iconName = focused ? 'heart' : 'heart-outline';
               } else if (route.name === 'Matches') {
                 iconName = focused ? 'search' : 'search-outline';
-              } else if (route.name === 'Requests') {
+              } else if (route.name === 'All Requests') {
                 iconName = focused ? 'mail-open' : 'mail-outline';
               } else if (route.name === 'Chat') {
                 iconName = focused ? 'chatbubbles' : 'chatbubbles-outline';
@@ -134,7 +134,7 @@ export default function AppScreens() {
           <Tab.Screen name="WishList" component={WishList} />
           <Tab.Screen name="Matches" component={SearchBestMatches} />
           <Tab.Screen
-            name="Requests"
+            name="All Requests"
             component={Requests}
             options={{ tabBarBadge: 1 }}
           />

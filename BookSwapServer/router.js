@@ -17,5 +17,17 @@ router.get('/isbn/:ISBN', isbn.getAllUsersOfISBN);
 
 router.get('/requests/:userId', requests.getRequests);
 router.post('/requests/:userId', requests.addOneRequest);
+router.put(
+  '/requests/:idUser/:idOtherUser/:receiverOrSender/:trueOrFalse',
+  requests.changeViewedPropertyOfRequest,
+);
+router.delete(
+  '/requests/:idUser/:idOtherUser/:receiverOrSender',
+  requests.deleteRequest,
+);
+router.put(
+  '/requests/:idUser/:idOtherUser/:status/:receiverOrSender/status',
+  requests.changeStatusRequest,
+);
 
 module.exports = router;

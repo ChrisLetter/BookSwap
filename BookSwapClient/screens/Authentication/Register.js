@@ -7,14 +7,14 @@ const Register = () => {
   const { login } = useContext(UserContext);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [userPassword, setUserPassword] = useState('');
 
   const handleSubmit = async (e) => {
-    const user = { username, email, password };
+    const user = { username, email, userPassword };
     const res = await apiServiceJWT.register(user);
     setUsername('');
     setEmail('');
-    setPassword('');
+    setUserPassword('');
     console.log(res);
     if (res.error) {
       alert(`${res.message}`);
@@ -41,8 +41,8 @@ const Register = () => {
       <Text style={{ paddingBottom: 30, paddingTop: 30 }}>password</Text>
       <TextInput
         style={{ borderWidth: 1, borderColor: 'grey' }}
-        value={password}
-        onChangeText={setPassword}
+        value={userPassword}
+        onChangeText={setUserPassword}
       />
       <TouchableOpacity onPress={handleSubmit}>
         <View>

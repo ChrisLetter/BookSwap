@@ -17,8 +17,9 @@ async function getAllBooks(req, res) {
 
 async function addBookToLibrary(req, res) {
   const userId = req.params.userId;
-  // console.log(req.params);
+  console.log(req.params);
   const bookToInsert = req.body;
+  console.log(req.body);
   try {
     User.findOneAndUpdate(
       { _id: userId },

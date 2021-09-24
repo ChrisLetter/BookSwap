@@ -21,7 +21,7 @@ const UserLibrary = ({ navigation }) => {
   function fetchBookFromDb() {
     fetch(`${BASE_URL}/books/${user.id}`)
       .then((data) => data.json())
-      .then((res) => setBooks(res.booksToSell))
+      .then((res) => setBooks(res))
       .catch((err) => console.log(err));
   }
 

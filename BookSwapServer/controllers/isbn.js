@@ -11,7 +11,7 @@ async function addUserToTheIsbnList(req, res) {
         ).then(() => {})
       : ISBNdb.findOneAndUpdate(
           { ISBN: ISBN },
-          { $push: { UsersThatWantsIt: userId } },
+          { $push: { UsersThatWantIt: userId } },
           { upsert: true },
         ).then(() => {});
     res.sendStatus(201);
@@ -21,4 +21,23 @@ async function addUserToTheIsbnList(req, res) {
   }
 }
 
-module.exports = { addUserToTheIsbnList };
+async function removeUserFromTheIsbnList(req, res) {
+  const { userId, ISBN, source } = req.params;
+  try {
+    source === 'sell'
+      ? ISBNdb.findOneAndUpdate(
+          { ISBN: ISBN },
+          { $pull: { UsersThatWantToSellIt: userId } },
+        ).then(() => {})
+      : ISBNdb.findOneAndUpdate(
+          { ISBN: ISBN },
+          { $pull: { UsersThatWantIt: userId } },
+        ).then(() => {});
+    res.sendStatus(201);
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
+}
+
+module.exports = { addUserToTheIsbnList, removeUserFromTheIsbnList };

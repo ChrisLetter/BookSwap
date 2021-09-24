@@ -32,15 +32,14 @@ const WishList = ({ navigation }) => {
   function removeBook(isbn) {
     fetch(`${BASE_URL}/books/${user.id}/${isbn}/wishList`, {
       method: 'DELETE',
-    });
+    })
+      .then(() =>
+        fetch(`${BASE_URL}/isbn/${user.id}/${isbn}/buy`, {
+          method: 'DELETE',
+        }),
+      )
+      .then(() => fetchBookFromDb());
   }
-  //     .then(() =>
-  //       fetch(`${ipAddressForFetching}/isbn/${UserId}/${isbn}/buy`, {
-  //         method: 'DELETE',
-  //       }),
-  //     )
-  //     .then(() => fetchBookFromDb());
-  // }
 
   return (
     <View style={styles.container}>

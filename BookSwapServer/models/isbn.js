@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const ISBNSchema = new Schema({
   ISBN: Number,
-  UsersThatWantsIt: Array,
+  UsersThatWantIt: Array,
   UsersThatWantToSellIt: Array,
 });
 

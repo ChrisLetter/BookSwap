@@ -11,5 +11,6 @@ router.post('/books/:userId/:source', books.addOneBook);
 router.delete('/books/:userId/:ISBN/:source', books.removeOneBook);
 
 router.post('/isbn/:userId/:ISBN/:source', isbn.addUserToTheIsbnList);
+router.delete('/isbn/:userId/:ISBN/:source', isbn.removeUserFromTheIsbnList);
 
 module.exports = router;

@@ -32,15 +32,14 @@ const UserLibrary = ({ navigation }) => {
   function removeBook(isbn) {
     fetch(`${BASE_URL}/books/${user.id}/${isbn}/library`, {
       method: 'DELETE',
-    });
+    })
+      .then(() =>
+        fetch(`${BASE_URL}/isbn/${user.id}/${isbn}/sell`, {
+          method: 'DELETE',
+        }),
+      )
+      .then(() => fetchBookFromDb());
   }
-  //     .then(() =>
-  //       fetch(`${BASE_URL}/isbn/${user.id}/${isbn}/sell`, {
-  //         method: 'DELETE',
-  //       }),
-  //     )
-  //     .then(() => fetchBookFromDb());
-  // }
 
   return (
     <View style={styles.container}>

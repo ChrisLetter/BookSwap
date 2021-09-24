@@ -14,7 +14,7 @@ import AddBookToLibrary from './screens/Library/AddBookToLibrary';
 import ScanIsbn from './screens/Library/ScanIsbn';
 import SelectFromInput from './screens/Library/SelectFromInput';
 import ConfirmIsbnScan from './screens/Library/ConfirmIsbnScan';
-import ScannedSuccessfully from './screens/Library/ScannedSuccessfully';
+import BookAddedSuccessfully from './screens/Library/BookAddedSuccessfully';
 import UserWishList from './screens/WishList/UserWishList';
 import AddBookToWishList from './screens/WishList/AddBookToWishList';
 import SelectFromInputWL from './screens/WishList/SelectFromInputWL';
@@ -43,8 +43,8 @@ function Library() {
         component={SelectFromInput}
       />
       <Stack.Screen
-        name="Scanned Successfully"
-        component={ScannedSuccessfully}
+        name="Book Added Successfully"
+        component={BookAddedSuccessfully}
       />
     </Stack.Navigator>
   );

@@ -40,16 +40,14 @@ const ConfirmIsbnScan = ({ route, navigation }) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(BookInfo),
-    });
-    // .then(() =>
-    // fetch(`${BASE_URL}/isbn/${user.id}/${BookInfo.ISBN}/sell`, {
-    // method: 'POST',
-    // }),
-    // )
-    // .catch((err) => console.log(err))
-    // .then(navigation.navigate('ScannedSuccessfully'));
-    // }
-    //
+    })
+      .then(() =>
+        fetch(`${BASE_URL}/isbn/${user.id}/${BookInfo.ISBN}/sell`, {
+          method: 'POST',
+        }),
+      )
+      .catch((err) => console.log(err))
+      .then(navigation.navigate('Book Added Successfully'));
   }
 
   return (

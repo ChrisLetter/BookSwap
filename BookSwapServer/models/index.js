@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { dbName, dbPort } = require('../../configServer.js');
+const { dbName, dbPort } = require('../configServer.js');
 
 mongoose.connect(
   `mongodb://localhost:${dbPort}/${dbName}`,

@@ -15,11 +15,12 @@ const Register = () => {
     setUsername('');
     setEmail('');
     setPassword('');
+    console.log(res);
     if (res.error) {
       alert(`${res.message}`);
     } else {
       const { accessToken, id } = res;
-      login(id);
+      login(accessToken, id);
     }
   };
 

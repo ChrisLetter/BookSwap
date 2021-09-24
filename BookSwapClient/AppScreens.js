@@ -36,8 +36,8 @@ function Library() {
     <Stack.Navigator>
       <Stack.Screen name="Your Library" component={UserLibrary} />
       <Stack.Screen name="Insert A New Book" component={AddBookToLibrary} />
-      <Stack.Screen name="Confirm the Book" component={ConfirmIsbnScan} />
       <Stack.Screen name="ScanISBN" component={ScanIsbn} />
+      <Stack.Screen name="Confirm the Book" component={ConfirmIsbnScan} />
       <Stack.Screen
         name="Select a Book From The List"
         component={SelectFromInput}

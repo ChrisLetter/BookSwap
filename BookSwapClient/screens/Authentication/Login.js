@@ -18,7 +18,7 @@ const Login = ({ navigation }) => {
       setPassword('');
     } else {
       const { accessToken, id } = res;
-      login(id);
+      login(id, accessToken);
     }
   };
 

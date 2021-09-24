@@ -12,10 +12,10 @@ const UserContext = createContext(initialState);
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(initialState);
 
-  const login = (id, token) => {
-    setUser((userId, Accesstoken) => ({
-      id: userId,
+  const login = (Accesstoken, id) => {
+    setUser((prevState) => ({
       token: Accesstoken,
+      id: id,
       auth: true,
     }));
   };

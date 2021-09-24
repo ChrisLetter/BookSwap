@@ -5,6 +5,7 @@ const { SECRET_KEY } = require('../../ignoredFile');
 
 const create = async (req, res) => {
   const { email, password } = req.body;
+  console.log(req.body);
   const user = await User.findOne({ email: email });
   if (user) {
     return res
@@ -21,8 +22,11 @@ const create = async (req, res) => {
       password: hash,
     });
     const { _id } = await newUser.save();
+    // console.log(_id);
     const id = _id.toString();
-    const accessToken = jwt.sign({ data: id }, SECRET_KEY, { expiresIn: '6h' });
+    // console.log(id);
+    const accessToken = jwt.sign({ _id }, SECRET_KEY);
+    // console.log(accessToken);
     res.status(201).send({ accessToken, id });
   } catch (error) {
     res.status(400).send({ error, message: 'Could not create user' });
@@ -37,8 +41,9 @@ const login = async (req, res) => {
     if (!validatedPass) {
       throw new Error();
     }
-    const id = user._id;
-    const accessToken = jwt.sign({ _id: id }, SECRET_KEY);
+    const id = user._id.toString();
+    console.log(id);
+    const accessToken = jwt.sign({ data: id }, SECRET_KEY);
     res.status(200).send({ accessToken, id });
   } catch (error) {
     res

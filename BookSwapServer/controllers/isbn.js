@@ -40,4 +40,20 @@ async function removeUserFromTheIsbnList(req, res) {
   }
 }
 
-module.exports = { addUserToTheIsbnList, removeUserFromTheIsbnList };
+async function getAllUsersOfISBN(req, res) {
+  const ISBN = req.params.ISBN;
+  try {
+    const usersList = await ISBNdb.findOne({ ISBN: ISBN });
+    res.status(200);
+    res.send(usersList);
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
+}
+
+module.exports = {
+  addUserToTheIsbnList,
+  removeUserFromTheIsbnList,
+  getAllUsersOfISBN,
+};

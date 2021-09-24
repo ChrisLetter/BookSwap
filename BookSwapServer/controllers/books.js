@@ -7,7 +7,13 @@ async function getAllBooks(req, res) {
     const booksToSell = books.booksToSell;
     const booksToBuy = books.booksToBuy;
     res.status(200);
-    source === 'library' ? res.send(booksToSell) : res.send(booksToBuy);
+    if (source === 'library') {
+      res.send(booksToSell);
+    } else if (source === 'wishList') {
+      res.send(booksToBuy);
+    } else if (source === 'all') {
+      res.send({ booksToBuy, booksToSell });
+    }
   } catch (e) {
     console.log(e);
     res.sendStatus(500);

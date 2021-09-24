@@ -12,5 +12,6 @@ router.delete('/books/:userId/:ISBN/:source', books.removeOneBook);
 
 router.post('/isbn/:userId/:ISBN/:source', isbn.addUserToTheIsbnList);
 router.delete('/isbn/:userId/:ISBN/:source', isbn.removeUserFromTheIsbnList);
+router.get('/isbn/:ISBN', isbn.getAllUsersOfISBN);
 
 module.exports = router;

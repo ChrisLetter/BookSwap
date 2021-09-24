@@ -29,10 +29,11 @@ const UserLibrary = ({ navigation }) => {
     if (isFocused) fetchBookFromDb();
   }, [isFocused]);
 
-  // function removeBook(isbn) {
-  //   fetch(`${BASE_URL}/books/${user.id}/${isbn}/sell`, {
-  //     method: 'DELETE',
-  //   })
+  function removeBook(isbn) {
+    fetch(`${BASE_URL}/books/${user.id}/${isbn}/library`, {
+      method: 'DELETE',
+    });
+  }
   //     .then(() =>
   //       fetch(`${BASE_URL}/isbn/${user.id}/${isbn}/sell`, {
   //         method: 'DELETE',

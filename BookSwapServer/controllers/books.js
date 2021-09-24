@@ -36,4 +36,34 @@ async function addOneBook(req, res) {
   }
 }
 
-module.exports = { getAllBooks, addOneBook };
+async function removeOneBook(req, res) {
+  const { userId, ISBN, source } = req.params;
+  try {
+    // TODO: refactor so that it updates without doing a double operation
+    const dbBooks = await User.findOne({ _id: userId });
+    source === 'library'
+      ? User.findOneAndUpdate(
+          { _id: userId },
+          {
+            booksToSell: dbBooks.booksToSell.filter(
+              (books) => books.ISBN !== ISBN,
+            ),
+          },
+        ).then(() => {})
+      : User.findOneAndUpdate(
+          { _id: userId },
+          {
+            booksToBuy: dbBooks.booksToBuy.filter(
+              (books) => books.ISBN !== ISBN,
+            ),
+          },
+        ).then(() => {});
+    // TODO: set the right status
+    res.sendStatus(201);
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
+}
+
+module.exports = { getAllBooks, addOneBook, removeOneBook };

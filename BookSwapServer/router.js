@@ -8,6 +8,7 @@ router.post('/login', auth.login);
 
 router.get('/books/:userId/:source', books.getAllBooks);
 router.post('/books/:userId/:source', books.addOneBook);
+router.delete('/books/:userId/:ISBN/:source', books.removeOneBook);
 
 router.post('/isbn/:userId/:ISBN/:source', isbn.addUserToTheIsbnList);
 

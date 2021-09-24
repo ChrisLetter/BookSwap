@@ -1,10 +1,20 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  Button,
+  TextInput,
+} from 'react-native';
 
-const RequestSent = () => {
+const RequestSent = ({ route, navigation }) => {
   return (
     <View>
-      <Text>RequestSent Working</Text>
+      <Text>Request Sent Correctly!</Text>
     </View>
   );
 };

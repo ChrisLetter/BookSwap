@@ -113,7 +113,7 @@ const BestMatches = ({ navigation }) => {
                 </Text>
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.navigate('MatchesDetailPage', {
+                    navigation.navigate('Send Request', {
                       UsersInfo: {
                         booksCurrUser: allBooksCurrentUser,
                         userBooksLibrary,

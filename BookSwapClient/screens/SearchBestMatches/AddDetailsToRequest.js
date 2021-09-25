@@ -42,7 +42,6 @@ const AddDetailsToRequest = ({ route, navigation }) => {
       status: 'pending',
       timeStamp: Date.now(),
     };
-    console.log(requestFromUser);
     fetch(`${BASE_URL}/requests/${user.id}`, {
       method: 'POST',
       headers: {

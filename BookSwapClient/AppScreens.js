@@ -87,7 +87,7 @@ function Requests() {
   );
 }
 
-function Chat() {
+function Chats() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Messages" component={AllMessages} />
@@ -120,7 +120,7 @@ export default function AppScreens() {
                 iconName = focused ? 'search' : 'search-outline';
               } else if (route.name === 'All Requests') {
                 iconName = focused ? 'mail-open' : 'mail-outline';
-              } else if (route.name === 'Chat') {
+              } else if (route.name === 'Chats') {
                 iconName = focused ? 'chatbubbles' : 'chatbubbles-outline';
               }
               return <Ionicons name={iconName} size={size} color={color} />;
@@ -138,7 +138,7 @@ export default function AppScreens() {
             component={Requests}
             options={{ tabBarBadge: 1 }}
           />
-          <Tab.Screen name="Chat" component={Chat} />
+          <Tab.Screen name="Chats" component={Chats} />
         </Tab.Navigator>
       )}
     </NavigationContainer>

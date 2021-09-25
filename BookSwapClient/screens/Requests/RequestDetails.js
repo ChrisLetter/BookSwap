@@ -47,6 +47,12 @@ const RequestDetails = ({ route, navigation }) => {
   }
 
   function acceptOffer() {
+    const message = {
+      userFrom: 'startingMessage',
+      userTo: 'startingMessage',
+      content: 'in this chat you can discuss the details of your exchange',
+      timeStamp: Date.now(),
+    };
     fetch(
       `${BASE_URL}/requests/${request.userFrom}/${request.userTo}/inProgress/sender/status`,
       {
@@ -61,13 +67,32 @@ const RequestDetails = ({ route, navigation }) => {
           },
         ),
       )
+      .then(() =>
+        fetch(`${BASE_URL}/messages/${request.userFrom}/${user.id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(message),
+        }),
+      )
+      .then(() => {
+        fetch(`${BASE_URL}/messages/${user.id}/${request.userFrom}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(message),
+        });
+      })
+      .then(() => navigation.navigate('Messages'))
       .catch((err) => console.log(err));
   }
 
   function deleteRequestForMaker() {
     fetch(`${BASE_URL}/requests/${request.userFrom}/${request.userTo}/sender`, {
       method: 'DELETE',
-    }).then(() => navigation.navigate('Requests'));
+    }).then(() => navigation.navigate('Best Matches'));
   }
 
   return (

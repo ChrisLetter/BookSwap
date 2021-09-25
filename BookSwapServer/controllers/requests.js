@@ -45,6 +45,7 @@ async function changeViewedPropertyOfRequest(req, res) {
         el.hasBeenViewed = trueOrFalse === 'true' ? true : false;
       }
     }
+    // await userInfos.save();
     User.findOneAndUpdate(
       { _id: idUser },
       { requests: userInfos.requests },

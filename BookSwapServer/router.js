@@ -3,6 +3,7 @@ const auth = require('./controllers/auth');
 const books = require('./controllers/books');
 const isbn = require('./controllers/isbn');
 const requests = require('./controllers/requests');
+const messages = require('./controllers/messages');
 
 router.post('/register', auth.create);
 router.post('/login', auth.login);
@@ -28,6 +29,13 @@ router.delete(
 router.put(
   '/requests/:idUser/:idOtherUser/:status/:receiverOrSender/status',
   requests.changeStatusRequest,
+);
+
+router.get('/messages/:idUser', messages.getAllMessages);
+router.post('/messages/:idUser/:idOtherUser', messages.addMessage);
+router.put(
+  '/messages/:idUser/:idOtherUser/:trueOrFalse/notification',
+  messages.toggleNotificationChat,
 );
 
 module.exports = router;

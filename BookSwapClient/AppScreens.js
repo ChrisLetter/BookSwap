@@ -46,35 +46,50 @@ import AppLoading from 'expo-app-loading';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const headerOptions = {
+  headerStyle: {
+    backgroundColor: 'white',
+    shadowColor: 'transparent',
+  },
+  headerTintColor: 'black',
+  headerTitleStyle: {
+    fontFamily: 'Rosario_500Medium',
+    fontSize: 20,
+  },
+};
+
 function Library() {
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="Your Library"
         component={UserLibrary}
-        options={{
-          title: 'Library',
-          headerStyle: {
-            backgroundColor: 'white',
-            shadowColor: 'transparent',
-          },
-          headerTintColor: 'black',
-          headerTitleStyle: {
-            fontFamily: 'Rosario_500Medium',
-            fontSize: 20,
-          },
-        }}
+        options={headerOptions}
       />
-      <Stack.Screen name="Insert A New Book" component={AddBookToLibrary} />
-      <Stack.Screen name="ScanISBN" component={ScanIsbn} />
-      <Stack.Screen name="Confirm the Book" component={ConfirmIsbnScan} />
+      <Stack.Screen
+        name="Insert A New Book"
+        component={AddBookToLibrary}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="ScanISBN"
+        component={ScanIsbn}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="Confirm the Book"
+        component={ConfirmIsbnScan}
+        options={headerOptions}
+      />
       <Stack.Screen
         name="Select a Book From The List"
         component={SelectFromInput}
+        options={headerOptions}
       />
       <Stack.Screen
         name="Book Added Successfully"
         component={BookAddedSuccessfully}
+        options={headerOptions}
       />
     </Stack.Navigator>
   );
@@ -83,12 +98,25 @@ function Library() {
 function WishList() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Whish List" component={UserWishList} />
-      <Stack.Screen name="Add a New Book" component={AddBookToWishList} />
-      <Stack.Screen name="Select one Book" component={SelectFromInputWL} />
+      <Stack.Screen
+        name="Wish List"
+        component={UserWishList}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="Add a New Book"
+        component={AddBookToWishList}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="Select one Book"
+        component={SelectFromInputWL}
+        options={headerOptions}
+      />
       <Stack.Screen
         name="Inserted Successfully"
         component={InsertedSuccessfully}
+        options={headerOptions}
       />
     </Stack.Navigator>
   );
@@ -97,13 +125,26 @@ function WishList() {
 function SearchBestMatches() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Best Matches" component={BestMatches} />
-      <Stack.Screen name="Send Request" component={SendRequest} />
+      <Stack.Screen
+        name="Best Matches"
+        component={BestMatches}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="Send Request"
+        component={SendRequest}
+        options={headerOptions}
+      />
       <Stack.Screen
         name="Add Details To The Request"
         component={AddDetailsToRequest}
+        options={headerOptions}
       />
-      <Stack.Screen name="Request Sent" component={RequestSent} />
+      <Stack.Screen
+        name="Request Sent"
+        component={RequestSent}
+        options={headerOptions}
+      />
     </Stack.Navigator>
   );
 }
@@ -111,8 +152,16 @@ function SearchBestMatches() {
 function Requests() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="All Requests" component={AllRequests} />
-      <Stack.Screen name="Details of the Request" component={RequestDetails} />
+      <Stack.Screen
+        name="All Requests"
+        component={AllRequests}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="Details of the Request"
+        component={RequestDetails}
+        options={headerOptions}
+      />
     </Stack.Navigator>
   );
 }
@@ -120,8 +169,16 @@ function Requests() {
 function Chats() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Messages" component={AllMessages} />
-      <Stack.Screen name="Chat" component={SingleUserChat} />
+      <Stack.Screen
+        name="Messages"
+        component={AllMessages}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="Chat"
+        component={SingleUserChat}
+        options={headerOptions}
+      />
     </Stack.Navigator>
   );
 }

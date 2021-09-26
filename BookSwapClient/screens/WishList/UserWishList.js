@@ -1,17 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { IconButton, Colors } from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
 
 import { UserContext } from '../../AuthContext';
 import BASE_URL from '../../configClient';
+import BookCard from '../../components/BookCard';
 
 const WishList = ({ navigation }) => {
   const { user } = useContext(UserContext);
@@ -47,33 +41,25 @@ const WishList = ({ navigation }) => {
         data={books}
         keyExtractor={(item) => item.ISBN}
         renderItem={({ item }) => (
-          <View style={styles.wholeResult}>
-            {item.thumbnail ? (
-              <View style={{ width: 120, height: 192 }}>
-                <Image
-                  source={{ uri: item.thumbnail }}
-                  style={{ width: '100%', height: '100%' }}
-                />
-              </View>
-            ) : null}
-            <View>
-              <Text>{item.title}</Text>
-              <Text>{item.authors}</Text>
-              <Text>{item.publisher}</Text>
-              <Text>{item.publishedDate}</Text>
-              <Text>{item.ISBN}</Text>
-              <TouchableOpacity onPress={() => removeBook(item.ISBN)}>
-                <Text>Remove the book</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+          <BookCard bookObj={item} removeBtn={() => removeBook(item.ISBN)} />
         )}
+      />
+      <IconButton
+        /* here I am inserting two buttons since the one that I want to use has a
+          cross in the middle, which is not filled with any colors, therefore the
+          background is visible in the middle of the button. I placed a similar white
+          button underneath the one that I want to use, so that it covers the background*/
+        style={styles.plusButton}
+        icon="plus"
+        color={Colors.white}
+        size={65}
+        onPress={() => navigation.navigate('Add a New Book')}
       />
       <IconButton
         style={styles.plusButton}
         icon="plus-circle"
         color={Colors.green500}
-        size={70}
+        size={65}
         onPress={() => navigation.navigate('Add a New Book')}
       />
     </View>
@@ -85,14 +71,11 @@ export default WishList;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   plusButton: {
     position: 'absolute',
-    top: '82%',
-    left: '70%',
-  },
-  wholeResult: {
-    flexDirection: 'row',
-    margin: 10,
+    top: '85%',
+    left: '76%',
   },
 });

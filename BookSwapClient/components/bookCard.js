@@ -117,6 +117,8 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     fontSize: 20,
     fontFamily: 'Rosario_500Medium',
+    width: 240,
+    textAlign: 'center',
   },
   textAuthor: {
     color: 'white',

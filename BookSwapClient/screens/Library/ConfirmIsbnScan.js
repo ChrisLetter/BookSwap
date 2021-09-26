@@ -4,8 +4,36 @@ import { Image } from 'react-native-elements';
 import secretKey from '../../ignoredFileReact';
 import BASE_URL from '../../configClient';
 import { UserContext } from '../../AuthContext';
+import BookCard from '../../components/BookCard';
+import { Button } from 'react-native-paper';
+import {
+  useFonts,
+  Rosario_300Light,
+  Rosario_400Regular,
+  Rosario_500Medium,
+  Rosario_600SemiBold,
+  Rosario_700Bold,
+  Rosario_300Light_Italic,
+  Rosario_400Regular_Italic,
+  Rosario_500Medium_Italic,
+  Rosario_600SemiBold_Italic,
+  Rosario_700Bold_Italic,
+} from '@expo-google-fonts/rosario';
+import AppLoading from 'expo-app-loading';
 
 const ConfirmIsbnScan = ({ route, navigation }) => {
+  const [fontsLoaded] = useFonts({
+    Rosario_300Light,
+    Rosario_400Regular,
+    Rosario_500Medium,
+    Rosario_600SemiBold,
+    Rosario_700Bold,
+    Rosario_300Light_Italic,
+    Rosario_400Regular_Italic,
+    Rosario_500Medium_Italic,
+    Rosario_600SemiBold_Italic,
+    Rosario_700Bold_Italic,
+  });
   const { scannedISBN } = route.params;
   const [book, setBook] = useState(null);
   const { user } = useContext(UserContext);
@@ -50,44 +78,72 @@ const ConfirmIsbnScan = ({ route, navigation }) => {
       .then(navigation.navigate('Book Added Successfully'));
   }
 
-  return (
-    <View style={styles.container}>
-      <Text>Is this the book you are looking for?</Text>
-      {book !== null ? <Text>{book.title}</Text> : null}
-      {book !== null ? <Text>{book.authors}</Text> : null}
-      {book !== null ? <Text>{scannedISBN}</Text> : null}
-      {book !== null && book.publisher !== undefined ? (
-        <Text>{console.log(book.publisher)}</Text>
-      ) : (
-        <Text>Unknown</Text>
-      )}
-      {book !== null ? <Text>{book.publishedDate.slice(0, 4)}</Text> : null}
-      <View style={{ width: 120, height: 192 }}>
-        {book && book.imageLinks ? (
-          <Image
-            source={{ uri: book.imageLinks.thumbnail }}
-            style={{ width: '100%', height: '100%' }}
-          />
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <View style={styles.container}>
+        {book ? (
+          <View style={styles.container}>
+            <Text style={styles.header}>Is this the right book?</Text>
+            <BookCard bookObj={book} />
+            <Button
+              mode="contained"
+              onPress={() => navigation.navigate('Insert A New Book')}
+              style={styles.buttonSearchManually}
+              labelStyle={{ fontSize: 16 }}
+            >
+              no, search manually
+            </Button>
+            <Button
+              mode="contained"
+              onPress={() => InsertBookInDb()}
+              style={styles.buttonAddToLibrary}
+              labelStyle={{ fontSize: 16 }}
+            >
+              Add to the library
+            </Button>
+          </View>
         ) : null}
       </View>
-      <TouchableOpacity
-        style={{ paddingBottom: 30 }}
-        onPress={() => InsertBookInDb()}
-      >
-        <Text>Yes, add it to my library</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Insert A New Book')}
-      >
-        <Text>No, search manually</Text>
-      </TouchableOpacity>
-    </View>
-  );
+    );
+  }
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
+  },
+  header: {
+    fontFamily: 'Rosario_500Medium',
+    fontSize: 24,
+    textAlign: 'center',
+    marginVertical: 40,
+  },
+  buttonSearchManually: {
+    marginHorizontal: 20,
+    backgroundColor: '#5D3FD3',
+    marginTop: 130,
+    padding: 10,
+    fontSize: 20,
+    shadowColor: 'black',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  buttonAddToLibrary: {
+    marginHorizontal: 20,
+    marginTop: 30,
+    backgroundColor: '#5D3FD3',
+    padding: 10,
+    fontSize: 20,
+    shadowColor: 'black',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 5,
   },
 });
 

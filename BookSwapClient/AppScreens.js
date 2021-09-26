@@ -79,7 +79,16 @@ function Library() {
       <Stack.Screen
         name="Confirm the Book"
         component={ConfirmIsbnScan}
-        options={headerOptions}
+        options={
+          (headerOptions,
+          {
+            headerTintColor: 'white',
+            headerStyle: {
+              backgroundColor: 'white',
+              shadowColor: 'transparent',
+            },
+          })
+        }
       />
       <Stack.Screen
         name="Select a Book From The List"

@@ -1,9 +1,15 @@
-import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Button } from 'react-native';
+import LottieView from 'lottie-react-native';
 
 const BookAddedSuccessfully = ({ navigation }) => {
   return (
     <View>
+      <LottieView
+        style={styles.lottie}
+        source={require('./../../assets/task-completed-done.json')}
+        autoPlay
+      />
       <Text>Book added correctly to your library!</Text>
       <TouchableOpacity onPress={() => navigation.navigate('Your Library')}>
         <Text>Go back to your library</Text>
@@ -18,3 +24,10 @@ const BookAddedSuccessfully = ({ navigation }) => {
 };
 
 export default BookAddedSuccessfully;
+
+const styles = StyleSheet.create({
+  lottie: {
+    width: 40,
+    height: 40,
+  },
+});

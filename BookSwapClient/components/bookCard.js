@@ -64,10 +64,14 @@ const BookCard = (props) => {
           end={{ x: 1, y: 1 }}
           style={styles.card}
         >
-          {props.bookObj.thumbnail ? (
+          {props.bookObj.thumbnail || props.bookObj.imageLinks ? (
             <View style={styles.imageContainer}>
               <Image
-                source={{ uri: props.bookObj.thumbnail }}
+                source={{
+                  uri:
+                    props.bookObj.thumbnail ||
+                    props.bookObj.imageLinks.thumbnail,
+                }}
                 style={styles.image}
               />
             </View>

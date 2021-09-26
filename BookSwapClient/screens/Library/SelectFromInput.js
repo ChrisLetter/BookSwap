@@ -2,11 +2,37 @@ import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, Button } from 'react-native';
 import { UserContext } from '../../AuthContext';
 import { Image } from 'react-native-elements';
+import {
+  useFonts,
+  Rosario_300Light,
+  Rosario_400Regular,
+  Rosario_500Medium,
+  Rosario_600SemiBold,
+  Rosario_700Bold,
+  Rosario_300Light_Italic,
+  Rosario_400Regular_Italic,
+  Rosario_500Medium_Italic,
+  Rosario_600SemiBold_Italic,
+  Rosario_700Bold_Italic,
+} from '@expo-google-fonts/rosario';
+import AppLoading from 'expo-app-loading';
 
 import secretKey from '../../ignoredFileReact';
 import BASE_URL from '../../configClient';
 
 const SelectFromInput = ({ route, navigation }) => {
+  const [fontsLoaded] = useFonts({
+    Rosario_300Light,
+    Rosario_400Regular,
+    Rosario_500Medium,
+    Rosario_600SemiBold,
+    Rosario_700Bold,
+    Rosario_300Light_Italic,
+    Rosario_400Regular_Italic,
+    Rosario_500Medium_Italic,
+    Rosario_600SemiBold_Italic,
+    Rosario_700Bold_Italic,
+  });
   const { user } = useContext(UserContext);
   const { title, authors, isbn } = route.params.FormInfo;
   const [books, setBooks] = useState(null);
@@ -81,39 +107,43 @@ const SelectFromInput = ({ route, navigation }) => {
       .then(navigation.navigate('Book Added Successfully'));
   }
 
-  return (
-    <View style={styles.container}>
-      <Text style={{ paddingBottom: 30 }}>test SelectBookFromInput</Text>
-      <FlatList
-        data={books}
-        keyExtractor={(item) => extractISBN13(item.industryIdentifiers)}
-        renderItem={({ item }) => (
-          <View style={styles.wholeResult}>
-            {item.imageLinks ? (
-              <View style={{ width: 120, height: 192 }}>
-                <Image
-                  source={{ uri: item.imageLinks.thumbnail }}
-                  style={{ width: '100%', height: '100%' }}
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <View style={styles.container}>
+        <Text style={{ paddingBottom: 30 }}>test SelectBookFromInput</Text>
+        <FlatList
+          data={books}
+          keyExtractor={(item) => extractISBN13(item.industryIdentifiers)}
+          renderItem={({ item }) => (
+            <View style={styles.wholeResult}>
+              {item.imageLinks ? (
+                <View style={{ width: 120, height: 192 }}>
+                  <Image
+                    source={{ uri: item.imageLinks.thumbnail }}
+                    style={{ width: '100%', height: '100%' }}
+                  />
+                </View>
+              ) : null}
+              <View>
+                <Text>{item.title}</Text>
+                <Text>{item.authors}</Text>
+                <Text>{item.publisher}</Text>
+                <Text>{item.publishedDate}</Text>
+                <Text>{extractISBN13(item.industryIdentifiers)}</Text>
+                <Button
+                  onPress={() => InsertBookInDb(item)}
+                  title="Add it to my librabry"
+                  color="#841584"
                 />
               </View>
-            ) : null}
-            <View>
-              <Text>{item.title}</Text>
-              <Text>{item.authors}</Text>
-              <Text>{item.publisher}</Text>
-              <Text>{item.publishedDate}</Text>
-              <Text>{extractISBN13(item.industryIdentifiers)}</Text>
-              <Button
-                onPress={() => InsertBookInDb(item)}
-                title="Add it to my librabry"
-                color="#841584"
-              />
             </View>
-          </View>
-        )}
-      />
-    </View>
-  );
+          )}
+        />
+      </View>
+    );
+  }
 };
 
 export default SelectFromInput;

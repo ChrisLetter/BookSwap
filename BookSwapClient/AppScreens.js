@@ -27,6 +27,7 @@ import AllRequests from './screens/Requests/AllRequests';
 import RequestDetails from './screens/Requests/RequestDetails';
 import AllMessages from './screens/Chat/AllMessages';
 import SingleUserChat from './screens/Chat/SingleUserChat';
+import BASE_URL from './configClient';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -34,7 +35,20 @@ const Tab = createBottomTabNavigator();
 function Library() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Your Library" component={UserLibrary} />
+      <Stack.Screen
+        name="Your Library"
+        component={UserLibrary}
+        options={{
+          title: 'Add the books you want to sell',
+          headerStyle: {
+            backgroundColor: 'white',
+          },
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
       <Stack.Screen name="Insert A New Book" component={AddBookToLibrary} />
       <Stack.Screen name="ScanISBN" component={ScanIsbn} />
       <Stack.Screen name="Confirm the Book" component={ConfirmIsbnScan} />
@@ -98,6 +112,37 @@ function Chats() {
 
 export default function AppScreens() {
   const { user } = useContext(UserContext);
+  const [numOfReq, setNumOfReq] = useState(null);
+
+  async function controlForRequests() {
+    if (user.id !== '') {
+      let response = await fetch(`${BASE_URL}/requests/${user.id}`);
+      let json = await response.json();
+      let filteredUserTo = json.filter((request) => request.userTo === user.id);
+      let mappedUserTo = filteredUserTo.map((element) => element.hasBeenViewed);
+      let numberOfRequestNotSeenUserTo = mappedUserTo.filter(
+        (el) => el === false,
+      );
+      let filteredUserFrom = json.filter(
+        (request) => request.userFrom === user.id,
+      );
+      let mappedUserFrom = filteredUserFrom.map(
+        (element) => element.hasBeenViewed,
+      );
+      let numberOfRequestNotSeenUserFrom = mappedUserFrom.filter(
+        (el) => el === true,
+      );
+      let numberOfRequestNotSeen = [
+        ...numberOfRequestNotSeenUserFrom,
+        ...numberOfRequestNotSeenUserTo,
+      ];
+      setNumOfReq(
+        numberOfRequestNotSeen.length ? numberOfRequestNotSeen.length : null,
+      );
+    }
+  }
+
+  setInterval(controlForRequests, 500);
 
   return (
     <NavigationContainer>
@@ -128,6 +173,7 @@ export default function AppScreens() {
             tabBarActiveTintColor: '#2471A3',
             tabBarInactiveTintColor: 'black',
             headerShown: false,
+            tabBarStyle: { backgroundColor: 'white' },
           })}
         >
           <Tab.Screen name="Library" component={Library} />
@@ -136,7 +182,7 @@ export default function AppScreens() {
           <Tab.Screen
             name="All Requests"
             component={Requests}
-            options={{ tabBarBadge: 1 }}
+            options={{ tabBarBadge: numOfReq }}
           />
           <Tab.Screen name="Chats" component={Chats} />
         </Tab.Navigator>

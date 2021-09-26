@@ -85,14 +85,14 @@ const RequestDetails = ({ route, navigation }) => {
           body: JSON.stringify(message),
         });
       })
-      .then(() => navigation.navigate('Messages'))
+      .then(() => navigation.navigate('Chats', { screen: 'Messages' }))
       .catch((err) => console.log(err));
   }
 
   function deleteRequestForMaker() {
     fetch(`${BASE_URL}/requests/${request.userFrom}/${request.userTo}/sender`, {
       method: 'DELETE',
-    }).then(() => navigation.navigate('Best Matches'));
+    }).then(() => navigation.navigate('Matches', { screen: 'Best Matches' }));
   }
 
   return (

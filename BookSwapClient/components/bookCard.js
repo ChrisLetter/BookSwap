@@ -58,29 +58,57 @@ const BookCard = (props) => {
             />
           </TouchableOpacity>
         ) : null}
-        <LinearGradient
-          colors={['#A73FD3', '#5D3FD3']}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.card}
-        >
-          {props.bookObj.thumbnail || props.bookObj.imageLinks ? (
-            <View style={styles.imageContainer}>
-              <Image
-                source={{
-                  uri:
-                    props.bookObj.thumbnail ||
-                    props.bookObj.imageLinks.thumbnail,
-                }}
-                style={styles.image}
-              />
+        {props.addBtn ? (
+          <TouchableOpacity onPress={() => props.addBtn(props.bookObj)}>
+            <LinearGradient
+              colors={['#A73FD3', '#5D3FD3']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.card}
+            >
+              {props.bookObj.thumbnail || props.bookObj.imageLinks ? (
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={{
+                      uri:
+                        props.bookObj.thumbnail ||
+                        props.bookObj.imageLinks.thumbnail,
+                    }}
+                    style={styles.image}
+                  />
+                </View>
+              ) : null}
+              <View style={styles.textContainer}>
+                <Text style={styles.textTitle}>{props.bookObj.title}</Text>
+                <Text style={styles.textAuthor}>{props.bookObj.authors}</Text>
+              </View>
+            </LinearGradient>
+          </TouchableOpacity>
+        ) : (
+          <LinearGradient
+            colors={['#A73FD3', '#5D3FD3']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.card}
+          >
+            {props.bookObj.thumbnail || props.bookObj.imageLinks ? (
+              <View style={styles.imageContainer}>
+                <Image
+                  source={{
+                    uri:
+                      props.bookObj.thumbnail ||
+                      props.bookObj.imageLinks.thumbnail,
+                  }}
+                  style={styles.image}
+                />
+              </View>
+            ) : null}
+            <View style={styles.textContainer}>
+              <Text style={styles.textTitle}>{props.bookObj.title}</Text>
+              <Text style={styles.textAuthor}>{props.bookObj.authors}</Text>
             </View>
-          ) : null}
-          <View style={styles.textContainer}>
-            <Text style={styles.textTitle}>{props.bookObj.title}</Text>
-            <Text style={styles.textAuthor}>{props.bookObj.authors}</Text>
-          </View>
-        </LinearGradient>
+          </LinearGradient>
+        )}
       </View>
     );
   }

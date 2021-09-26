@@ -98,7 +98,16 @@ function Library() {
       <Stack.Screen
         name="Book Added Successfully"
         component={BookAddedSuccessfully}
-        options={headerOptions}
+        options={
+          (headerOptions,
+          {
+            headerTintColor: 'white',
+            headerStyle: {
+              backgroundColor: 'white',
+              shadowColor: 'transparent',
+            },
+          })
+        }
       />
     </Stack.Navigator>
   );

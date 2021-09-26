@@ -1,24 +1,33 @@
 import React, { useContext, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Button } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import LottieView from 'lottie-react-native';
+import { Button } from 'react-native-paper';
 
 const BookAddedSuccessfully = ({ navigation }) => {
   return (
-    <View>
+    <View style={styles.container}>
       <LottieView
         style={styles.lottie}
         source={require('./../../assets/task-completed-done.json')}
         autoPlay
+        loop={false}
       />
-      <Text>Book added correctly to your library!</Text>
-      <TouchableOpacity onPress={() => navigation.navigate('Your Library')}>
-        <Text>Go back to your library</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Insert A New Book')}
+      <Button
+        mode="contained"
+        onPress={() => navigation.navigate('Your Library')}
+        style={styles.buttonGoToLibrary}
+        labelStyle={{ fontSize: 16 }}
       >
-        <Text>Insert another book</Text>
-      </TouchableOpacity>
+        Back to the Library
+      </Button>
+      <Button
+        mode="contained"
+        onPress={() => navigation.navigate('Insert A New Book')}
+        style={styles.buttonAddAnotherOne}
+        labelStyle={{ fontSize: 16 }}
+      >
+        Add another one
+      </Button>
     </View>
   );
 };
@@ -26,8 +35,36 @@ const BookAddedSuccessfully = ({ navigation }) => {
 export default BookAddedSuccessfully;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
   lottie: {
-    width: 40,
-    height: 40,
+    width: 400,
+    height: 400,
+  },
+  buttonGoToLibrary: {
+    marginHorizontal: 20,
+    backgroundColor: '#A73FD3',
+    marginTop: 20,
+    padding: 10,
+    fontSize: 20,
+    shadowColor: 'black',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  buttonAddAnotherOne: {
+    marginHorizontal: 20,
+    backgroundColor: '#5D3FD3',
+    marginTop: 60,
+    padding: 10,
+    fontSize: 20,
+    shadowColor: 'black',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 5,
   },
 });

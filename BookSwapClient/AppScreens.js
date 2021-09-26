@@ -28,6 +28,20 @@ import RequestDetails from './screens/Requests/RequestDetails';
 import AllMessages from './screens/Chat/AllMessages';
 import SingleUserChat from './screens/Chat/SingleUserChat';
 import BASE_URL from './configClient';
+import {
+  useFonts,
+  Rosario_300Light,
+  Rosario_400Regular,
+  Rosario_500Medium,
+  Rosario_600SemiBold,
+  Rosario_700Bold,
+  Rosario_300Light_Italic,
+  Rosario_400Regular_Italic,
+  Rosario_500Medium_Italic,
+  Rosario_600SemiBold_Italic,
+  Rosario_700Bold_Italic,
+} from '@expo-google-fonts/rosario';
+import AppLoading from 'expo-app-loading';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -39,13 +53,15 @@ function Library() {
         name="Your Library"
         component={UserLibrary}
         options={{
-          title: 'Add the books you want to sell',
+          title: 'Library',
           headerStyle: {
             backgroundColor: 'white',
+            shadowColor: 'transparent',
           },
           headerTintColor: 'black',
           headerTitleStyle: {
-            fontWeight: 'bold',
+            fontFamily: 'Rosario_500Medium',
+            fontSize: 20,
           },
         }}
       />
@@ -95,7 +111,7 @@ function SearchBestMatches() {
 function Requests() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Requests" component={AllRequests} />
+      <Stack.Screen name="All Requests" component={AllRequests} />
       <Stack.Screen name="Details of the Request" component={RequestDetails} />
     </Stack.Navigator>
   );
@@ -113,6 +129,18 @@ function Chats() {
 export default function AppScreens() {
   const { user } = useContext(UserContext);
   const [numOfReq, setNumOfReq] = useState(null);
+  const [fontsLoaded] = useFonts({
+    Rosario_300Light,
+    Rosario_400Regular,
+    Rosario_500Medium,
+    Rosario_600SemiBold,
+    Rosario_700Bold,
+    Rosario_300Light_Italic,
+    Rosario_400Regular_Italic,
+    Rosario_500Medium_Italic,
+    Rosario_600SemiBold_Italic,
+    Rosario_700Bold_Italic,
+  });
 
   async function controlForRequests() {
     if (user.id !== '') {
@@ -144,49 +172,63 @@ export default function AppScreens() {
 
   setInterval(controlForRequests, 500);
 
-  return (
-    <NavigationContainer>
-      {!user.auth ? (
-        <Stack.Navigator>
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Register" component={Register} />
-        </Stack.Navigator>
-      ) : (
-        <Tab.Navigator
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <NavigationContainer>
+        {!user.auth ? (
+          <Stack.Navigator>
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Register" component={Register} />
+          </Stack.Navigator>
+        ) : (
+          <Tab.Navigator
+            screenOptions={({ route }) => ({
+              tabBarIcon: ({ focused, color, size }) => {
+                let iconName;
 
-              if (route.name === 'Library') {
-                iconName = focused ? 'library' : 'library-outline';
-              } else if (route.name === 'WishList') {
-                iconName = focused ? 'heart' : 'heart-outline';
-              } else if (route.name === 'Matches') {
-                iconName = focused ? 'search' : 'search-outline';
-              } else if (route.name === 'All Requests') {
-                iconName = focused ? 'mail-open' : 'mail-outline';
-              } else if (route.name === 'Chats') {
-                iconName = focused ? 'chatbubbles' : 'chatbubbles-outline';
-              }
-              return <Ionicons name={iconName} size={size} color={color} />;
-            },
-            tabBarActiveTintColor: '#2471A3',
-            tabBarInactiveTintColor: 'black',
-            headerShown: false,
-            tabBarStyle: { backgroundColor: 'white' },
-          })}
-        >
-          <Tab.Screen name="Library" component={Library} />
-          <Tab.Screen name="WishList" component={WishList} />
-          <Tab.Screen name="Matches" component={SearchBestMatches} />
-          <Tab.Screen
-            name="All Requests"
-            component={Requests}
-            options={{ tabBarBadge: numOfReq }}
-          />
-          <Tab.Screen name="Chats" component={Chats} />
-        </Tab.Navigator>
-      )}
-    </NavigationContainer>
-  );
+                if (route.name === 'Library') {
+                  iconName = focused ? 'library-sharp' : 'library-sharp';
+                } else if (route.name === 'Wish List') {
+                  iconName = focused ? 'star-sharp' : 'star-sharp';
+                } else if (route.name === 'Matches') {
+                  iconName = focused ? 'people-sharp' : 'people-sharp';
+                } else if (route.name === 'Requests') {
+                  iconName = focused ? 'mail-open-sharp' : 'mail-open-sharp';
+                } else if (route.name === 'Chats') {
+                  iconName = focused
+                    ? 'chatbubbles-sharp'
+                    : 'chatbubbles-sharp';
+                }
+                return <Ionicons name={iconName} size={size} color={color} />;
+              },
+              tabBarActiveTintColor: '#A73FD3',
+              tabBarInactiveTintColor: '#6c757d',
+              headerShown: false,
+              tabBarStyle: {
+                backgroundColor: 'white',
+                height: 75,
+                paddingBottom: 25,
+              },
+              tabBarLabelStyle: {
+                fontSize: 12,
+                fontFamily: 'Rosario_600SemiBold',
+              },
+            })}
+          >
+            <Tab.Screen name="Library" component={Library} />
+            <Tab.Screen name="Wish List" component={WishList} />
+            <Tab.Screen name="Matches" component={SearchBestMatches} />
+            <Tab.Screen
+              name="Requests"
+              component={Requests}
+              options={{ tabBarBadge: numOfReq }}
+            />
+            <Tab.Screen name="Chats" component={Chats} />
+          </Tab.Navigator>
+        )}
+      </NavigationContainer>
+    );
+  }
 }

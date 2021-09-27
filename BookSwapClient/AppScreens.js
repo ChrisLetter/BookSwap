@@ -245,7 +245,15 @@ function Requests() {
       <Stack.Screen
         name="Details of the Request"
         component={RequestDetails}
-        options={headerOptions}
+        options={{
+          headerStyle: {
+            backgroundColor: 'white',
+            shadowColor: 'transparent',
+          },
+          headerTitle: '',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+        }}
       />
     </Stack.Navigator>
   );

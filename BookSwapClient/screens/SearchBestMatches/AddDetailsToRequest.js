@@ -73,7 +73,8 @@ const AddDetailsToRequest = ({ route, navigation }) => {
   const [monetaryCompensationYesOrNo, setMonetaryCompensationYesOrNo] =
     useState(false);
   const [AskOrGiveMoney, setAskOrGiveMoney] = useState(true);
-  const [monetaryCompensationValue, setMonetaryCompensationValue] = useState(0);
+  const [monetaryCompensationValue, setMonetaryCompensationValue] =
+    useState('');
   const [comment, setComment] = useState(null);
 
   const onToggleSwitch = () => setAskOrGiveMoney(!AskOrGiveMoney);

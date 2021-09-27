@@ -48,15 +48,15 @@ const DisplaySingleRequest = (props) => {
         {props.info?.userFrom === props.user ? (
           <TouchableOpacity onPress={props.pressing}>
             <LinearGradient
-              colors={['#5D3FD3', '#A73FD3']}
+              colors={
+                props.info?.hasBeenViewed
+                  ? ['#c32f27', '#d8572a']
+                  : ['#5D3FD3', '#A73FD3']
+              }
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.card}
             >
-              {console.log(props.info)}
-              {props.info?.hasBeenViewed ? (
-                <Text> notificatiooooon</Text>
-              ) : null}
               <Text style={styles.text}>
                 You sent a request to {props.info?.userToUsername}
               </Text>

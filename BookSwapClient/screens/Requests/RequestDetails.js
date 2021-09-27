@@ -7,15 +7,42 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
-  Button,
   TextInput,
 } from 'react-native';
 import { IconButton, Colors } from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
 import { UserContext } from '../../AuthContext';
 import BASE_URL from '../../configClient';
+import BookCard from '../../components/BookCard';
+import {
+  useFonts,
+  Rosario_300Light,
+  Rosario_400Regular,
+  Rosario_500Medium,
+  Rosario_600SemiBold,
+  Rosario_700Bold,
+  Rosario_300Light_Italic,
+  Rosario_400Regular_Italic,
+  Rosario_500Medium_Italic,
+  Rosario_600SemiBold_Italic,
+  Rosario_700Bold_Italic,
+} from '@expo-google-fonts/rosario';
+import AppLoading from 'expo-app-loading';
+import { Button } from 'react-native-paper';
 
 const RequestDetails = ({ route, navigation }) => {
+  const [fontsLoaded] = useFonts({
+    Rosario_300Light,
+    Rosario_400Regular,
+    Rosario_500Medium,
+    Rosario_600SemiBold,
+    Rosario_700Bold,
+    Rosario_300Light_Italic,
+    Rosario_400Regular_Italic,
+    Rosario_500Medium_Italic,
+    Rosario_600SemiBold_Italic,
+    Rosario_700Bold_Italic,
+  });
   const { request } = route.params;
   const { user } = useContext(UserContext);
   const isFocused = useIsFocused();
@@ -43,6 +70,8 @@ const RequestDetails = ({ route, navigation }) => {
           },
         ),
       )
+      .then(() => navigation.navigate('All Requests'))
+      .then(() => navigation.navigate('Best Matches'))
       .catch((err) => console.log(err));
   }
 
@@ -85,190 +114,220 @@ const RequestDetails = ({ route, navigation }) => {
           body: JSON.stringify(message),
         });
       })
-      .then(() => navigation.navigate('Chats', { screen: 'Messages' }))
+      .then(() => navigation.navigate('All Requests'))
+      .then(() => navigation.navigate('Chats'))
       .catch((err) => console.log(err));
   }
 
   function deleteRequestForMaker() {
     fetch(`${BASE_URL}/requests/${request.userFrom}/${request.userTo}/sender`, {
       method: 'DELETE',
-    }).then(() => navigation.navigate('Matches', { screen: 'Best Matches' }));
+    })
+      .then(() => navigation.navigate('All Requests'))
+      .then(() => navigation.navigate('Best Matches'));
   }
 
-  return (
-    <ScrollView>
-      {console.log(request)}
-      {request.status === 'rejected' ? (
-        <View>
-          <Text>Your request has been rejected</Text>
-          <Button
-            onPress={() => deleteRequestForMaker()}
-            title="Press here to delete the request"
-            color="#841584"
-          />
-        </View>
-      ) : null}
-      {request.userFrom === user.id ? (
-        <View>
-          <Text>You'll have to give to the user these books</Text>
-          <FlatList
-            data={request.booksOffered}
-            keyExtractor={(element) => element.ISBN}
-            renderItem={({ item }) => (
-              <View>
-                {item.thumbnail ? (
-                  <View style={{ width: 120, height: 192 }}>
-                    <Image
-                      source={{ uri: item.thumbnail }}
-                      style={{ width: '100%', height: '100%' }}
-                    />
-                  </View>
-                ) : null}
-                <View>
-                  <Text>{item.title}</Text>
-                  <Text>{item.authors}</Text>
-                  <Text>{item.publisher}</Text>
-                  <Text>{item.publishedDate}</Text>
-                  <Text>{item.ISBN}</Text>
-                </View>
-              </View>
-            )}
-          />
-        </View>
-      ) : (
-        <View>
-          <Text>Pinco Pallino will give you these books</Text>
-          <FlatList
-            data={request.booksAsked}
-            keyExtractor={(element) => element.ISBN}
-            renderItem={({ item }) => (
-              <View>
-                {item.thumbnail ? (
-                  <View style={{ width: 120, height: 192 }}>
-                    <Image
-                      source={{ uri: item.thumbnail }}
-                      style={{ width: '100%', height: '100%' }}
-                    />
-                  </View>
-                ) : null}
-                <View>
-                  <Text>{item.title}</Text>
-                  <Text>{item.authors}</Text>
-                  <Text>{item.publisher}</Text>
-                  <Text>{item.publishedDate}</Text>
-                  <Text>{item.ISBN}</Text>
-                </View>
-              </View>
-            )}
-          />
-        </View>
-      )}
-      {request.userFrom !== user.id ? (
-        <View>
-          <Text>You'll have to give to the user these books</Text>
-          <FlatList
-            data={request.booksOffered}
-            keyExtractor={(element) => element.ISBN}
-            renderItem={({ item }) => (
-              <View>
-                {item.thumbnail ? (
-                  <View style={{ width: 120, height: 192 }}>
-                    <Image
-                      source={{ uri: item.thumbnail }}
-                      style={{ width: '100%', height: '100%' }}
-                    />
-                  </View>
-                ) : null}
-                <View>
-                  <Text>{item.title}</Text>
-                  <Text>{item.authors}</Text>
-                  <Text>{item.publisher}</Text>
-                  <Text>{item.publishedDate}</Text>
-                  <Text>{item.ISBN}</Text>
-                </View>
-              </View>
-            )}
-          />
-        </View>
-      ) : (
-        <View>
-          <Text>Pinco Pallino will give you these books</Text>
-          <FlatList
-            data={request.booksAsked}
-            keyExtractor={(element) => element.ISBN}
-            renderItem={({ item }) => (
-              <View>
-                {item.thumbnail ? (
-                  <View style={{ width: 120, height: 192 }}>
-                    <Image
-                      source={{ uri: item.thumbnail }}
-                      style={{ width: '100%', height: '100%' }}
-                    />
-                  </View>
-                ) : null}
-                <View>
-                  <Text>{item.title}</Text>
-                  <Text>{item.authors}</Text>
-                  <Text>{item.publisher}</Text>
-                  <Text>{item.publishedDate}</Text>
-                  <Text>{item.ISBN}</Text>
-                </View>
-              </View>
-            )}
-          />
-        </View>
-      )}
-      {request.userFrom === user.id ? (
-        <View>
-          {request.comment !== null ? (
-            <Text>You left this comment:</Text>
-          ) : null}
-          <Text>{request.comment}</Text>
-        </View>
-      ) : (
-        <View>
-          {request.comment !== null ? (
-            <Text>Pinco Pallino left this comment:</Text>
-          ) : null}
-          <Text>{request.comment}</Text>
-        </View>
-      )}
-      {request.userFrom === user.id ? (
-        <View>
-          {request.monetaryCompensation ? (
-            <Text>You offered {request.monetaryCompensationValue} $</Text>
-          ) : null}
-        </View>
-      ) : (
-        <View>
-          {request.monetaryCompensation ? (
-            <Text>
-              Pinco Pallino offered you {request.monetaryCompensationValue} $
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <ScrollView style={styles.container}>
+        {request.status === 'rejected' ? (
+          <View>
+            <Text style={styles.mainHeaders}>
+              Your request has been rejected
             </Text>
-          ) : null}
-        </View>
-      )}
-      {request.status === 'inProgress' ? (
-        <View>
-          <Text>Add Button for deleting the request and all the books</Text>
-        </View>
-      ) : null}
-      {request.userFrom !== user.id && request.status === 'pending' ? (
-        <View>
-          <Button
-            onPress={() => acceptOffer()}
-            title="Open the chat"
-            color="#841584"
-          />
-          <Button
-            onPress={() => rejectOffer()}
-            title="Reject"
-            color="#841584"
-          />
-        </View>
-      ) : null}
-    </ScrollView>
-  );
+            <Button
+              mode="contained"
+              onPress={() => deleteRequestForMaker()}
+              style={styles.buttonRefuse2}
+              labelStyle={{ fontSize: 16 }}
+            >
+              delete the request
+            </Button>
+          </View>
+        ) : null}
+        {request.userFrom === user.id ? (
+          <View>
+            <Text style={styles.mainHeaders}>You offered these books</Text>
+            <FlatList
+              data={request.booksOffered}
+              keyExtractor={(element) => element.ISBN}
+              renderItem={({ item }) => <BookCard bookObj={item} />}
+              style={styles.bookCardContainer}
+            />
+          </View>
+        ) : (
+          <View>
+            <Text style={styles.mainHeaders}>
+              {' '}
+              {request.userFromUsername} asked these books
+            </Text>
+            <FlatList
+              data={request.booksAsked}
+              keyExtractor={(element) => element.ISBN}
+              renderItem={({ item }) => <BookCard bookObj={item} />}
+              style={styles.bookCardContainer}
+            />
+          </View>
+        )}
+        {request.userFrom !== user.id ? (
+          <View>
+            <Text style={styles.mainHeaders}>
+              {request.userFromUsername} offered you these books
+            </Text>
+            <FlatList
+              data={request.booksOffered}
+              keyExtractor={(element) => element.ISBN}
+              renderItem={({ item }) => <BookCard bookObj={item} />}
+              style={styles.bookCardContainer}
+            />
+          </View>
+        ) : (
+          <View>
+            <Text style={styles.mainHeaders}>You asked for these books</Text>
+            <FlatList
+              data={request.booksAsked}
+              keyExtractor={(element) => element.ISBN}
+              renderItem={({ item }) => <BookCard bookObj={item} />}
+              style={styles.bookCardContainer}
+            />
+          </View>
+        )}
+        {request.userFrom === user.id ? (
+          <View>
+            {request.comment !== null ? (
+              <Text style={styles.commentHeaders}>You left this comment:</Text>
+            ) : null}
+            <Text style={styles.comment}>{request.comment}</Text>
+          </View>
+        ) : (
+          <View>
+            {request.comment !== null ? (
+              <Text style={styles.commentHeaders}>
+                {request.userFromUsername} left this comment:
+              </Text>
+            ) : null}
+            <Text style={styles.comment}>{request.comment}</Text>
+          </View>
+        )}
+        {request.userFrom === user.id ? (
+          <View>
+            {request.monetaryCompensation ? (
+              <Text style={styles.offeringText}>
+                You offered {request.monetaryCompensationValue} $
+              </Text>
+            ) : null}
+          </View>
+        ) : (
+          <View>
+            {request.monetaryCompensation ? (
+              <Text style={styles.offeringText}>
+                {request.userFromUsername} offered you{' '}
+                {request.monetaryCompensationValue} $
+              </Text>
+            ) : null}
+          </View>
+        )}
+        {request.status === 'inProgress' ? (
+          <View>
+            <Text>Add Button for deleting the request and all the books</Text>
+          </View>
+        ) : null}
+        {request.userFrom !== user.id && request.status === 'pending' ? (
+          <View>
+            <Button
+              mode="contained"
+              onPress={() => rejectOffer()}
+              style={styles.buttonRefuse}
+              labelStyle={{ fontSize: 16 }}
+            >
+              Reject the offer
+            </Button>
+            <Button
+              mode="contained"
+              onPress={() => acceptOffer()}
+              style={styles.buttonAccept}
+              labelStyle={{ fontSize: 16 }}
+            >
+              Accept the offer
+            </Button>
+          </View>
+        ) : null}
+      </ScrollView>
+    );
+  }
 };
 
 export default RequestDetails;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  mainHeaders: {
+    fontFamily: 'Rosario_500Medium',
+    fontSize: 20,
+    textAlign: 'center',
+  },
+  bookCardContainer: {
+    paddingBottom: 40,
+  },
+  comment: {
+    fontFamily: 'Rosario_500Medium_Italic',
+    fontSize: 18,
+    textAlign: 'center',
+    paddingTop: 10,
+    paddingBottom: 30,
+  },
+  commentHeaders: {
+    fontFamily: 'Rosario_500Medium',
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  offeringText: {
+    fontFamily: 'Rosario_500Medium',
+    fontSize: 18,
+    textAlign: 'center',
+    paddingBottom: 20,
+  },
+  buttonRefuse: {
+    marginHorizontal: 20,
+    backgroundColor: '#AA336A',
+    marginTop: 20,
+    padding: 10,
+    fontSize: 20,
+    shadowColor: 'black',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  buttonRefuse2: {
+    marginHorizontal: 20,
+    backgroundColor: '#AA336A',
+    marginTop: 20,
+    marginBottom: 40,
+    padding: 10,
+    fontSize: 20,
+    shadowColor: 'black',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  buttonAccept: {
+    marginHorizontal: 20,
+    backgroundColor: '#5D3FD3',
+    marginTop: 20,
+    marginBottom: 40,
+    padding: 10,
+    fontSize: 20,
+    shadowColor: 'black',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+});

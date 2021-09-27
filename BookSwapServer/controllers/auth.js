@@ -51,7 +51,8 @@ const getUsername = async (req, res) => {
   const { userId } = req.params;
   try {
     const userInfos = await User.findOne({ _id: userId });
-    res.status(201).send(userInfos.username);
+    const username = userInfos.username;
+    res.status(201).send({ username });
   } catch (error) {
     res.status(500);
     console.log(error);

@@ -86,7 +86,7 @@ const BookCard = (props) => {
           </TouchableOpacity>
         ) : (
           <LinearGradient
-            colors={['#A73FD3', '#5D3FD3']}
+            colors={['#AA336A', '#5D3FD3']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={styles.card}
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     marginTop: 20,
-    marginHorizontal: 15,
+    marginHorizontal: 20,
     // margin: 15,
     borderRadius: 5,
     shadowColor: 'black',
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 2,
     elevation: 5,
-    padding: 6,
+    // padding: 6,
     zIndex: -5,
   },
   textContainer: {
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     color: 'white',
     paddingTop: 30,
     paddingBottom: 10,
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: 'Rosario_500Medium',
     width: 240,
     textAlign: 'center',

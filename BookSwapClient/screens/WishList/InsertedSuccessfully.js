@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
   buttonGoToLibrary: {
     marginHorizontal: 20,
-    backgroundColor: '#A73FD3',
+    backgroundColor: '#AA336A',
     marginTop: 20,
     padding: 10,
     fontSize: 20,

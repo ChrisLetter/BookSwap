@@ -9,11 +9,39 @@ import {
 } from 'react-native';
 import { IconButton, Colors } from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
+import AppLoading from 'expo-app-loading';
+
+import {
+  useFonts,
+  Rosario_300Light,
+  Rosario_400Regular,
+  Rosario_500Medium,
+  Rosario_600SemiBold,
+  Rosario_700Bold,
+  Rosario_300Light_Italic,
+  Rosario_400Regular_Italic,
+  Rosario_500Medium_Italic,
+  Rosario_600SemiBold_Italic,
+  Rosario_700Bold_Italic,
+} from '@expo-google-fonts/rosario';
 
 import { UserContext } from '../../AuthContext';
 import BASE_URL from '../../configClient';
 
 const BestMatches = ({ navigation }) => {
+  const [fontsLoaded] = useFonts({
+    Rosario_300Light,
+    Rosario_400Regular,
+    Rosario_500Medium,
+    Rosario_600SemiBold,
+    Rosario_700Bold,
+    Rosario_300Light_Italic,
+    Rosario_400Regular_Italic,
+    Rosario_500Medium_Italic,
+    Rosario_600SemiBold_Italic,
+    Rosario_700Bold_Italic,
+  });
   const { user } = useContext(UserContext);
 
   const isFocused = useIsFocused();
@@ -95,43 +123,93 @@ const BestMatches = ({ navigation }) => {
       }
     }
     const sorted = Object.entries(freq).sort(([, a], [, b]) => b - a);
-    setMatchesFound(sorted);
+    (async function () {
+      for (let el of sorted) {
+        let response = await fetch(`${BASE_URL}/username/${el[0]}`);
+        let json = await response.json();
+        el.push(json.username);
+      }
+      setMatchesFound(sorted);
+    })();
   }
 
-  return (
-    <View>
-      <Text> Search page</Text>
-      <FlatList
-        data={matchesFound}
-        keyExtractor={(item) => item[0]}
-        renderItem={({ item }) => (
-          <View>
-            {item ? (
-              <View>
-                <Text>
-                  User {item[0]} has {item[1]} books
-                </Text>
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('Send Request', {
-                      UsersInfo: {
-                        booksCurrUser: allBooksCurrentUser,
-                        userBooksLibrary,
-                        userBooksWishList,
-                        UserMatch: item[0],
-                      },
-                    })
-                  }
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <View style={styles.container}>
+        {matchesFound !== null && matchesFound.length > 0 ? (
+          <FlatList
+            data={matchesFound}
+            keyExtractor={(item) => item[0]}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Send Request', {
+                    UsersInfo: {
+                      booksCurrUser: allBooksCurrentUser,
+                      userBooksLibrary,
+                      userBooksWishList,
+                      UserMatch: item[0],
+                      Username: item[2],
+                    },
+                  })
+                }
+                style={styles.cardContainer}
+              >
+                <LinearGradient
+                  colors={['#5D3FD3', '#AA336A']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.card}
                 >
-                  <Text> Search</Text>
-                </TouchableOpacity>
-              </View>
-            ) : null}
-          </View>
-        )}
-      />
-    </View>
-  );
+                  <Text style={styles.cardText}>
+                    You can trade {item[1]} {item[1] > 1 ? 'books' : 'book'}{' '}
+                    with {item[2]}
+                  </Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            )}
+          />
+        ) : null}
+      </View>
+    );
+  }
 };
 
 export default BestMatches;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  cardContainer: {
+    shadowColor: 'black',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 5,
+    zIndex: -5,
+  },
+  card: {
+    flexDirection: 'row',
+    marginTop: 20,
+    marginHorizontal: 15,
+    // margin: 15,
+    borderRadius: 5,
+    shadowColor: 'black',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 5,
+    padding: 6,
+    justifyContent: 'center',
+  },
+  cardText: {
+    color: 'white',
+    fontFamily: 'Rosario_500Medium',
+    fontSize: 17,
+    padding: 20,
+  },
+});

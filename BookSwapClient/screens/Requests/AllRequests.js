@@ -62,8 +62,19 @@ const AllRequests = ({ route, navigation }) => {
   }
 
   return (
-    <View>
-      <Text>Requests main page</Text>
+    <View style={styles.container}>
+      {incomingRequests.map((req) => (
+        <DisplaySingleRequest
+          info={req}
+          pressing={() => {
+            removeNotificationBadgeReceiver(req);
+            navigation.navigate('Details of the Request', {
+              request: req,
+            });
+          }}
+          key={req.timeStamp}
+        />
+      ))}
       {madeRequests.map((req) => (
         <DisplaySingleRequest
           info={req}
@@ -77,20 +88,15 @@ const AllRequests = ({ route, navigation }) => {
           key={req.timeStamp}
         />
       ))}
-      {incomingRequests.map((req) => (
-        <DisplaySingleRequest
-          info={req}
-          pressing={() => {
-            removeNotificationBadgeReceiver(req);
-            navigation.navigate('Details of the Request', {
-              request: req,
-            });
-          }}
-          key={req.timeStamp}
-        />
-      ))}
     </View>
   );
 };
 
 export default AllRequests;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+});

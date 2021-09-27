@@ -10,26 +10,100 @@ import {
   Button,
   TextInput,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import AppLoading from 'expo-app-loading';
+
+import {
+  useFonts,
+  Rosario_300Light,
+  Rosario_400Regular,
+  Rosario_500Medium,
+  Rosario_600SemiBold,
+  Rosario_700Bold,
+  Rosario_300Light_Italic,
+  Rosario_400Regular_Italic,
+  Rosario_500Medium_Italic,
+  Rosario_600SemiBold_Italic,
+  Rosario_700Bold_Italic,
+} from '@expo-google-fonts/rosario';
 
 const DisplaySingleRequest = (props) => {
-  return (
-    <View>
-      {props.info?.userFrom === props.user ? (
-        <View>
-          {props.info?.hasBeenViewed ? <Text> notificatiooooon</Text> : null}
-          <Text>You made a request to the user {props.info?.userTo}</Text>
-        </View>
-      ) : (
-        <Text>
-          {!props.info?.hasBeenViewed ? <Text> notificatiooooon</Text> : null}
-          User {props.info?.userFrom} want your book
-        </Text>
-      )}
-      <TouchableOpacity onPress={props.pressing}>
-        <Text>See the details</Text>
-      </TouchableOpacity>
-    </View>
-  );
+  const [fontsLoaded] = useFonts({
+    Rosario_300Light,
+    Rosario_400Regular,
+    Rosario_500Medium,
+    Rosario_600SemiBold,
+    Rosario_700Bold,
+    Rosario_300Light_Italic,
+    Rosario_400Regular_Italic,
+    Rosario_500Medium_Italic,
+    Rosario_600SemiBold_Italic,
+    Rosario_700Bold_Italic,
+  });
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <View>
+        {props.info?.userFrom === props.user ? (
+          <TouchableOpacity onPress={props.pressing}>
+            <LinearGradient
+              colors={['#5D3FD3', '#A73FD3']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.card}
+            >
+              {console.log(props.info)}
+              {props.info?.hasBeenViewed ? (
+                <Text> notificatiooooon</Text>
+              ) : null}
+              <Text style={styles.text}>
+                You sent a request to {props.info?.userToUsername}
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={props.pressing}>
+            <LinearGradient
+              colors={
+                !props.info?.hasBeenViewed
+                  ? ['#c32f27', '#d8572a']
+                  : ['#5D3FD3', '#A73FD3']
+              }
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.card}
+            >
+              <Text style={styles.text}>
+                {props.info?.userFromUsername} sent you a request
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        )}
+      </View>
+    );
+  }
 };
 
 export default DisplaySingleRequest;
+
+const styles = StyleSheet.create({
+  card: {
+    flexDirection: 'row',
+    marginTop: 20,
+    marginHorizontal: 15,
+    borderRadius: 5,
+    shadowColor: 'black',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 5,
+    padding: 20,
+    justifyContent: 'center',
+  },
+  text: {
+    color: 'white',
+    fontFamily: 'Rosario_500Medium',
+    fontSize: 16,
+  },
+});

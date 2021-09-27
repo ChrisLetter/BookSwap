@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   },
   buttonSearchManually: {
     marginHorizontal: 20,
-    backgroundColor: '#5D3FD3',
+    backgroundColor: '#AA336A',
     marginTop: 130,
     padding: 10,
     fontSize: 20,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import {
   View,
   Text,
@@ -52,9 +52,24 @@ const AddDetailsToRequest = ({ route, navigation }) => {
     Rosario_700Bold_Italic,
   });
   const { user } = useContext(UserContext);
+  const [Username, setUsername] = useState(null);
 
-  const { matchesFromWishList, matchesFromLibraryToSell, UserMatch } =
-    route.params;
+  async function fetchUsernameFromDb() {
+    let response = await fetch(`${BASE_URL}/username/${user.id}`);
+    let json = await response.json();
+    setUsername(json);
+  }
+
+  useEffect(() => {
+    fetchUsernameFromDb();
+  }, [user]);
+
+  const {
+    matchesFromWishList,
+    matchesFromLibraryToSell,
+    UserMatch,
+    UsernameOtherUser,
+  } = route.params;
   const [monetaryCompensationYesOrNo, setMonetaryCompensationYesOrNo] =
     useState(false);
   const [AskOrGiveMoney, setAskOrGiveMoney] = useState(true);
@@ -66,7 +81,9 @@ const AddDetailsToRequest = ({ route, navigation }) => {
   function sendRequest() {
     const requestFromUser = {
       userFrom: user.id,
+      userFromUsername: Username.username,
       userTo: UserMatch,
+      userToUsername: UsernameOtherUser,
       hasBeenViewed: false,
       booksOffered: matchesFromLibraryToSell,
       booksAsked: matchesFromWishList,

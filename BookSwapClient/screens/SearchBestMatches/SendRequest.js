@@ -98,6 +98,7 @@ const SendRequest = ({ route, navigation }) => {
       matchesFromWishList,
       matchesFromLibraryToSell,
       UserMatch,
+      UsernameOtherUser: Username,
     });
   }
 

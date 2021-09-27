@@ -270,7 +270,15 @@ function Chats() {
       <Stack.Screen
         name="Chat"
         component={SingleUserChat}
-        options={headerOptions}
+        options={{
+          headerStyle: {
+            backgroundColor: 'white',
+            shadowColor: 'transparent',
+          },
+          headerTitle: '',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+        }}
       />
     </Stack.Navigator>
   );

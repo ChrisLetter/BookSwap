@@ -81,15 +81,29 @@ const SingleUserChat = ({ route, navigation }) => {
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <View>
         {allMessages ? (
           <FlatList
             data={allMessages.msgs}
             keyExtractor={(item) => item.timeStamp.toString()}
             renderItem={({ item }) => (
-              <View>
-                <Text>{item.content}</Text>
+              <View
+                style={
+                  item.userFrom === 'startingMessage' ? styles.starting : null
+                }
+              >
+                <View
+                  style={
+                    item.userTo === 'startingMessage'
+                      ? styles.starting
+                      : item.userTo === user.id
+                      ? styles.otherUser
+                      : styles.user
+                  }
+                >
+                  <Text>{item.content}</Text>
+                </View>
               </View>
             )}
           />
@@ -111,3 +125,19 @@ const SingleUserChat = ({ route, navigation }) => {
 };
 
 export default SingleUserChat;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  starting: {
+    backgroundColor: 'red',
+  },
+  user: {
+    backgroundColor: 'green',
+  },
+  otherUser: {
+    backgroundColor: 'blue',
+  },
+});

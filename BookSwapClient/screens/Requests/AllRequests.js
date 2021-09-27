@@ -62,7 +62,7 @@ const AllRequests = ({ route, navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {incomingRequests.map((req) => (
         <DisplaySingleRequest
           info={req}
@@ -88,7 +88,7 @@ const AllRequests = ({ route, navigation }) => {
           key={req.timeStamp}
         />
       ))}
-    </View>
+    </ScrollView>
   );
 };
 

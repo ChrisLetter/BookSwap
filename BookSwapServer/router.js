@@ -7,7 +7,7 @@ const messages = require('./controllers/messages');
 
 router.post('/register', auth.create);
 router.post('/login', auth.login);
-router.get('/username/:userId', auth.getUsername)
+router.get('/username/:userId', auth.getUsername);
 
 router.get('/books/:userId/:source', books.getAllBooks);
 router.post('/books/:userId/:source', books.addOneBook);
@@ -33,7 +33,10 @@ router.put(
 );
 
 router.get('/messages/:idUser', messages.getAllMessages);
-router.post('/messages/:idUser/:idOtherUser/:otherUsername', messages.addMessage);
+router.post(
+  '/messages/:idUser/:idOtherUser/:otherUsername?',
+  messages.addMessage,
+);
 router.put(
   '/messages/:idUser/:idOtherUser/:trueOrFalse/notification',
   messages.toggleNotificationChat,

@@ -56,6 +56,7 @@ const headerOptions = {
     fontFamily: 'Rosario_500Medium',
     fontSize: 20,
   },
+  headerBackTitle: 'Back',
 };
 
 function Library() {
@@ -117,14 +118,22 @@ function WishList() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Wish List"
+        name=" Your Wish List"
         component={UserWishList}
         options={headerOptions}
       />
       <Stack.Screen
         name="Add a New Book"
         component={AddBookToWishList}
-        options={headerOptions}
+        options={{
+          headerStyle: {
+            backgroundColor: 'white',
+            shadowColor: 'transparent',
+          },
+          headerTitle: '',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+        }}
       />
       <Stack.Screen
         name="Select one Book"
@@ -259,7 +268,11 @@ export default function AppScreens() {
               component={Login}
               options={{ headerShown: false }}
             />
-            <Stack.Screen name="Register" component={Register} />
+            <Stack.Screen
+              name="Register"
+              component={Register}
+              options={{ headerShown: false }}
+            />
           </Stack.Navigator>
         ) : (
           <Tab.Navigator

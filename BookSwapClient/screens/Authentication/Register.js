@@ -1,7 +1,8 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import apiServiceJWT from '../../ApiServiceJWT';
 import { UserContext } from '../../AuthContext';
+import { TextInput, Button } from 'react-native-paper';
 
 const Register = () => {
   const { login } = useContext(UserContext);
@@ -25,32 +26,61 @@ const Register = () => {
   };
 
   return (
-    <View>
-      <Text style={{ paddingBottom: 30, paddingTop: 30 }}>username</Text>
+    <View style={styles.container}>
       <TextInput
-        style={{ borderWidth: 1, borderColor: 'grey' }}
+        label="username"
+        style={styles.input}
         value={username}
         onChangeText={setUsername}
+        mode="outlined"
       />
-      <Text style={{ paddingBottom: 30, paddingTop: 30 }}>email</Text>
       <TextInput
-        style={{ borderWidth: 1, borderColor: 'grey' }}
+        label="email"
+        style={styles.input}
         value={email}
         onChangeText={setEmail}
+        mode="outlined"
       />
-      <Text style={{ paddingBottom: 30, paddingTop: 30 }}>password</Text>
       <TextInput
-        style={{ borderWidth: 1, borderColor: 'grey' }}
+        label="password"
+        style={styles.input}
         value={userPassword}
         onChangeText={setUserPassword}
+        mode="outlined"
+        secureTextEntry={true}
       />
-      <TouchableOpacity onPress={handleSubmit}>
-        <View>
-          <Text style={{ paddingBottom: 30, paddingTop: 30 }}>Submit!</Text>
-        </View>
-      </TouchableOpacity>
+      <Button
+        mode="contained"
+        onPress={handleSubmit}
+        style={styles.buttonRegister}
+        labelStyle={{ fontSize: 16 }}
+      >
+        Register
+      </Button>
     </View>
   );
 };
 
 export default Register;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    paddingTop: 200,
+  },
+  input: {
+    marginHorizontal: 20,
+    marginVertical: 2,
+  },
+  buttonRegister: {
+    marginHorizontal: 20,
+    marginTop: 50,
+    padding: 10,
+    shadowColor: 'black',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+});

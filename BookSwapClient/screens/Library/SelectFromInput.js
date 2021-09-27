@@ -138,8 +138,9 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   header: {
-    fontSize: 20,
-    fontFamily: 'Rosario_400Regular',
+    fontSize: 18,
+    fontFamily: 'Rosario_400Regular_Italic',
     textAlign: 'center',
+    paddingBottom: 10,
   },
 });

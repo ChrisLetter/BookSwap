@@ -51,17 +51,10 @@ const AddBookToLibrary = ({ navigation }) => {
   } else {
     return (
       <View style={styles.container}>
-        <Button
-          icon="camera"
-          mode="contained"
-          onPress={() => navigation.navigate('ScanISBN')}
-          style={styles.buttonISBN}
-          labelStyle={{ fontSize: 16 }}
-          contentStyle={{ flexDirection: 'row-reverse' }}
-        >
-          Scan isbn
-        </Button>
-        <Text style={styles.header2}>Or fill at least one field</Text>
+        <Text style={styles.header2}>
+          Fill at least one field or scan the ISBN {'\n'}
+          code with your camera
+        </Text>
         <TextInput
           label="Title"
           style={styles.input}
@@ -92,6 +85,16 @@ const AddBookToLibrary = ({ navigation }) => {
         >
           Search
         </Button>
+        <Button
+          icon="camera"
+          mode="contained"
+          onPress={() => navigation.navigate('ScanISBN')}
+          style={styles.buttonISBN}
+          labelStyle={{ fontSize: 16 }}
+          contentStyle={{ flexDirection: 'row-reverse' }}
+        >
+          Scan isbn
+        </Button>
       </View>
     );
   }
@@ -109,14 +112,15 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   header2: {
-    fontFamily: 'Rosario_500Medium',
-    fontSize: 18,
+    fontFamily: 'Rosario_400Regular_Italic',
+    fontSize: 17,
     textAlign: 'center',
-    marginBottom: 25,
+    marginBottom: 30,
+    marginTop: 10,
   },
   buttonISBN: {
     marginHorizontal: 20,
-    margin: 100,
+    marginTop: 170,
     padding: 10,
     fontSize: 20,
     shadowColor: 'black',
@@ -127,12 +131,13 @@ const styles = StyleSheet.create({
   },
   buttonSearch: {
     marginHorizontal: 20,
-    marginTop: 40,
+    marginTop: 20,
     padding: 10,
     shadowColor: 'black',
     shadowOffset: { width: 1, height: 2 },
     shadowOpacity: 0.9,
     shadowRadius: 2,
     elevation: 5,
+    backgroundColor: '#A73FD3',
   },
 });

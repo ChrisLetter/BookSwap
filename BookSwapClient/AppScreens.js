@@ -65,12 +65,20 @@ function Library() {
       <Stack.Screen
         name="Your Library"
         component={UserLibrary}
-        options={headerOptions}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Insert A New Book"
         component={AddBookToLibrary}
-        options={headerOptions}
+        options={{
+          headerStyle: {
+            backgroundColor: 'white',
+            shadowColor: 'transparent',
+          },
+          headerTitle: '',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+        }}
       />
       <Stack.Screen
         name="ScanISBN"
@@ -94,7 +102,15 @@ function Library() {
       <Stack.Screen
         name="Select a Book From The List"
         component={SelectFromInput}
-        options={headerOptions}
+        options={{
+          headerStyle: {
+            backgroundColor: 'white',
+            shadowColor: 'transparent',
+          },
+          headerTitle: '',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+        }}
       />
       <Stack.Screen
         name="Book Added Successfully"
@@ -120,7 +136,7 @@ function WishList() {
       <Stack.Screen
         name="Your Wish List"
         component={UserWishList}
-        options={headerOptions}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Add a New Book"
@@ -138,12 +154,29 @@ function WishList() {
       <Stack.Screen
         name="Select one Book"
         component={SelectFromInputWL}
-        options={headerOptions}
+        options={{
+          headerStyle: {
+            backgroundColor: 'white',
+            shadowColor: 'transparent',
+          },
+          headerTitle: '',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+        }}
       />
       <Stack.Screen
         name="Inserted Successfully"
         component={InsertedSuccessfully}
-        options={headerOptions}
+        options={
+          (headerOptions,
+          {
+            headerTintColor: 'white',
+            headerStyle: {
+              backgroundColor: 'white',
+              shadowColor: 'transparent',
+            },
+          })
+        }
       />
     </Stack.Navigator>
   );

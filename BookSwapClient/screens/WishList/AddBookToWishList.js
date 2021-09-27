@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     marginBottom: 25,
+    marginTop: 25,
   },
   buttonSearch: {
     marginHorizontal: 20,

@@ -58,7 +58,7 @@ const WishList = ({ navigation }) => {
       <IconButton
         style={styles.plusButton}
         icon="plus-circle"
-        color={Colors.green500}
+        color={Colors.lightGreenA700}
         size={65}
         onPress={() => navigation.navigate('Add a New Book')}
       />

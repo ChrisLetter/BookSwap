@@ -58,7 +58,7 @@ const UserLibrary = ({ navigation }) => {
       <IconButton
         style={styles.plusButton}
         icon="plus-circle"
-        color={Colors.green500}
+        color={Colors.lightGreenA700}
         size={65}
         onPress={() => navigation.navigate('Insert A New Book')}
       />

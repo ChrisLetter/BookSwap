@@ -118,7 +118,7 @@ function WishList() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name=" Your Wish List"
+        name="Your Wish List"
         component={UserWishList}
         options={headerOptions}
       />
@@ -296,7 +296,7 @@ export default function AppScreens() {
                 return <Ionicons name={iconName} size={size} color={color} />;
               },
               tabBarActiveTintColor: '#A73FD3',
-              tabBarInactiveTintColor: '#6c757d',
+              tabBarInactiveTintColor: 'black',
               headerShown: false,
               tabBarStyle: {
                 backgroundColor: 'white',

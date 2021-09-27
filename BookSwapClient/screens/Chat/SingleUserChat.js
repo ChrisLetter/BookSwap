@@ -14,8 +14,34 @@ import { IconButton, Colors } from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
 import { UserContext } from '../../AuthContext';
 import BASE_URL from '../../configClient';
+import {
+  useFonts,
+  Rosario_300Light,
+  Rosario_400Regular,
+  Rosario_500Medium,
+  Rosario_600SemiBold,
+  Rosario_700Bold,
+  Rosario_300Light_Italic,
+  Rosario_400Regular_Italic,
+  Rosario_500Medium_Italic,
+  Rosario_600SemiBold_Italic,
+  Rosario_700Bold_Italic,
+} from '@expo-google-fonts/rosario';
+import AppLoading from 'expo-app-loading';
 
 const SingleUserChat = ({ route, navigation }) => {
+  const [fontsLoaded] = useFonts({
+    Rosario_300Light,
+    Rosario_400Regular,
+    Rosario_500Medium,
+    Rosario_600SemiBold,
+    Rosario_700Bold,
+    Rosario_300Light_Italic,
+    Rosario_400Regular_Italic,
+    Rosario_500Medium_Italic,
+    Rosario_600SemiBold_Italic,
+    Rosario_700Bold_Italic,
+  });
   const isFocused = useIsFocused();
   const { otherUser } = route.params;
   const [allMessages, setAllMessages] = useState([]);
@@ -80,19 +106,17 @@ const SingleUserChat = ({ route, navigation }) => {
       .catch((err) => console.log(err));
   }
 
-  return (
-    <View style={styles.container}>
-      <View>
-        {allMessages ? (
-          <FlatList
-            data={allMessages.msgs}
-            keyExtractor={(item) => item.timeStamp.toString()}
-            renderItem={({ item }) => (
-              <View
-                style={
-                  item.userFrom === 'startingMessage' ? styles.starting : null
-                }
-              >
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <View style={styles.container}>
+        <View>
+          {allMessages ? (
+            <FlatList
+              data={allMessages.msgs}
+              keyExtractor={(item) => item.timeStamp.toString()}
+              renderItem={({ item }) => (
                 <View
                   style={
                     item.userTo === 'startingMessage'
@@ -102,26 +126,35 @@ const SingleUserChat = ({ route, navigation }) => {
                       : styles.user
                   }
                 >
-                  <Text>{item.content}</Text>
+                  <Text
+                    style={
+                      item.userTo === 'startingMessage'
+                        ? styles.startingText
+                        : item.userTo === user.id
+                        ? styles.otherUserText
+                        : styles.userText
+                    }
+                  >
+                    {item.content}
+                  </Text>
                 </View>
-              </View>
-            )}
+              )}
+            />
+          ) : null}
+          <TextInput
+            style={{ borderWidth: 1, borderColor: 'grey' }}
+            value={currentMessage}
+            onChangeText={setCurrentMessage}
           />
-        ) : null}
-        <Text>Enter here the message </Text>
-        <TextInput
-          style={{ borderWidth: 1, borderColor: 'grey' }}
-          value={currentMessage}
-          onChangeText={setCurrentMessage}
-        />
-        <Button
-          onPress={() => sendMessage()}
-          title="send the message"
-          color="#841584"
-        />
+          <Button
+            onPress={() => sendMessage()}
+            title="send the message"
+            color="#841584"
+          />
+        </View>
       </View>
-    </View>
-  );
+    );
+  }
 };
 
 export default SingleUserChat;
@@ -132,12 +165,42 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   starting: {
-    backgroundColor: 'red',
+    textAlign: 'center',
+  },
+  startingText: {
+    fontFamily: 'Rosario_500Medium',
+    fontSize: 18,
+    textAlign: 'center',
+    paddingVertical: 20,
   },
   user: {
-    backgroundColor: 'green',
+    alignSelf: 'flex-start',
+    backgroundColor: '#5D3FD3',
+    marginHorizontal: 20,
+    marginVertical: 4,
+    borderRadius: 20,
+  },
+  userText: {
+    fontFamily: 'Rosario_500Medium',
+    fontSize: 16,
+    textAlign: 'center',
+    color: 'white',
+    padding: 10,
+    paddingHorizontal: 20,
   },
   otherUser: {
-    backgroundColor: 'blue',
+    alignSelf: 'flex-end',
+    backgroundColor: '#A73FD3',
+    marginHorizontal: 20,
+    marginVertical: 4,
+    borderRadius: 20,
+  },
+  otherUserText: {
+    fontFamily: 'Rosario_500Medium',
+    fontSize: 16,
+    textAlign: 'center',
+    color: 'white',
+    padding: 10,
+    paddingHorizontal: 20,
   },
 });

@@ -206,12 +206,29 @@ function SearchBestMatches() {
       <Stack.Screen
         name="Add Details To The Request"
         component={AddDetailsToRequest}
-        options={headerOptions}
+        options={{
+          headerStyle: {
+            backgroundColor: 'white',
+            shadowColor: 'transparent',
+          },
+          headerTitle: '',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+        }}
       />
       <Stack.Screen
         name="Request Sent"
         component={RequestSent}
-        options={headerOptions}
+        options={
+          (headerOptions,
+          {
+            headerTintColor: 'white',
+            headerStyle: {
+              backgroundColor: 'white',
+              shadowColor: 'transparent',
+            },
+          })
+        }
       />
     </Stack.Navigator>
   );
@@ -336,7 +353,7 @@ export default function AppScreens() {
                 }
                 return <Ionicons name={iconName} size={size} color={color} />;
               },
-              tabBarActiveTintColor: '#A73FD3',
+              tabBarActiveTintColor: '#AA336A',
               tabBarInactiveTintColor: 'black',
               headerShown: false,
               tabBarStyle: {

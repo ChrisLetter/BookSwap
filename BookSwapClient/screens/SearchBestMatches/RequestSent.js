@@ -1,22 +1,51 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Image,
-  Button,
-  TextInput,
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import LottieView from 'lottie-react-native';
+import { Button } from 'react-native-paper';
 
 const RequestSent = ({ route, navigation }) => {
   return (
-    <View>
-      <Text>Request Sent Correctly!</Text>
+    <View style={styles.container}>
+      <LottieView
+        style={styles.lottie}
+        source={require('./../../assets/loading-email.json')}
+        autoPlay
+        loop={true}
+      />
+      <Button
+        mode="contained"
+        onPress={() => navigation.navigate('Best Matches')}
+        style={styles.searchAnotherMatch}
+        labelStyle={{ fontSize: 16 }}
+      >
+        Search other matches
+      </Button>
     </View>
   );
 };
 
 export default RequestSent;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  lottie: {
+    left: -20,
+    width: 300,
+    height: 400,
+  },
+  searchAnotherMatch: {
+    marginHorizontal: 20,
+    backgroundColor: '#5D3FD3',
+    marginTop: 60,
+    padding: 10,
+    fontSize: 20,
+    shadowColor: 'black',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+});

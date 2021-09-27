@@ -101,7 +101,7 @@ const ConfirmIsbnScan = ({ route, navigation }) => {
               style={styles.buttonAddToLibrary}
               labelStyle={{ fontSize: 16 }}
             >
-              Add to the library
+              Yes, Add to the library
             </Button>
           </View>
         ) : null}

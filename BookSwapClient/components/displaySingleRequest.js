@@ -44,14 +44,14 @@ const DisplaySingleRequest = (props) => {
     return <AppLoading />;
   } else {
     return (
-      <View>
+      <View style={styles.cardContainer}>
         {props.info?.userFrom === props.user ? (
           <TouchableOpacity onPress={props.pressing}>
             <LinearGradient
               colors={
                 props.info?.hasBeenViewed
                   ? ['#c32f27', '#d8572a']
-                  : ['#5D3FD3', '#A73FD3']
+                  : ['#5D3FD3', '#AA336A']
               }
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
@@ -68,7 +68,7 @@ const DisplaySingleRequest = (props) => {
               colors={
                 !props.info?.hasBeenViewed
                   ? ['#c32f27', '#d8572a']
-                  : ['#5D3FD3', '#A73FD3']
+                  : ['#5D3FD3', '#AA336A']
               }
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
@@ -88,6 +88,14 @@ const DisplaySingleRequest = (props) => {
 export default DisplaySingleRequest;
 
 const styles = StyleSheet.create({
+  cardContainer: {
+    shadowColor: 'black',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 5,
+    zIndex: -5,
+  },
   card: {
     flexDirection: 'row',
     marginTop: 20,
@@ -98,12 +106,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 2,
     elevation: 5,
-    padding: 20,
+    padding: 6,
     justifyContent: 'center',
   },
   text: {
     color: 'white',
     fontFamily: 'Rosario_500Medium',
-    fontSize: 16,
+    fontSize: 17,
+    padding: 20,
   },
 });

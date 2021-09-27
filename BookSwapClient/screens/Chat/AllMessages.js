@@ -11,9 +11,11 @@ import {
   TextInput,
 } from 'react-native';
 import { IconButton, Colors } from 'react-native-paper';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useIsFocused } from '@react-navigation/native';
 import { UserContext } from '../../AuthContext';
 import BASE_URL from '../../configClient';
+import DisplaySingleRequest from '../../components/displaySingleRequest';
 
 const AllMessages = ({ route, navigation }) => {
   const isFocused = useIsFocused();
@@ -44,24 +46,12 @@ const AllMessages = ({ route, navigation }) => {
   }
 
   return (
-    <View>
-      <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
-        <Text>Enter the chat</Text>
-      </TouchableOpacity>
-      {/* {console.log(allMessages)} */}
+    <View style={styles.container}>
       <FlatList
         data={allMessages}
         keyExtractor={(item) => item.otherUser}
         renderItem={({ item }) => (
-          <View
-            style={
-              item.notification
-                ? styles.withNotification
-                : styles.withoutNotification
-            }
-          >
-            <Text>{item.otherUser}</Text>
-            <Text>{item.lastMessage}</Text>
+          <View style={styles.cardContainer}>
             <TouchableOpacity
               onPress={() => {
                 if (item.notification) {
@@ -73,7 +63,18 @@ const AllMessages = ({ route, navigation }) => {
                 });
               }}
             >
-              <Text>Enter the chat</Text>
+              <LinearGradient
+                colors={
+                  item.notification
+                    ? ['#c32f27', '#d8572a']
+                    : ['#5D3FD3', '#AA336A']
+                }
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.card}
+              >
+                <Text style={styles.text}>{item.otherUsername}</Text>
+              </LinearGradient>
             </TouchableOpacity>
           </View>
         )}
@@ -83,11 +84,36 @@ const AllMessages = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  withoutNotification: {
-    backgroundColor: 'lavender',
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
   },
-  withNotification: {
-    backgroundColor: 'cyan',
+  cardContainer: {
+    shadowColor: 'black',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 5,
+    zIndex: -5,
+  },
+  card: {
+    flexDirection: 'row',
+    marginTop: 20,
+    marginHorizontal: 15,
+    borderRadius: 5,
+    shadowColor: 'black',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 5,
+    padding: 6,
+    justifyContent: 'center',
+  },
+  text: {
+    color: 'white',
+    fontFamily: 'Rosario_500Medium',
+    fontSize: 17,
+    padding: 20,
   },
 });
 

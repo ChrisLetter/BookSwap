@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  LogBox,
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AppLoading from 'expo-app-loading';
 import { IconButton, Colors } from 'react-native-paper';
@@ -17,6 +24,10 @@ import {
   Rosario_600SemiBold_Italic,
   Rosario_700Bold_Italic,
 } from '@expo-google-fonts/rosario';
+
+LogBox.ignoreLogs([
+  'VirtualizedLists should never be nested', // TODO: Remove when fixed
+]);
 
 const BookCard = (props) => {
   const [fontsLoaded] = useFonts({

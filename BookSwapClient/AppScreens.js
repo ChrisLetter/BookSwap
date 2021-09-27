@@ -193,7 +193,15 @@ function SearchBestMatches() {
       <Stack.Screen
         name="Send Request"
         component={SendRequest}
-        options={headerOptions}
+        options={{
+          headerStyle: {
+            backgroundColor: 'white',
+            shadowColor: 'transparent',
+          },
+          headerTitle: '',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+        }}
       />
       <Stack.Screen
         name="Add Details To The Request"

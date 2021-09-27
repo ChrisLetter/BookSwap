@@ -13,7 +13,7 @@ async function getAllMessages(req, res) {
 }
 
 async function addMessage(req, res) {
-  const { idUser, idOtherUser } = req.params;
+  const { idUser, idOtherUser, otherUsername } = req.params;
   const messageInfos = req.body;
   try {
     const allUserInfos = await User.findOne({ _id: idUser });
@@ -27,6 +27,7 @@ async function addMessage(req, res) {
     if (msgToChange.length === 0) {
       const msgToInsert = {
         otherUser: idOtherUser,
+        otherUsername: otherUsername,
         msgs: [messageInfos],
         lastMessage: messageInfos.timeStamp,
         notification: false,

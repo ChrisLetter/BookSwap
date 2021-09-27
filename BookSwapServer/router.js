@@ -33,7 +33,7 @@ router.put(
 );
 
 router.get('/messages/:idUser', messages.getAllMessages);
-router.post('/messages/:idUser/:idOtherUser', messages.addMessage);
+router.post('/messages/:idUser/:idOtherUser/:otherUsername', messages.addMessage);
 router.put(
   '/messages/:idUser/:idOtherUser/:trueOrFalse/notification',
   messages.toggleNotificationChat,

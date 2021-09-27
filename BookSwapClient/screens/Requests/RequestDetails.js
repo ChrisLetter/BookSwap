@@ -76,10 +76,18 @@ const RequestDetails = ({ route, navigation }) => {
   }
 
   function acceptOffer() {
-    const message = {
+    const messageUserFrom = {
       userFrom: 'startingMessage',
       userTo: 'startingMessage',
-      content: 'in this chat you can discuss the details of your exchange',
+      content:
+        'Your request has been accepted! Discuss with the user the details for concluding the deal',
+      timeStamp: Date.now(),
+    };
+    const messageUserTo = {
+      userFrom: 'startingMessage',
+      userTo: 'startingMessage',
+      content:
+        'You accepted the request! Discuss with the user the details for concluding the deal',
       timeStamp: Date.now(),
     };
     fetch(
@@ -97,22 +105,36 @@ const RequestDetails = ({ route, navigation }) => {
         ),
       )
       .then(() =>
-        fetch(`${BASE_URL}/messages/${request.userFrom}/${user.id}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+        fetch(
+          `${BASE_URL}/messages/${request.userFrom}/${user.id}/${request.userToUsername}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(messageUserFrom),
           },
-          body: JSON.stringify(message),
-        }),
+        ),
       )
       .then(() => {
-        fetch(`${BASE_URL}/messages/${user.id}/${request.userFrom}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+        fetch(
+          `${BASE_URL}/messages/${user.id}/${request.userFrom}/${request.userFromUsername}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(messageUserTo),
           },
-          body: JSON.stringify(message),
-        });
+        );
+      })
+      .then(() => {
+        fetch(
+          `${BASE_URL}/messages/${request.userFrom}/${user.id}/true/notification`,
+          {
+            method: 'PUT',
+          },
+        );
       })
       .then(() => navigation.navigate('All Requests'))
       .then(() => navigation.navigate('Chats'))
@@ -132,6 +154,7 @@ const RequestDetails = ({ route, navigation }) => {
   } else {
     return (
       <ScrollView style={styles.container}>
+        {console.log(request)}
         {request.status === 'rejected' ? (
           <View>
             <Text style={styles.mainHeaders}>

@@ -7,6 +7,7 @@ const messages = require('./controllers/messages');
 
 router.post('/register', auth.create);
 router.post('/login', auth.login);
+router.get('/username/:userId', auth.getUsername)
 
 router.get('/books/:userId/:source', books.getAllBooks);
 router.post('/books/:userId/:source', books.addOneBook);

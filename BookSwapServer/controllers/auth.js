@@ -47,4 +47,15 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { create, login };
+const getUsername = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const userInfos = await User.findOne({ _id: userId });
+    res.status(201).send(userInfos.username);
+  } catch (error) {
+    res.status(500);
+    console.log(error);
+  }
+};
+
+module.exports = { create, login, getUsername };

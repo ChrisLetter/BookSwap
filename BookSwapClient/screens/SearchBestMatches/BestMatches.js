@@ -11,6 +11,7 @@ import { IconButton, Colors } from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AppLoading from 'expo-app-loading';
+import LoadingSearching from '../../components/LoadingSearching';
 
 import {
   useFonts,
@@ -50,6 +51,7 @@ const BestMatches = ({ navigation }) => {
   const [userBooksWishList, setUserBooksWishList] = useState([]);
   const [ISBNfromDB, setISBNfromDB] = useState([]);
   const [matchesFound, setMatchesFound] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function fetchBookFromDb() {
     try {
@@ -88,6 +90,13 @@ const BestMatches = ({ navigation }) => {
   useEffect(() => {
     fetchBookFromDb();
   }, [isFocused]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1200);
+  }, []);
 
   useEffect(() => {
     if (
@@ -138,40 +147,46 @@ const BestMatches = ({ navigation }) => {
   } else {
     return (
       <View style={styles.container}>
-        {matchesFound !== null && matchesFound.length > 0 ? (
-          <FlatList
-            data={matchesFound}
-            keyExtractor={(item) => item[0]}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('Send Request', {
-                    UsersInfo: {
-                      booksCurrUser: allBooksCurrentUser,
-                      userBooksLibrary,
-                      userBooksWishList,
-                      UserMatch: item[0],
-                      Username: item[2],
-                    },
-                  })
-                }
-                style={styles.cardContainer}
-              >
-                <LinearGradient
-                  colors={['#5D3FD3', '#AA336A']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.card}
-                >
-                  <Text style={styles.cardText}>
-                    You can trade {item[1]} {item[1] > 1 ? 'books' : 'book'}{' '}
-                    with {item[2]}
-                  </Text>
-                </LinearGradient>
-              </TouchableOpacity>
-            )}
-          />
-        ) : null}
+        {!isLoading ? (
+          <View style={styles.container}>
+            {matchesFound !== null && matchesFound.length > 0 ? (
+              <FlatList
+                data={matchesFound}
+                keyExtractor={(item) => item[0]}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate('Send Request', {
+                        UsersInfo: {
+                          booksCurrUser: allBooksCurrentUser,
+                          userBooksLibrary,
+                          userBooksWishList,
+                          UserMatch: item[0],
+                          Username: item[2],
+                        },
+                      })
+                    }
+                    style={styles.cardContainer}
+                  >
+                    <LinearGradient
+                      colors={['#5D3FD3', '#AA336A']}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 1 }}
+                      style={styles.card}
+                    >
+                      <Text style={styles.cardText}>
+                        You can trade {item[1]} {item[1] > 1 ? 'books' : 'book'}{' '}
+                        with {item[2]}
+                      </Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                )}
+              />
+            ) : null}
+          </View>
+        ) : (
+          <LoadingSearching />
+        )}
       </View>
     );
   }

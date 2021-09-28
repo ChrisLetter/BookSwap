@@ -108,6 +108,7 @@ const SingleUserChat = ({ route, navigation }) => {
           },
         );
       })
+      .then(() => setCurrentMessage(null))
       .catch((err) => console.log(err));
   }
 
@@ -228,7 +229,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Rosario_500Medium',
     fontSize: 12,
     textAlign: 'right',
-    color: 'white',a
+    color: 'white',
     paddingBottom: 4,
     paddingRight: 10,
   },
@@ -263,5 +264,6 @@ const styles = StyleSheet.create({
   },
   flatlist: {
     height: 630,
+    overflow: 'scroll',
   },
 });

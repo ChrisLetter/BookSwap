@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { LogBox } from 'react-native';
 
 import { UserContext } from './AuthContext';
 
@@ -27,6 +28,7 @@ import AllRequests from './screens/Requests/AllRequests';
 import RequestDetails from './screens/Requests/RequestDetails';
 import AllMessages from './screens/Chat/AllMessages';
 import SingleUserChat from './screens/Chat/SingleUserChat';
+import RequestAccepted from './screens/Requests/RequestAccepted';
 import BASE_URL from './configClient';
 import {
   useFonts,
@@ -255,6 +257,20 @@ function Requests() {
           headerTintColor: 'black',
         }}
       />
+      <Stack.Screen
+        name="RequestAccepted"
+        component={RequestAccepted}
+        options={
+          (headerOptions,
+          {
+            headerTintColor: 'white',
+            headerStyle: {
+              backgroundColor: 'white',
+              shadowColor: 'transparent',
+            },
+          })
+        }
+      />
     </Stack.Navigator>
   );
 }
@@ -287,6 +303,7 @@ function Chats() {
 export default function AppScreens() {
   const { user } = useContext(UserContext);
   const [numOfReq, setNumOfReq] = useState(null);
+  const [numOfMessages, setNumOfMessages] = useState(null);
   const [fontsLoaded] = useFonts({
     Rosario_300Light,
     Rosario_400Regular,
@@ -328,7 +345,22 @@ export default function AppScreens() {
     }
   }
 
-  setInterval(controlForRequests, 500);
+  setInterval(controlForRequests, 1500);
+
+  async function controlForMessages() {
+    if (user.id !== '') {
+      let response = await fetch(`${BASE_URL}/messages/${user.id}`);
+      let json = await response.json();
+      let messagesWithNotification = json.filter(
+        (msg) => msg.notification === true,
+      );
+      setNumOfMessages(
+        messagesWithNotification.length
+          ? messagesWithNotification.length
+          : null,
+      );
+    }
+  }
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -369,7 +401,7 @@ export default function AppScreens() {
                 }
                 return <Ionicons name={iconName} size={size} color={color} />;
               },
-              tabBarActiveTintColor: '#AA336A',
+              tabBarActiveTintColor: '#5D3FD3',
               tabBarInactiveTintColor: 'black',
               headerShown: false,
               tabBarStyle: {
@@ -391,7 +423,11 @@ export default function AppScreens() {
               component={Requests}
               options={{ tabBarBadge: numOfReq }}
             />
-            <Tab.Screen name="Chats" component={Chats} />
+            <Tab.Screen
+              name="Chats"
+              component={Chats}
+              options={{ tabBarBadge: numOfMessages }}
+            />
           </Tab.Navigator>
         )}
       </NavigationContainer>

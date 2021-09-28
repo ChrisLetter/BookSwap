@@ -136,8 +136,15 @@ const RequestDetails = ({ route, navigation }) => {
           },
         );
       })
-      .then(() => navigation.navigate('All Requests'))
-      .then(() => navigation.navigate('Chats'))
+      .then(() => {
+        fetch(
+          `${BASE_URL}/messages/${user.id}/${request.userFrom}/true/notification`,
+          {
+            method: 'PUT',
+          },
+        );
+      })
+      .then(() => navigation.navigate('RequestAccepted'))
       .catch((err) => console.log(err));
   }
 
@@ -252,11 +259,6 @@ const RequestDetails = ({ route, navigation }) => {
             ) : null}
           </View>
         )}
-        {request.status === 'inProgress' ? (
-          <View>
-            <Text>Add Button for deleting the request and all the books</Text>
-          </View>
-        ) : null}
         {request.userFrom !== user.id && request.status === 'pending' ? (
           <View>
             <Button

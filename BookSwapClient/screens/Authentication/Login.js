@@ -19,6 +19,7 @@ import {
   Rosario_700Bold_Italic,
 } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
+import LoadingLogin from '../../components/LoadingLogin';
 
 const Login = ({ navigation }) => {
   const [fontsLoaded] = useFonts({
@@ -36,8 +37,10 @@ const Login = ({ navigation }) => {
   const { login } = useContext(UserContext);
   const [email, setEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
+    setIsLoading(true);
     const user = { email, userPassword };
     const res = await apiServiceJWT.login(user);
     if (res.error) {
@@ -46,7 +49,10 @@ const Login = ({ navigation }) => {
       setUserPassword('');
     } else {
       const { accessToken, id } = res;
-      login(accessToken, id);
+      setTimeout(() => {
+        login(accessToken, id);
+        setIsLoading(false);
+      }, 1400);
     }
   };
   if (!fontsLoaded) {
@@ -54,47 +60,55 @@ const Login = ({ navigation }) => {
   } else {
     return (
       <View style={styles.container}>
-        <Text style={styles.mainH1}> BookSwap </Text>
-        <LottieView
-          style={styles.images}
-          source={require('./../../assets/reading.json')}
-          autoPlay
-          loop={false}
-        />
-        <View>
-          <TextInput
-            label="email"
-            style={styles.input}
-            value={email}
-            onChangeText={setEmail}
-            mode="outlined"
-          />
-          <TextInput
-            label="password"
-            style={styles.input}
-            value={userPassword}
-            onChangeText={setUserPassword}
-            mode="outlined"
-            secureTextEntry={true}
-          />
-          <Button
-            mode="contained"
-            onPress={handleSubmit}
-            style={styles.buttonLogin}
-            labelStyle={{ fontSize: 16 }}
-          >
-            login
-          </Button>
-          <Text style={styles.header}> Don't have an account? </Text>
-          <Button
-            mode="contained"
-            onPress={() => navigation.navigate('Register')}
-            style={styles.buttonRegister}
-            labelStyle={{ fontSize: 16 }}
-          >
-            Register
-          </Button>
-        </View>
+        {!isLoading ? (
+          <View>
+            <View style={styles.lottieContainer}>
+              <Text style={styles.mainH1}> BookSwap </Text>
+              <LottieView
+                style={styles.images}
+                source={require('./../../assets/reading.json')}
+                autoPlay
+                loop={false}
+              />
+            </View>
+            <View>
+              <TextInput
+                label="email"
+                style={styles.input}
+                value={email}
+                onChangeText={setEmail}
+                mode="outlined"
+              />
+              <TextInput
+                label="password"
+                style={styles.input}
+                value={userPassword}
+                onChangeText={setUserPassword}
+                mode="outlined"
+                secureTextEntry={true}
+              />
+              <Button
+                mode="contained"
+                onPress={handleSubmit}
+                style={styles.buttonLogin}
+                labelStyle={{ fontSize: 16 }}
+              >
+                login
+              </Button>
+              <Text style={styles.header}> Don't have an account? </Text>
+              <Button
+                mode="contained"
+                onPress={() => navigation.navigate('Register')}
+                style={styles.buttonRegister}
+                labelStyle={{ fontSize: 16 }}
+              >
+                Register
+              </Button>
+            </View>
+          </View>
+        ) : (
+          <LoadingLogin />
+        )}
       </View>
     );
   }
@@ -109,11 +123,11 @@ const styles = StyleSheet.create({
   },
   input: {
     marginHorizontal: 20,
-    marginVertical: 2,
+    marginVertical: 0,
   },
   buttonLogin: {
     marginHorizontal: 20,
-    marginTop: 13,
+    marginTop: 5,
     padding: 10,
     shadowColor: 'black',
     shadowOffset: { width: 1, height: 2 },
@@ -140,14 +154,17 @@ const styles = StyleSheet.create({
     marginTop: 130,
   },
   images: {
-    height: 220,
+    height: 250,
     alignItems: 'center',
-    paddingLeft: 65,
+    marginBottom: -15,
   },
   mainH1: {
     fontFamily: 'Rosario_500Medium',
     fontSize: 24,
     textAlign: 'center',
-    marginTop: 60,
+    marginTop: 55,
+  },
+  lottieContainer: {
+    alignItems: 'center',
   },
 });

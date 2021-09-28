@@ -17,8 +17,8 @@ import {
 } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
 import BookCard from '../../components/BookCard';
+import { REACT_APP_API_KEY } from '@env';
 
-import secretKey from '../../ignoredFileReact';
 import BASE_URL from '../../configClient';
 
 const SelectFromInputWL = ({ route, navigation }) => {
@@ -39,7 +39,7 @@ const SelectFromInputWL = ({ route, navigation }) => {
   const [books, setBooks] = useState(null);
 
   useEffect(() => {
-    fetchBookFromUserInput(title, authors, isbn, secretKey.ApiKey);
+    fetchBookFromUserInput(title, authors, isbn, REACT_APP_API_KEY);
   }, [title, authors, isbn]);
 
   function fetchBookFromUserInput(titleInput, authorInput, isbnInput, key) {

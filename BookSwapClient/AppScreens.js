@@ -4,7 +4,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { LogBox } from 'react-native';
 
 import { UserContext } from './AuthContext';
 
@@ -345,7 +344,7 @@ export default function AppScreens() {
     }
   }
 
-  setInterval(controlForRequests, 1500);
+  setInterval(controlForRequests, 800);
 
   async function controlForMessages() {
     if (user.id !== '') {
@@ -361,6 +360,8 @@ export default function AppScreens() {
       );
     }
   }
+
+  setInterval(controlForMessages, 200);
 
   if (!fontsLoaded) {
     return <AppLoading />;

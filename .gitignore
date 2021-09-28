@@ -1,3 +1,4 @@
 node_modules
 ignoredFile.js
 ignoredFileReact.js
+.env

@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Image } from 'react-native-elements';
-import secretKey from '../../ignoredFileReact';
+import { REACT_APP_API_KEY } from '@env';
 import BASE_URL from '../../configClient';
 import { UserContext } from '../../AuthContext';
 import BookCard from '../../components/BookCard';
@@ -39,7 +39,7 @@ const ConfirmIsbnScan = ({ route, navigation }) => {
   const { user } = useContext(UserContext);
 
   useEffect(() => {
-    fetchBookFromISBN(scannedISBN, secretKey.ApiKey);
+    fetchBookFromISBN(scannedISBN, REACT_APP_API_KEY);
   }, [scannedISBN]);
 
   function fetchBookFromISBN(ISBN, key) {

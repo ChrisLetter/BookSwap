@@ -6,7 +6,7 @@ import { UserProvider } from './AuthContext';
 import { LogBox } from 'react-native';
 
 export default function App() {
-  LogBox.ignoreAllLogs();
+  // LogBox.ignoreAllLogs();
   // for recording the video, I am going to ignore all the logs
 
   return (

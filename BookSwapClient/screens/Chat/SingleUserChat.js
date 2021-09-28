@@ -69,6 +69,11 @@ const SingleUserChat = ({ route, navigation }) => {
     checkForNewMessages();
   }, []);
 
+  function fromTimeStampToHours(timestamp) {
+    const options = { hour: '2-digit', minute: '2-digit' };
+    return new Date(timestamp).toLocaleTimeString('it-IT', options);
+  }
+
   function sendMessage() {
     const message = {
       userFrom: user.id,
@@ -114,6 +119,7 @@ const SingleUserChat = ({ route, navigation }) => {
         <View>
           {allMessages ? (
             <FlatList
+              style={styles.flatlist}
               data={allMessages.msgs}
               keyExtractor={(item) => item.timeStamp.toString()}
               renderItem={({ item }) => (
@@ -137,20 +143,33 @@ const SingleUserChat = ({ route, navigation }) => {
                   >
                     {item.content}
                   </Text>
+                  <Text
+                    style={
+                      item.userTo === user.id
+                        ? styles.hoursOtherUser
+                        : styles.hoursUser
+                    }
+                  >
+                    {fromTimeStampToHours(item.timeStamp)}
+                  </Text>
                 </View>
               )}
             />
           ) : null}
-          <TextInput
-            style={{ borderWidth: 1, borderColor: 'grey' }}
-            value={currentMessage}
-            onChangeText={setCurrentMessage}
-          />
-          <Button
-            onPress={() => sendMessage()}
-            title="send the message"
-            color="#841584"
-          />
+          <View style={styles.sendMessage}>
+            <TextInput
+              style={styles.inputBar}
+              value={currentMessage}
+              onChangeText={setCurrentMessage}
+            />
+            <IconButton
+              style={styles.plusButton}
+              icon="send"
+              color={Colors.purple600}
+              size={25}
+              onPress={() => sendMessage()}
+            />
+          </View>
         </View>
       </View>
     );
@@ -163,6 +182,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+    position: 'relative',
   },
   starting: {
     textAlign: 'center',
@@ -183,9 +203,9 @@ const styles = StyleSheet.create({
   userText: {
     fontFamily: 'Rosario_500Medium',
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: 'left',
     color: 'white',
-    padding: 10,
+    paddingTop: 10,
     paddingHorizontal: 20,
   },
   otherUser: {
@@ -198,9 +218,50 @@ const styles = StyleSheet.create({
   otherUserText: {
     fontFamily: 'Rosario_500Medium',
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: 'right',
     color: 'white',
-    padding: 10,
+    paddingTop: 10,
+
     paddingHorizontal: 20,
+  },
+  hoursUser: {
+    fontFamily: 'Rosario_500Medium',
+    fontSize: 12,
+    textAlign: 'right',
+    color: 'white',a
+    paddingBottom: 4,
+    paddingRight: 10,
+  },
+  hoursOtherUser: {
+    fontFamily: 'Rosario_500Medium',
+    fontSize: 12,
+    textAlign: 'left',
+    color: 'white',
+    paddingBottom: 4,
+    paddingLeft: 10,
+  },
+  sendMessage: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'absolute',
+    top: '100%',
+  },
+  inputBar: {
+    borderWidth: 1,
+    borderColor: 'grey',
+    width: 320,
+    borderRadius: 20,
+    paddingLeft: 10,
+    marginLeft: 20,
+    marginVertical: 10,
+    paddingVertical: 5,
+    shadowColor: 'black',
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 1,
+    elevation: 1,
+  },
+  flatlist: {
+    height: 630,
   },
 });

@@ -7,6 +7,7 @@ const options = {
   credentials: true,
 };
 
+console.log('PORT');
 const app = express();
 
 app

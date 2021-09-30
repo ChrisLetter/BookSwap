@@ -9,6 +9,9 @@ const options = {
 
 console.log('PORT');
 // console.log('Miguel');
+
+console.log('Miguel');
+
 const app = express();
 
 app

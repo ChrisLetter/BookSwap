@@ -3,6 +3,8 @@ const User = require('../models/users.js');
 async function getAllBooks(req, res) {
   const { userId, source } = req.params;
   try {
+    //MIGUEL WAS DEFINETLY HERE!!
+    //magidkdkjdjkd
     const books = await User.findOne({ _id: userId });
     const booksToSell = books.booksToSell;
     const booksToBuy = books.booksToBuy;

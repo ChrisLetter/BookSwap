@@ -8,8 +8,10 @@ const options = {
 };
 
 console.log('PORT');
+// console.log('Miguel');
 
-console.log('TEST SOMETHING')
+console.log('Miguel');
+
 
 const app = express();
 

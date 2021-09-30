@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('./../models/users');
 const { SECRET_KEY } = require('../../ignoredFile');
 
+// Abriele-branch was here
 const create = async (req, res) => {
   const { email, userPassword } = req.body;
   const user = await User.findOne({ email: email });

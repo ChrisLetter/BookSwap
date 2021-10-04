@@ -1,7 +1,8 @@
+/* eslint-disable no-undef */
 // test-setup.js
 const mongoose = require('mongoose');
-mongoose.set('useCreateIndex', true);
-mongoose.promise = global.Promise;
+// mongoose.set('useCreateIndex', true);
+// mongoose.promise = global.Promise;
 
 async function removeAllCollections() {
   const collections = Object.keys(mongoose.connection.collections);
@@ -39,7 +40,8 @@ module.exports = {
     // Connect to Mongoose
     beforeAll(async () => {
       const url = `mongodb://127.0.0.1/${databaseName}`;
-      await mongoose.connect(url, { useNewUrlParser: true });
+      await mongoose.createConnection(url, { useNewUrlParser: true });
+      // Should be mongoose.connect
     });
 
     // Cleans up database between each test

@@ -1,12 +1,13 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "test": "jest",
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "test": "node_modules/.bin/jest",
+    "test:debug": "node --inspect-brk node_modules/jest/bin/jest.js --runInBand"
   },
   "jest": {
     "preset": "jest-expo"
@@ -28,6 +29,8 @@
     "expo-font": "~9.2.1",
     "expo-linear-gradient": "~9.2.0",
     "expo-status-bar": "~1.0.4",
+    "jest": "^27.2.4",
+    "jest-expo": "^42.1.0",
     "lottie-react-native": "4.0.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",

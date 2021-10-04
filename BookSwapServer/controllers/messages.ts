@@ -1,7 +1,6 @@
-import express, { Request, Response } from 'express';
-import User from '../models/users.js';
-import UserModel from '../models/users'
-import { IUser, Messages } from '../types';
+import { Request, Response } from 'express';
+const UserModel = require ('../models/users');
+import { IUser} from '../types';
 
 async function getAllMessages(req: Request, res: Response ) {
   const { idUser } = req.params;
@@ -43,7 +42,7 @@ async function addMessage(req: Request, res: Response ) {
         msgToChange[0].lastMessage = messageInfos.timeStamp;
         otherMessagesToKeep.push(msgToChange[0]);
       }
-      await User.findOneAndUpdate(
+      await UserModel.findOneAndUpdate(
         { _id: idUser },
         { messages: otherMessagesToKeep },
       ).then(() => {
@@ -79,7 +78,7 @@ async function toggleNotificationChat(req: Request, res: Response ) {
 
       otherMessagesToKeep?.push(msgToChange[0]);
     }
-    User.findOneAndUpdate(
+    UserModel.findOneAndUpdate(
       { _id: idUser },
       { messages: otherMessagesToKeep },
     )

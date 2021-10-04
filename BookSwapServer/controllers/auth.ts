@@ -1,8 +1,7 @@
-import express, { Request, Response } from 'express';
-import bcrypt from 'bcrypt';
+import { Request, Response } from 'express';
+const bcrypt = require('bcrypt');
 import jwt from 'jsonwebtoken';
-// const User = require('./../models/users');
-import UserModel from '../models/users'
+const UserModel = require ('../models/users');
 import { IUser } from '../types';
 
 

@@ -1,4 +1,4 @@
-export const mock = {
+module.export = {
   username: 'Chris Letter',
   email: 'ChrisLetter@gmail.com',
   password: 'password',

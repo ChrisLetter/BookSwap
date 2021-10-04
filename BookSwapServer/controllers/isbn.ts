@@ -1,5 +1,5 @@
-import express, { Request, Response } from 'express';
-import  ISBNdb from '../models/isbn';
+import { Request, Response } from 'express';
+import ISBNdb from '../models/isbn';
 
 async function addUserToTheIsbnList(req: Request, res: Response ) {
   const { userId, ISBN, source } = req.params;

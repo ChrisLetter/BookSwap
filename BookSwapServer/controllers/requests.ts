@@ -1,12 +1,12 @@
-import express, { Request, Response } from 'express';
-import User from '../models/users.js';
+import { Request, Response } from 'express';
+const UserModel = require ('../models/users');
 
 async function getRequests(req: Request, res: Response ) {
   const userId = req.params.userId;
   try {
-    const books = await User.findOne({ _id: userId });
+    const books = await UserModel.findOne({ _id: userId });
     res.status(200);
-    res.send(books?.requests.sort((a, b) => b.timeStamp - a.timeStamp));
+    res.send(books?.requests.sort((a: any, b: any) => b.timeStamp - a.timeStamp));
   } catch (e) {
     res.sendStatus(500);
   }
@@ -16,7 +16,7 @@ async function addOneRequest(req: Request, res: Response ) {
   const userId = req.params.userId;
   const requestToInsert = req.body;
   try {
-    User.findOneAndUpdate(
+    UserModel.findOneAndUpdate(
       { _id: userId },
       { $push: { requests: requestToInsert } },
       { upsert: true },
@@ -35,7 +35,7 @@ async function changeViewedPropertyOfRequest(req: Request, res: Response ) {
 
   const { idUser, idOtherUser, receiverOrSender, trueOrFalse } = req.params;
   try {
-    const userInfos = await User.findOne({ _id: idUser });
+    const userInfos = await UserModel.findOne({ _id: idUser });
     if (userInfos) {
       for (const el of userInfos.requests) {
         if (
@@ -47,7 +47,7 @@ async function changeViewedPropertyOfRequest(req: Request, res: Response ) {
       }
     }
     // await userInfos.save();
-    User.findOneAndUpdate(
+    UserModel.findOneAndUpdate(
       { _id: idUser },
       { requests: userInfos?.requests },
     )
@@ -65,14 +65,14 @@ async function deleteRequest(req: Request, res: Response ) {
 
   const { idUser, idOtherUser, receiverOrSender } = req.params;
   try {
-    const userInfos = await User.findOne({ _id: idUser });
+    const userInfos = await UserModel.findOne({ _id: idUser });
     const temp = userInfos?.requests.filter(
-      (request) =>
+      (request: any) =>
         (receiverOrSender === 'receiver'
           ? request.userFrom
           : request.userTo) !== idOtherUser,
     );
-    User.findOneAndUpdate({ _id: idUser }, { requests: temp }).then();
+    UserModel.findOneAndUpdate({ _id: idUser }, { requests: temp }).then();
     res.sendStatus(201);
   } catch (e) {
     res.sendStatus(500);
@@ -83,7 +83,7 @@ async function changeStatusRequest(req: Request, res: Response ) {
   // TODO: refactor so that it updates without doing a double operation
   const { idUser, idOtherUser, status, receiverOrSender } = req.params;
   try {
-    const userInfos = await User.findOne({ _id: idUser });
+    const userInfos = await UserModel.findOne({ _id: idUser });
     if (userInfos){
       for (const el of userInfos?.requests) {
         if (
@@ -94,7 +94,7 @@ async function changeStatusRequest(req: Request, res: Response ) {
         }
       }
     }
-    User.findOneAndUpdate(
+    UserModel.findOneAndUpdate(
       { _id: idUser },
       { requests: userInfos?.requests },
     )

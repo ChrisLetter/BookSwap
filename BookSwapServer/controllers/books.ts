@@ -1,5 +1,5 @@
-import express, { Request, Response } from 'express';
-import UserModel from '../models/users';
+import { Request, Response } from 'express';
+const UserModel = require ('../models/users');
 import { Books } from '../types'
 
 async function getAllBooks(req: Request, res: Response) {
@@ -54,7 +54,7 @@ async function removeOneBook(req: Request, res: Response) {
           { _id: userId },
           {
             booksToSell: dbBooks?.booksToSell.filter(
-              (books) => books.ISBN !== ISBN,
+              (books: Books) => books.ISBN !== ISBN,
             ),
           },
         ).then()

@@ -1,8 +1,7 @@
-import express, { Request, Response } from 'express';
-import bcrypt from 'bcrypt';
+import { Request, Response } from 'express';
+const bcrypt = require('bcrypt');
 import jwt from 'jsonwebtoken';
-// const User = require('./../models/users');
-import UserModel from '../models/users'
+const UserModel = require ('../models/users');
 import { IUser } from '../types';
 
 
@@ -38,6 +37,9 @@ const login = async (req: Request, res: Response)  => {
   try {
     const user1:IUser | null = await UserModel.findOne({ email });
 
+    console.log('model', user1?.password)
+    console.log('userP', userPassword)
+
     // let _id;
     // let password;
     if(user1){
@@ -54,7 +56,7 @@ const login = async (req: Request, res: Response)  => {
   } catch (error) {
     res
       .status(401)
-      .send({ error: '401', message: 'Username or password is incorrect' });
+      .send({ error: '401', message: 'Email or password is incorrect' });
   }
 };
 

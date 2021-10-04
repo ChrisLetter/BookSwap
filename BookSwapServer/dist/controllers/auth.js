@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcrypt = require('bcrypt');
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 // const User = require('./../models/users');
 const users_1 = __importDefault(require("../models/users"));
@@ -28,7 +28,7 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (userPassword === '') {
             throw new Error();
         }
-        const hash = yield bcrypt_1.default.hash(userPassword, 10);
+        const hash = yield bcrypt.hash(userPassword, 10);
         const newUser = new users_1.default(Object.assign(Object.assign({}, req.body), { password: hash }));
         const { _id } = yield newUser.save();
         const id = _id.toString();
@@ -47,7 +47,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         // let password;
         if (user1) {
             const { _id, password } = user1;
-            const validatedPass = yield bcrypt_1.default.compare(userPassword, password);
+            const validatedPass = yield bcrypt.compare(userPassword, password);
             if (!validatedPass) {
                 throw new Error();
             }

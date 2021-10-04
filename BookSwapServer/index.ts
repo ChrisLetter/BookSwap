@@ -1,17 +1,23 @@
 // const express = require('express');
 import express from 'express';
 import cors from 'cors';
-import router from './router';
+const router = require('./router');
 import * as dotenv from 'dotenv'
 
-dotenv.config()
+const filename = process.env.ENV === 'test'
+  ? '.env.test'
+  : '.env'
+  
+dotenv.config({ path: filename })
 
+
+const app = express();
 const options = {
   origin: '*',
   credentials: true,
 };
 
-const app = express();
+
 
 app
   .use(cors(options))

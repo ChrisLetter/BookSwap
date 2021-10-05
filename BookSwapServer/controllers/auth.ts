@@ -37,9 +37,6 @@ const login = async (req: Request, res: Response)  => {
   try {
     const user1:IUser | null = await UserModel.findOne({ email });
 
-    console.log('model', user1?.password)
-    console.log('userP', userPassword)
-
     // let _id;
     // let password;
     if(user1){
@@ -65,7 +62,7 @@ const getUsername = async (req: Request, res: Response ) => {
   try {
     const userInfos = await UserModel.findOne({ _id: userId });
     const username = userInfos?.username;
-    res.status(201).send({ username });
+    res.status(200).send({ username });
   } catch (error) {
     res.status(500);
     // console.log(error);

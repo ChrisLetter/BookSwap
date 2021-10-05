@@ -14,7 +14,7 @@ const mockRegisterUser = {
   userPassword: '123456',
 };
 
-describe('Auth Endpoints', () => {
+describe('ISBN Endpoints', () => {
   const app = express();
   app.use(express.json());
   app.use(router);
@@ -65,16 +65,6 @@ describe('Auth Endpoints', () => {
     expect(res.body.username).toBe(username);
   });
 });
-
-// // Auth
-// router.post('/register', auth.create);
-// router.post('/login', auth.login);
-// router.get('/username/:userId', auth.getUsername);
-
-// // Books
-// router.get('/books/:userId/:source', books.getAllBooks);
-// router.post('/books/:userId/:source', books.addOneBook);
-// router.delete('/books/:userId/:ISBN/:source', books.removeOneBook);
 
 // // ISBN
 // router.post('/isbn/:userId/:ISBN/:source', isbn.addUserToTheIsbnList);

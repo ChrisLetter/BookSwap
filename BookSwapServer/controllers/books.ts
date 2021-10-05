@@ -5,8 +5,6 @@ import { Books } from '../types'
 async function getAllBooks(req: Request, res: Response) {
   const { userId, source } = req.params;
   try {
-    // MIGUEL WAS DEFINETLY HERE!!
-    // magidkdkjdjkd
     const books = await UserModel.findOne({ _id: userId });
     const booksToSell = books?.booksToSell;
     const booksToBuy = books?.booksToBuy;

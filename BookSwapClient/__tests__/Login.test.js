@@ -1,26 +1,35 @@
 import React from "react";
 // import { render } from "@testing-library/react-native";
-import Login from "../screens/Authentication/Login";
 import renderer from 'react-test-renderer'
-import Mock from '../__mocks__/@react-native-async-storage/index.js'
-import { exportAllDeclaration } from "@babel/types";
+import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
+import Login from "../screens/Authentication/Login";
+// import { exportAllDeclaration } from "@babel/types";
+// import { describe } from "jest-circus";
+// import asMock from "@react-native-async-storage/async-storage/jest/async-storage-mock";
+// import Mock from '../__mocks__/@react-native-async-storage/index.js'
+
+// jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
+
 jest.mock('@react-native-async-storage/async-storage', () => {
-    jest.mock('@react-native-community/async-storage', () => {
-        return {
-          getItem: async (...args) => args,
-          setItem: async (...args) => args,
-          removeItem: async (...args) => args,
-        };
-      });
+    return {mockAsyncStorage}
 });
 
-jest.mock('@expo-google-fonts/rosario',() => {
-    return {useFonts: (...args) => args}
+
+jest.mock('@expo-google-fonts/rosario',() => ''
+// return {useFonts: (...args,mockAsyncStorage) => args}
+)
+
+jest.mock('lottie-react-native', () => '');
+
+test("render", () => {
+    console.log({mockAsyncStorage});
+    expect(1).toBe(1);
 })
 
-jest.mock('lottieViewAddress', () => '');
 
-it("renders", () => {
-    const tree = renderer.create(<Login />).toJSON();
-    expect(tree.children.length).toBe(1);
-})
+// test("renders", () => {
+// //         console.log({mockAsyncStorage});
+//         // const tree = renderer.create(<Login />).toJSON();
+//         // expect(tree.children.length).toBe(1);
+//         render
+// })

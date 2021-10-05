@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import apiServiceJWT from '../../ApiServiceJWT';
 import { UserContext } from '../../AuthContext';
 import { TextInput, Button } from 'react-native-paper';
@@ -20,6 +19,7 @@ import {
 } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
 import LoadingLogin from '../../components/LoadingLogin';
+import AsyncStorage from '@react-native-community/async-storage'
 
 const Login = ({ navigation }) => {
   const [fontsLoaded] = useFonts({
@@ -73,6 +73,7 @@ const Login = ({ navigation }) => {
             </View>
             <View>
               <TextInput
+                placeholder="Email"
                 label="email"
                 style={styles.input}
                 value={email}
@@ -80,6 +81,7 @@ const Login = ({ navigation }) => {
                 mode="outlined"
               />
               <TextInput
+                placeholder="Password"
                 label="password"
                 style={styles.input}
                 value={userPassword}
@@ -88,6 +90,7 @@ const Login = ({ navigation }) => {
                 secureTextEntry={true}
               />
               <Button
+                testID="LoginBtn"
                 mode="contained"
                 onPress={handleSubmit}
                 style={styles.buttonLogin}

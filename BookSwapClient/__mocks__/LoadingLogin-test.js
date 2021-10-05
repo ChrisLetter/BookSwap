@@ -1,12 +1,12 @@
 //Snapshot testing
 import React from 'react'
-import LoadingLogin from '../components/LoadingLogin'
 import renderer from 'react-test-renderer'
+import Register from '../screens/Authentication/Register'
 
 test('Loading Login snapshot', () => {
     //create snapshot
     const snap = renderer.create(
-        <LoadingLogin />
+        <Register />
     ).toJSON();
 
     //Expected output

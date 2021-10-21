@@ -8,32 +8,12 @@ import BASE_URL from '../../configClient';
 import BookCard from '../../components/BookCard';
 import {
   useFonts,
-  Rosario_300Light,
-  Rosario_400Regular,
-  Rosario_500Medium,
-  Rosario_600SemiBold,
-  Rosario_700Bold,
-  Rosario_300Light_Italic,
   Rosario_400Regular_Italic,
-  Rosario_500Medium_Italic,
-  Rosario_600SemiBold_Italic,
-  Rosario_700Bold_Italic,
 } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
 
 const UserLibrary = ({ navigation }) => {
-  const [fontsLoaded] = useFonts({
-    Rosario_300Light,
-    Rosario_400Regular,
-    Rosario_500Medium,
-    Rosario_600SemiBold,
-    Rosario_700Bold,
-    Rosario_300Light_Italic,
-    Rosario_400Regular_Italic,
-    Rosario_500Medium_Italic,
-    Rosario_600SemiBold_Italic,
-    Rosario_700Bold_Italic,
-  });
+  const [fontsLoaded] = useFonts({ Rosario_400Regular_Italic });
   const { user } = useContext(UserContext);
   const [books, setBooks] = useState(null);
   const isFocused = useIsFocused();

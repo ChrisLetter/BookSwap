@@ -1,15 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Image,
-  Button,
-  TextInput,
-} from 'react-native';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 

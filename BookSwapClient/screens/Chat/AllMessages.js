@@ -1,40 +1,33 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import {
   View,
   Text,
-  ScrollView,
   StyleSheet,
   FlatList,
   TouchableOpacity,
-  Image,
-  Button,
-  TextInput,
 } from 'react-native';
-import { IconButton, Colors } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useIsFocused } from '@react-navigation/native';
 import { UserContext } from '../../AuthContext';
 import BASE_URL from '../../configClient';
-import DisplaySingleRequest from '../../components/displaySingleRequest';
 
 const AllMessages = ({ route, navigation }) => {
   const isFocused = useIsFocused();
   const { user } = useContext(UserContext);
   const [allMessages, setAllMessages] = useState([]);
 
-  async function fetchMessagesFromDb() {
-    try {
-      let response = await fetch(`${BASE_URL}/messages/${user.id}`);
-      let json = await response.json();
-      setAllMessages(json);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
   useEffect(() => {
+    async function fetchMessagesFromDb() {
+      try {
+        let response = await fetch(`${BASE_URL}/messages/${user.id}`);
+        let json = await response.json();
+        setAllMessages(json);
+      } catch (err) {
+        console.log(err);
+      }
+    }
     fetchMessagesFromDb();
-  }, [isFocused]);
+  }, [user.id, isFocused]);
 
   function turnOffTheNotification(otherUser) {
     fetch(`${BASE_URL}/messages/${user.id}/${otherUser}/false/notification`, {

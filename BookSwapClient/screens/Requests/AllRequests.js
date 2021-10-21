@@ -39,10 +39,10 @@ const AllRequests = ({ route, navigation }) => {
     if (isFocused) controlForRequests();
   }, [isFocused]);
 
-  function removeNotificationBadgeReceiver(whatever) {
-    if (!whatever.hasBeenViewed) {
+  function removeNotificationBadgeReceiver(req) {
+    if (!req.hasBeenViewed) {
       fetch(
-        `${BASE_URL}/requests/${whatever.userTo}/${whatever.userFrom}/receiver/true`,
+        `${BASE_URL}/requests/${req.userTo}/${req.userFrom}/receiver/true`,
         {
           method: 'PUT',
         },
@@ -50,14 +50,11 @@ const AllRequests = ({ route, navigation }) => {
     }
   }
 
-  function removeNotificationBadgeSender(whatever) {
-    if (whatever.hasBeenViewed) {
-      fetch(
-        `${BASE_URL}/requests/${whatever.userFrom}/${whatever.userTo}/sender/false`,
-        {
-          method: 'PUT',
-        },
-      ).catch((err) => console.log(err));
+  function removeNotificationBadgeSender(req) {
+    if (req.hasBeenViewed) {
+      fetch(`${BASE_URL}/requests/${req.userFrom}/${req.userTo}/sender/false`, {
+        method: 'PUT',
+      }).catch((err) => console.log(err));
     }
   }
 

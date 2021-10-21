@@ -48,26 +48,26 @@ const SingleUserChat = ({ route, navigation }) => {
   const { user } = useContext(UserContext);
   const [currentMessage, setCurrentMessage] = useState(null);
 
-  async function fetchMessagesFromDb() {
-    try {
-      let response = await fetch(`${BASE_URL}/messages/${user.id}`);
-      let json = await response.json();
-      const [onlyRelevantMessages] = json.filter(
-        (message) => message.otherUser === otherUser,
-      );
-      setAllMessages(onlyRelevantMessages);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  function checkForNewMessages() {
-    if (isFocused) setInterval(() => fetchMessagesFromDb(), 100);
-  }
-
   useEffect(() => {
+    async function fetchMessagesFromDb() {
+      try {
+        let response = await fetch(`${BASE_URL}/messages/${user.id}`);
+        let json = await response.json();
+        const [onlyRelevantMessages] = json.filter(
+          (message) => message.otherUser === otherUser,
+        );
+        setAllMessages(onlyRelevantMessages);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    function checkForNewMessages() {
+      if (isFocused) {
+        setInterval(() => fetchMessagesFromDb(), 100);
+      }
+    }
     checkForNewMessages();
-  }, []);
+  }, [isFocused, user.id, otherUser]);
 
   function fromTimeStampToHours(timestamp) {
     const options = { hour: '2-digit', minute: '2-digit' };

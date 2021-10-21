@@ -1,9 +1,7 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useState, useContext, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import React from 'react';
 import AppScreens from './AppScreens';
 import { UserProvider } from './AuthContext';
-import { LogBox } from 'react-native';
+// import { LogBox } from 'react-native';
 
 export default function App() {
   // LogBox.ignoreAllLogs();

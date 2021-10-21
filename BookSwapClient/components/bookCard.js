@@ -47,7 +47,7 @@ const BookCard = (props) => {
   } else {
     return (
       <View
-        /* I need this outerCard style because, the shadows were not working
+        /* I need this outerCard style because the shadows were not working
         on the LinearGradient, so I wrapped everything in a View */
         style={styles.outerCard}
       >

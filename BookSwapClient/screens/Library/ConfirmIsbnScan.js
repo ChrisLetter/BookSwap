@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Image } from 'react-native-elements';
+import { View, Text, StyleSheet } from 'react-native';
 import { REACT_APP_API_KEY } from '@env';
 import { BASE_URL, SERVER_PORT } from '@env';
 import { UserContext } from '../../AuthContext';

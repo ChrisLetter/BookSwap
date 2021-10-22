@@ -28,7 +28,7 @@ import {
 } from '@expo-google-fonts/rosario';
 
 import { UserContext } from '../../AuthContext';
-import BASE_URL from '../../configClient';
+import { BASE_URL, SERVER_PORT } from '@env';
 
 const BestMatches = ({ navigation }) => {
   const [fontsLoaded] = useFonts({
@@ -55,7 +55,9 @@ const BestMatches = ({ navigation }) => {
 
   async function fetchBookFromDb() {
     try {
-      let response = await fetch(`${BASE_URL}/books/${user.id}/all`);
+      let response = await fetch(
+        `${BASE_URL}:${SERVER_PORT}/books/${user.id}/all`,
+      );
       let json = await response.json();
       setAllBooksCurrentUser(json);
       let booksToSell = await json.booksToSell
@@ -65,7 +67,7 @@ const BestMatches = ({ navigation }) => {
         .map((books) => books.ISBN)
         .filter((whatever) => !userBooksWishList.includes(whatever));
       booksToSell.map((isbn) =>
-        fetch(`${BASE_URL}/isbn/${isbn}`)
+        fetch(`${BASE_URL}:${SERVER_PORT}/isbn/${isbn}`)
           .then((data) => data.json())
           .then((res) => {
             setISBNfromDB((prev) => [...prev, res]);
@@ -73,7 +75,7 @@ const BestMatches = ({ navigation }) => {
           .catch((err) => console.log(err)),
       );
       booksWishList.map((isbn) =>
-        fetch(`${BASE_URL}/isbn/${isbn}`)
+        fetch(`${BASE_URL}:${SERVER_PORT}/isbn/${isbn}`)
           .then((data) => data.json())
           .then((res) => {
             setISBNfromDB((prev) => [...prev, res]);
@@ -134,7 +136,9 @@ const BestMatches = ({ navigation }) => {
     const sorted = Object.entries(freq).sort(([, a], [, b]) => b - a);
     (async function () {
       for (let el of sorted) {
-        let response = await fetch(`${BASE_URL}/username/${el[0]}`);
+        let response = await fetch(
+          `${BASE_URL}:${SERVER_PORT}/username/${el[0]}`,
+        );
         let json = await response.json();
         el.push(json.username);
       }

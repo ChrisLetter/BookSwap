@@ -9,7 +9,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import { useIsFocused } from '@react-navigation/native';
 import { UserContext } from '../../AuthContext';
-import BASE_URL from '../../configClient';
+import { BASE_URL, SERVER_PORT } from '@env';
 
 const AllMessages = ({ route, navigation }) => {
   const isFocused = useIsFocused();
@@ -19,7 +19,9 @@ const AllMessages = ({ route, navigation }) => {
   useEffect(() => {
     async function fetchMessagesFromDb() {
       try {
-        let response = await fetch(`${BASE_URL}/messages/${user.id}`);
+        let response = await fetch(
+          `${BASE_URL}:${SERVER_PORT}/messages/${user.id}`,
+        );
         let json = await response.json();
         setAllMessages(json);
       } catch (err) {
@@ -30,12 +32,15 @@ const AllMessages = ({ route, navigation }) => {
   }, [user.id, isFocused]);
 
   function turnOffTheNotification(otherUser) {
-    fetch(`${BASE_URL}/messages/${user.id}/${otherUser}/false/notification`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
+    fetch(
+      `${BASE_URL}:${SERVER_PORT}/messages/${user.id}/${otherUser}/false/notification`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       },
-    });
+    );
   }
 
   return (

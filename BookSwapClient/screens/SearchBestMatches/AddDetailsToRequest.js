@@ -36,7 +36,7 @@ import {
 } from '@expo-google-fonts/rosario';
 
 import { UserContext } from '../../AuthContext';
-import BASE_URL from '../../configClient';
+import { BASE_URL, SERVER_PORT } from '@env';
 
 const AddDetailsToRequest = ({ route, navigation }) => {
   const [fontsLoaded] = useFonts({
@@ -55,7 +55,9 @@ const AddDetailsToRequest = ({ route, navigation }) => {
   const [Username, setUsername] = useState(null);
 
   async function fetchUsernameFromDb() {
-    let response = await fetch(`${BASE_URL}/username/${user.id}`);
+    let response = await fetch(
+      `${BASE_URL}:${SERVER_PORT}/username/${user.id}`,
+    );
     let json = await response.json();
     setUsername(json);
   }
@@ -95,7 +97,7 @@ const AddDetailsToRequest = ({ route, navigation }) => {
       status: 'pending',
       timeStamp: Date.now(),
     };
-    fetch(`${BASE_URL}/requests/${user.id}`, {
+    fetch(`${BASE_URL}:${SERVER_PORT}/requests/${user.id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -103,7 +105,7 @@ const AddDetailsToRequest = ({ route, navigation }) => {
       body: JSON.stringify(requestFromUser),
     })
       .then(() => {
-        fetch(`${BASE_URL}/requests/${UserMatch}`, {
+        fetch(`${BASE_URL}:${SERVER_PORT}/requests/${UserMatch}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

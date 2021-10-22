@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Image } from 'react-native-elements';
 import { REACT_APP_API_KEY } from '@env';
-import BASE_URL from '../../configClient';
+import { BASE_URL, SERVER_PORT } from '@env';
 import { UserContext } from '../../AuthContext';
 import BookCard from '../../components/BookCard';
 import { Button } from 'react-native-paper';
@@ -62,7 +62,7 @@ const ConfirmIsbnScan = ({ route, navigation }) => {
       publishedDate: book.publishedDate,
     };
 
-    fetch(`${BASE_URL}/books/${user.id}/library`, {
+    fetch(`${BASE_URL}:${SERVER_PORT}/books/${user.id}/library`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -70,9 +70,12 @@ const ConfirmIsbnScan = ({ route, navigation }) => {
       body: JSON.stringify(BookInfo),
     })
       .then(() =>
-        fetch(`${BASE_URL}/isbn/${user.id}/${BookInfo.ISBN}/sell`, {
-          method: 'POST',
-        }),
+        fetch(
+          `${BASE_URL}:${SERVER_PORT}/isbn/${user.id}/${BookInfo.ISBN}/sell`,
+          {
+            method: 'POST',
+          },
+        ),
       )
       .catch((err) => console.log(err))
       .then(navigation.navigate('Book Added Successfully'));

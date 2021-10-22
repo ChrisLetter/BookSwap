@@ -5,7 +5,6 @@ const { SECRET_KEY } = require('../../ignoredFile');
 
 const create = async (req, res) => {
   const { email, userPassword } = req.body;
-  console.log(email, userPassword);
   const user = await User.findOne({ email: email });
   if (user) {
     return res

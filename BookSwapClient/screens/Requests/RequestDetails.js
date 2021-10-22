@@ -12,7 +12,7 @@ import {
 import { IconButton, Colors } from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
 import { UserContext } from '../../AuthContext';
-import BASE_URL from '../../configClient';
+import { BASE_URL, SERVER_PORT } from '@env';
 import BookCard from '../../components/BookCard';
 import {
   useFonts,
@@ -49,14 +49,14 @@ const RequestDetails = ({ route, navigation }) => {
 
   function rejectOffer() {
     fetch(
-      `${BASE_URL}/requests/${request.userFrom}/${request.userTo}/sender/true`,
+      `${BASE_URL}:${SERVER_PORT}/requests/${request.userFrom}/${request.userTo}/sender/true`,
       {
         method: 'PUT',
       },
     )
       .then(() =>
         fetch(
-          `${BASE_URL}/requests/${request.userTo}/${request.userFrom}/receiver`,
+          `${BASE_URL}:${SERVER_PORT}/requests/${request.userTo}/${request.userFrom}/receiver`,
           {
             method: 'DELETE',
           },
@@ -64,7 +64,7 @@ const RequestDetails = ({ route, navigation }) => {
       )
       .then(() =>
         fetch(
-          `${BASE_URL}/requests/${request.userFrom}/${request.userTo}/rejected/sender/status`,
+          `${BASE_URL}:${SERVER_PORT}/requests/${request.userFrom}/${request.userTo}/rejected/sender/status`,
           {
             method: 'PUT',
           },
@@ -91,14 +91,14 @@ const RequestDetails = ({ route, navigation }) => {
       timeStamp: Date.now(),
     };
     fetch(
-      `${BASE_URL}/requests/${request.userFrom}/${request.userTo}/inProgress/sender/status`,
+      `${BASE_URL}:${SERVER_PORT}/requests/${request.userFrom}/${request.userTo}/inProgress/sender/status`,
       {
         method: 'PUT',
       },
     )
       .then(() =>
         fetch(
-          `${BASE_URL}/requests/${request.userTo}/${request.userFrom}/inProgress/receiver/status`,
+          `${BASE_URL}:${SERVER_PORT}/requests/${request.userTo}/${request.userFrom}/inProgress/receiver/status`,
           {
             method: 'PUT',
           },
@@ -106,7 +106,7 @@ const RequestDetails = ({ route, navigation }) => {
       )
       .then(() =>
         fetch(
-          `${BASE_URL}/messages/${request.userFrom}/${user.id}/${request.userToUsername}`,
+          `${BASE_URL}:${SERVER_PORT}/messages/${request.userFrom}/${user.id}/${request.userToUsername}`,
           {
             method: 'POST',
             headers: {
@@ -118,7 +118,7 @@ const RequestDetails = ({ route, navigation }) => {
       )
       .then(() => {
         fetch(
-          `${BASE_URL}/messages/${user.id}/${request.userFrom}/${request.userFromUsername}`,
+          `${BASE_URL}:${SERVER_PORT}/messages/${user.id}/${request.userFrom}/${request.userFromUsername}`,
           {
             method: 'POST',
             headers: {
@@ -130,7 +130,7 @@ const RequestDetails = ({ route, navigation }) => {
       })
       .then(() => {
         fetch(
-          `${BASE_URL}/messages/${request.userFrom}/${user.id}/true/notification`,
+          `${BASE_URL}:${SERVER_PORT}/messages/${request.userFrom}/${user.id}/true/notification`,
           {
             method: 'PUT',
           },
@@ -138,7 +138,7 @@ const RequestDetails = ({ route, navigation }) => {
       })
       .then(() => {
         fetch(
-          `${BASE_URL}/messages/${user.id}/${request.userFrom}/true/notification`,
+          `${BASE_URL}:${SERVER_PORT}/messages/${user.id}/${request.userFrom}/true/notification`,
           {
             method: 'PUT',
           },
@@ -149,9 +149,12 @@ const RequestDetails = ({ route, navigation }) => {
   }
 
   function deleteRequestForMaker() {
-    fetch(`${BASE_URL}/requests/${request.userFrom}/${request.userTo}/sender`, {
-      method: 'DELETE',
-    })
+    fetch(
+      `${BASE_URL}:${SERVER_PORT}/requests/${request.userFrom}/${request.userTo}/sender`,
+      {
+        method: 'DELETE',
+      },
+    )
       .then(() => navigation.navigate('All Requests'))
       .then(() => navigation.navigate('Best Matches'));
   }

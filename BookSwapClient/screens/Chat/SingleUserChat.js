@@ -13,7 +13,7 @@ import {
 import { IconButton, Colors } from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
 import { UserContext } from '../../AuthContext';
-import BASE_URL from '../../configClient';
+import { BASE_URL, SERVER_PORT } from '@env';
 import {
   useFonts,
   Rosario_300Light,
@@ -51,7 +51,9 @@ const SingleUserChat = ({ route, navigation }) => {
   useEffect(() => {
     async function fetchMessagesFromDb() {
       try {
-        let response = await fetch(`${BASE_URL}/messages/${user.id}`);
+        let response = await fetch(
+          `${BASE_URL}:${SERVER_PORT}/messages/${user.id}`,
+        );
         let json = await response.json();
         const [onlyRelevantMessages] = json.filter(
           (message) => message.otherUser === otherUser,
@@ -81,7 +83,7 @@ const SingleUserChat = ({ route, navigation }) => {
       content: currentMessage,
       timeStamp: Date.now(),
     };
-    fetch(`${BASE_URL}/messages/${otherUser}/${user.id}`, {
+    fetch(`${BASE_URL}:${SERVER_PORT}/messages/${otherUser}/${user.id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -89,7 +91,7 @@ const SingleUserChat = ({ route, navigation }) => {
       body: JSON.stringify(message),
     })
       .then(() => {
-        fetch(`${BASE_URL}/messages/${user.id}/${otherUser}`, {
+        fetch(`${BASE_URL}:${SERVER_PORT}/messages/${user.id}/${otherUser}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -99,7 +101,7 @@ const SingleUserChat = ({ route, navigation }) => {
       })
       .then(() => {
         fetch(
-          `${BASE_URL}/messages/${otherUser}/${user.id}/true/notification`,
+          `${BASE_URL}:${SERVER_PORT}/messages/${otherUser}/${user.id}/true/notification`,
           {
             method: 'PUT',
             headers: {

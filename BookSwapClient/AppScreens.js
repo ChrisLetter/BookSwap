@@ -27,7 +27,7 @@ import RequestDetails from './screens/Requests/RequestDetails';
 import AllMessages from './screens/Chat/AllMessages';
 import SingleUserChat from './screens/Chat/SingleUserChat';
 import RequestAccepted from './screens/Requests/RequestAccepted';
-import BASE_URL from './configClient';
+import { BASE_URL, SERVER_PORT } from '@env';
 import {
   useFonts,
   Rosario_300Light,
@@ -317,7 +317,9 @@ export default function AppScreens() {
 
   async function controlForRequests() {
     if (user.id !== '') {
-      let response = await fetch(`${BASE_URL}/requests/${user.id}`);
+      let response = await fetch(
+        `${BASE_URL}:${SERVER_PORT}/requests/${user.id}`,
+      );
       let json = await response.json();
       let filteredUserTo = json.filter((request) => request.userTo === user.id);
       let mappedUserTo = filteredUserTo.map((element) => element.hasBeenViewed);
@@ -347,7 +349,9 @@ export default function AppScreens() {
 
   async function controlForMessages() {
     if (user.id !== '') {
-      let response = await fetch(`${BASE_URL}/messages/${user.id}`);
+      let response = await fetch(
+        `${BASE_URL}:${SERVER_PORT}/messages/${user.id}`,
+      );
       let json = await response.json();
       let messagesWithNotification = json.filter(
         (msg) => msg.notification === true,

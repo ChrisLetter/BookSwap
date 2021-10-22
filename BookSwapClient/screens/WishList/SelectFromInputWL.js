@@ -19,7 +19,7 @@ import AppLoading from 'expo-app-loading';
 import BookCard from '../../components/BookCard';
 import { REACT_APP_API_KEY } from '@env';
 
-import BASE_URL from '../../configClient';
+import { BASE_URL, SERVER_PORT } from '@env';
 
 const SelectFromInputWL = ({ route, navigation }) => {
   const [fontsLoaded] = useFonts({
@@ -92,7 +92,7 @@ const SelectFromInputWL = ({ route, navigation }) => {
       publishedDate: item.publishedDate,
     };
 
-    fetch(`${BASE_URL}/books/${user.id}/wishlist`, {
+    fetch(`${BASE_URL}:${SERVER_PORT}/books/${user.id}/wishlist`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -100,9 +100,12 @@ const SelectFromInputWL = ({ route, navigation }) => {
       body: JSON.stringify(BookInfo),
     })
       .then(() =>
-        fetch(`${BASE_URL}/isbn/${user.id}/${BookInfo.ISBN}/buy`, {
-          method: 'POST',
-        }),
+        fetch(
+          `${BASE_URL}:${SERVER_PORT}/isbn/${user.id}/${BookInfo.ISBN}/buy`,
+          {
+            method: 'POST',
+          },
+        ),
       )
       .catch((err) => console.log(err))
       .then(navigation.navigate('Inserted Successfully'));

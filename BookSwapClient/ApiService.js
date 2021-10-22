@@ -3,10 +3,6 @@ import { BASE_URL, SERVER_PORT } from '@env';
 const apiService = {};
 
 apiService.register = (user) => {
-  console.log('registeringAPi');
-  console.log(SERVER_PORT);
-  console.log(BASE_URL);
-  console.log(user);
   return fetch(`${BASE_URL}:${SERVER_PORT}/register`, {
     method: 'POST',
     credentials: 'include',

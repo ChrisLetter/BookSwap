@@ -4,7 +4,7 @@ import { IconButton, Colors } from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
 
 import { UserContext } from '../../AuthContext';
-import BASE_URL from '../../configClient';
+import { BASE_URL, SERVER_PORT } from '@env';
 import BookCard from '../../components/BookCard';
 import {
   useFonts,
@@ -19,7 +19,7 @@ const UserLibrary = ({ navigation }) => {
   const isFocused = useIsFocused();
 
   function fetchBookFromDb() {
-    fetch(`${BASE_URL}/books/${user.id}/library`)
+    fetch(`${BASE_URL}:${SERVER_PORT}/books/${user.id}/library`)
       .then((data) => data.json())
       .then((res) => setBooks(res))
       .catch((err) => console.log(err));
@@ -30,11 +30,11 @@ const UserLibrary = ({ navigation }) => {
   }, [isFocused]);
 
   function removeBook(isbn) {
-    fetch(`${BASE_URL}/books/${user.id}/${isbn}/library`, {
+    fetch(`${BASE_URL}:${SERVER_PORT}/books/${user.id}/${isbn}/library`, {
       method: 'DELETE',
     })
       .then(() =>
-        fetch(`${BASE_URL}/isbn/${user.id}/${isbn}/sell`, {
+        fetch(`${BASE_URL}:${SERVER_PORT}/isbn/${user.id}/${isbn}/sell`, {
           method: 'DELETE',
         }),
       )

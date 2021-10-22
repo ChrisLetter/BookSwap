@@ -25,9 +25,9 @@ import {
   Rosario_700Bold_Italic,
 } from '@expo-google-fonts/rosario';
 
-LogBox.ignoreLogs([
-  'VirtualizedLists should never be nested', // TODO: Remove when fixed
-]);
+// LogBox.ignoreLogs([
+//   'VirtualizedLists should never be nested', // TODO: Remove when fixed
+// ]);
 
 const BookCard = (props) => {
   const [fontsLoaded] = useFonts({

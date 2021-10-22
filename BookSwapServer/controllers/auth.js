@@ -5,6 +5,7 @@ const { SECRET_KEY } = require('../../ignoredFile');
 
 const create = async (req, res) => {
   const { email, userPassword } = req.body;
+  console.log(email, userPassword);
   const user = await User.findOne({ email: email });
   if (user) {
     return res
@@ -31,6 +32,7 @@ const create = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, userPassword } = req.body;
+  console.log('hitting');
   try {
     const { _id, password } = await User.findOne({ email: email });
     const validatedPass = await bcrypt.compare(userPassword, password);

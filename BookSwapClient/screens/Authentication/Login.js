@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import apiServiceJWT from '../../ApiServiceJWT';
+import apiService from '../../ApiService';
 import { UserContext } from '../../AuthContext';
 import { TextInput, Button } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
@@ -42,7 +41,8 @@ const Login = ({ navigation }) => {
   const handleSubmit = async (e) => {
     setIsLoading(true);
     const user = { email, userPassword };
-    const res = await apiServiceJWT.login(user);
+    console.log('client');
+    const res = await apiService.login(user);
     if (res.error) {
       alert(`${res.message}`);
       setEmail('');

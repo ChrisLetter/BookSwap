@@ -38,5 +38,5 @@ BookSwap is an open source project that allows users to exchange books. Unlike o
 
 ## Screenshots:
 
-![login](screenshots/login.png?raw=true) ![library](screenshots/library.png?raw=true) ![add-new-book](screenshots/add-new-book.png?raw=true) ![isbn](screenshots/isbn.png?raw=true) ![matches](screenshots/matches.png?raw=true) ![requestpage](screenshots/request-page.png?raw=true) ![chat](screenshots/chat.png?raw=true)
+<img src="screenshots/login.png?raw=true" height="600"> <img src="screenshots/library.png?raw=true" height="600"> <img src="screenshots/add-new-book.png?raw=true" height="600"> <img src="screenshots/isbn.png?raw=true" height="600"> <img src="screenshots/matches.png?raw=true" height="600"> <img src="screenshots/request-page.png?raw=true" height="600"> <img src="screenshots/chat.png?raw=true" height="600">
 

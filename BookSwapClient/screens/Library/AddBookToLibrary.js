@@ -1,34 +1,14 @@
-import React, { useContext, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import {
   useFonts,
-  Rosario_300Light,
-  Rosario_400Regular,
-  Rosario_500Medium,
-  Rosario_600SemiBold,
-  Rosario_700Bold,
-  Rosario_300Light_Italic,
   Rosario_400Regular_Italic,
-  Rosario_500Medium_Italic,
-  Rosario_600SemiBold_Italic,
-  Rosario_700Bold_Italic,
 } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
 
 const AddBookToLibrary = ({ navigation }) => {
-  const [fontsLoaded] = useFonts({
-    Rosario_300Light,
-    Rosario_400Regular,
-    Rosario_500Medium,
-    Rosario_600SemiBold,
-    Rosario_700Bold,
-    Rosario_300Light_Italic,
-    Rosario_400Regular_Italic,
-    Rosario_500Medium_Italic,
-    Rosario_600SemiBold_Italic,
-    Rosario_700Bold_Italic,
-  });
+  const [fontsLoaded] = useFonts({ Rosario_400Regular_Italic });
   const [title, setTitle] = useState(null);
   const [authors, setAuthors] = useState(null);
   const [isbn, setIsbn] = useState(null);
@@ -75,13 +55,12 @@ const AddBookToLibrary = ({ navigation }) => {
           value={isbn}
           onChangeText={setIsbn}
           mode="outlined"
-          // TODO set digit input instead of normal keyboard
         />
         <Button
           mode="contained"
           onPress={handleSubmit}
           style={styles.buttonSearch}
-          labelStyle={{ fontSize: 16 }}
+          labelStyle={styles.label}
         >
           Search
         </Button>
@@ -90,8 +69,8 @@ const AddBookToLibrary = ({ navigation }) => {
           mode="contained"
           onPress={() => navigation.navigate('ScanISBN')}
           style={styles.buttonISBN}
-          labelStyle={{ fontSize: 16 }}
-          contentStyle={{ flexDirection: 'row-reverse' }}
+          labelStyle={styles.label}
+          contentStyle={styles.buttonContent}
         >
           Scan isbn
         </Button>
@@ -140,5 +119,11 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 5,
     backgroundColor: '#AA336A',
+  },
+  label: {
+    fontSize: 16,
+  },
+  buttonContent: {
+    flexDirection: 'row-reverse',
   },
 });

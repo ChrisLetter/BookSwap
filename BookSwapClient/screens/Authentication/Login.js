@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import apiService from '../../ApiService';
 import { UserContext } from '../../AuthContext';
 import { TextInput, Button } from 'react-native-paper';
@@ -20,8 +20,7 @@ const Login = ({ navigation }) => {
     const user = { email, userPassword };
     const res = await apiService.login(user);
     if (res.error) {
-      // eslint-disable-next-line no-alert
-      alert(`${res.message}`);
+      Alert.alert(`${res.message}`);
       setEmail('');
       setUserPassword('');
       setIsLoading(false);

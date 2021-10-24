@@ -16,7 +16,7 @@ const BookAddedSuccessfully = ({ navigation }) => {
         mode="contained"
         onPress={() => navigation.navigate('Your Library')}
         style={styles.buttonGoToLibrary}
-        labelStyle={{ fontSize: 16 }}
+        labelStyle={styles.label}
       >
         Back to the Library
       </Button>
@@ -24,7 +24,7 @@ const BookAddedSuccessfully = ({ navigation }) => {
         mode="contained"
         onPress={() => navigation.navigate('Insert A New Book')}
         style={styles.buttonAddAnotherOne}
-        labelStyle={{ fontSize: 16 }}
+        labelStyle={styles.label}
       >
         Add another one
       </Button>
@@ -66,5 +66,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 2,
     elevation: 5,
+  },
+  label: {
+    fontSize: 16,
   },
 });

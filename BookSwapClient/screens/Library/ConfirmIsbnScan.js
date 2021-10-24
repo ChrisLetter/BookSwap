@@ -1,56 +1,29 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { REACT_APP_API_KEY } from '@env';
-import { BASE_URL, SERVER_PORT } from '@env';
 import { UserContext } from '../../AuthContext';
 import BookCard from '../../components/BookCard';
 import { Button } from 'react-native-paper';
-import {
-  useFonts,
-  Rosario_300Light,
-  Rosario_400Regular,
-  Rosario_500Medium,
-  Rosario_600SemiBold,
-  Rosario_700Bold,
-  Rosario_300Light_Italic,
-  Rosario_400Regular_Italic,
-  Rosario_500Medium_Italic,
-  Rosario_600SemiBold_Italic,
-  Rosario_700Bold_Italic,
-} from '@expo-google-fonts/rosario';
+import { useFonts, Rosario_500Medium } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
+import apiService from './../../ApiService';
 
 const ConfirmIsbnScan = ({ route, navigation }) => {
-  const [fontsLoaded] = useFonts({
-    Rosario_300Light,
-    Rosario_400Regular,
-    Rosario_500Medium,
-    Rosario_600SemiBold,
-    Rosario_700Bold,
-    Rosario_300Light_Italic,
-    Rosario_400Regular_Italic,
-    Rosario_500Medium_Italic,
-    Rosario_600SemiBold_Italic,
-    Rosario_700Bold_Italic,
-  });
+  const [fontsLoaded] = useFonts({ Rosario_500Medium });
   const { scannedISBN } = route.params;
   const [book, setBook] = useState(null);
   const { user } = useContext(UserContext);
+
+  async function fetchBookFromISBN(ISBN, key) {
+    const bookFromGoogle = await apiService.searchBooksByIsbnGoogle(ISBN, key);
+    setBook(bookFromGoogle.items[0].volumeInfo);
+  }
 
   useEffect(() => {
     fetchBookFromISBN(scannedISBN, REACT_APP_API_KEY);
   }, [scannedISBN]);
 
-  function fetchBookFromISBN(ISBN, key) {
-    fetch(
-      `https://www.googleapis.com/books/v1/volumes?q=isbn:${ISBN}&key=${key}`,
-    )
-      .then((data) => data.json())
-      .then((res) => setBook(res.items[0].volumeInfo))
-      .catch((err) => console.log(err));
-  }
-
-  function InsertBookInDb() {
+  async function InsertBookInDb() {
     const thumbnail = book.imageLinks ? book.imageLinks.thumbnail : null;
     const BookInfo = {
       title: book.title,
@@ -60,23 +33,9 @@ const ConfirmIsbnScan = ({ route, navigation }) => {
       thumbnail: thumbnail,
       publishedDate: book.publishedDate,
     };
-
-    fetch(`${BASE_URL}:${SERVER_PORT}/books/${user.id}/library`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(BookInfo),
-    })
-      .then(() =>
-        fetch(
-          `${BASE_URL}:${SERVER_PORT}/isbn/${user.id}/${BookInfo.ISBN}/sell`,
-          {
-            method: 'POST',
-          },
-        ),
-      )
-      .catch((err) => console.log(err))
+    await apiService.addBook(user.id, 'library', BookInfo);
+    await apiService
+      .addBookToISBNList(user.id, BookInfo.ISBN, 'sell')
       .then(navigation.navigate('Book Added Successfully'));
   }
 
@@ -93,7 +52,7 @@ const ConfirmIsbnScan = ({ route, navigation }) => {
               mode="contained"
               onPress={() => navigation.navigate('Insert A New Book')}
               style={styles.buttonSearchManually}
-              labelStyle={{ fontSize: 16 }}
+              labelStyle={styles.label}
             >
               no, search manually
             </Button>
@@ -101,7 +60,7 @@ const ConfirmIsbnScan = ({ route, navigation }) => {
               mode="contained"
               onPress={() => InsertBookInDb()}
               style={styles.buttonAddToLibrary}
-              labelStyle={{ fontSize: 16 }}
+              labelStyle={styles.label}
             >
               Yes, Add to the library
             </Button>
@@ -146,6 +105,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 2,
     elevation: 5,
+  },
+  label: {
+    fontSize: 16,
   },
 });
 

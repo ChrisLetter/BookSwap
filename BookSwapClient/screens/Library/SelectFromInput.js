@@ -1,38 +1,17 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, Button } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { UserContext } from '../../AuthContext';
-import { Image } from 'react-native-elements';
 import {
   useFonts,
-  Rosario_300Light,
-  Rosario_400Regular,
-  Rosario_500Medium,
-  Rosario_600SemiBold,
-  Rosario_700Bold,
-  Rosario_300Light_Italic,
   Rosario_400Regular_Italic,
-  Rosario_500Medium_Italic,
-  Rosario_600SemiBold_Italic,
-  Rosario_700Bold_Italic,
 } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
 import BookCard from '../../components/BookCard';
 import { REACT_APP_API_KEY } from '@env';
-import { BASE_URL, SERVER_PORT } from '@env';
+import apiService from './../../ApiService';
 
 const SelectFromInput = ({ route, navigation }) => {
-  const [fontsLoaded] = useFonts({
-    Rosario_300Light,
-    Rosario_400Regular,
-    Rosario_500Medium,
-    Rosario_600SemiBold,
-    Rosario_700Bold,
-    Rosario_300Light_Italic,
-    Rosario_400Regular_Italic,
-    Rosario_500Medium_Italic,
-    Rosario_600SemiBold_Italic,
-    Rosario_700Bold_Italic,
-  });
+  const [fontsLoaded] = useFonts({ Rosario_400Regular_Italic });
   const { user } = useContext(UserContext);
   const { title, authors, isbn } = route.params.FormInfo;
   const [books, setBooks] = useState(null);
@@ -41,47 +20,53 @@ const SelectFromInput = ({ route, navigation }) => {
     fetchBookFromUserInput(title, authors, isbn, REACT_APP_API_KEY);
   }, [title, authors, isbn]);
 
-  function fetchBookFromUserInput(titleInput, authorInput, isbnInput, key) {
-    let apiLink = 'https://www.googleapis.com/books/v1/volumes?q=';
+  // in this function, based on the input of the user, I create the correct
+  // url to query the google book database
+  async function fetchBookFromUserInput(
+    titleInput,
+    authorInput,
+    isbnInput,
+    key,
+  ) {
+    let url = 'https://www.googleapis.com/books/v1/volumes?q=';
     if (titleInput !== null) {
       titleInput = titleInput.split(' ').join('+');
-      apiLink += `intitle:${titleInput}`;
+      url += `intitle:${titleInput}`;
     }
     if (authorInput !== null && titleInput !== null) {
       authorInput = authorInput.split(' ').join('+');
-      apiLink += `+inauthor:${authorInput}`;
+      url += `+inauthor:${authorInput}`;
     }
     if (authorInput !== null && titleInput === null) {
       authorInput = authorInput.split(' ').join('+');
-      apiLink += `inauthor:${authorInput}`;
+      url += `inauthor:${authorInput}`;
     }
     if (isbnInput !== null && titleInput === null && authorInput === null) {
-      apiLink += `isbn:${isbnInput}`;
+      url += `isbn:${isbnInput}`;
     }
     if (
       (isbnInput !== null && titleInput !== null) ||
       (isbnInput !== null && authorInput !== null)
     ) {
-      apiLink += `+isbn:${isbnInput}`;
+      url += `+isbn:${isbnInput}`;
     }
-    fetch(`${apiLink}&key=${key}`)
-      .then((data) => data.json())
-      .then((res) =>
-        res.items
-          .slice(0, 15)
-          .map((book) => book.volumeInfo)
-          .filter((test) => test.industryIdentifiers !== undefined),
-      )
-      .then((res) => setBooks(res))
-      .catch((err) => console.log(err));
+    const result = await apiService.searchBooksByFormGoogle(url, key);
+    const filteredResult = result.items
+      .slice(0, 15)
+      .map((book) => book.volumeInfo)
+      .filter((test) => test.industryIdentifiers !== undefined);
+    setBooks(filteredResult);
   }
 
+  // I need this function because the results from the API are not
+  // consistent, some books have 2 ISBN codes (one has 13 digit, another 10),
+  //  with this function I filter them and I keep only the 13 digit one.
   function extractISBN13(arr) {
     const filtered = arr.filter((elem) => elem.identifier.length >= 13);
     return filtered[0].identifier;
   }
 
-  function InsertBookInDb(item) {
+  async function InsertBookInDb(item) {
     const BookInfo = {
       title: item.title,
       authors: item.authors,
@@ -90,23 +75,9 @@ const SelectFromInput = ({ route, navigation }) => {
       thumbnail: item.imageLinks.thumbnail,
       publishedDate: item.publishedDate,
     };
-
-    fetch(`${BASE_URL}:${SERVER_PORT}/books/${user.id}/library`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(BookInfo),
-    })
-      .then(() =>
-        fetch(
-          `${BASE_URL}:${SERVER_PORT}/isbn/${user.id}/${BookInfo.ISBN}/sell`,
-          {
-            method: 'POST',
-          },
-        ),
-      )
-      .catch((err) => console.log(err))
+    await apiService.addBook(user.id, 'library', BookInfo);
+    await apiService
+      .addBookToISBNList(user.id, BookInfo.ISBN, 'sell')
       .then(navigation.navigate('Book Added Successfully'));
   }
 

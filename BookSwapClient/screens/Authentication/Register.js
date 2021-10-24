@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import apiService from '../../ApiService';
 import { UserContext } from '../../AuthContext';
 import { TextInput, Button } from 'react-native-paper';
@@ -17,8 +17,7 @@ const Register = () => {
     setEmail('');
     setUserPassword('');
     if (res.error) {
-      // eslint-disable-next-line no-alert
-      alert(`${res.message}`);
+      Alert.alert(`${res.message}`);
     } else {
       const { accessToken, id } = res;
       login(accessToken, id);

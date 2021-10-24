@@ -2,9 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import { View, StyleSheet, FlatList, Text } from 'react-native';
 import { IconButton, Colors } from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
+import apiService from '../../ApiService';
 
 import { UserContext } from '../../AuthContext';
-import { BASE_URL, SERVER_PORT } from '@env';
 import BookCard from '../../components/BookCard';
 import {
   useFonts,
@@ -18,27 +18,19 @@ const UserLibrary = ({ navigation }) => {
   const [books, setBooks] = useState(null);
   const isFocused = useIsFocused();
 
-  function fetchBookFromDb() {
-    fetch(`${BASE_URL}:${SERVER_PORT}/books/${user.id}/library`)
-      .then((data) => data.json())
-      .then((res) => setBooks(res))
-      .catch((err) => console.log(err));
+  async function getBooks(userId) {
+    const fetchedBooks = await apiService.getUserLibraryBooks(userId);
+    setBooks(fetchedBooks);
   }
 
   useEffect(() => {
-    fetchBookFromDb();
-  }, [isFocused]);
+    getBooks(user.id);
+  }, [isFocused, user.id]);
 
-  function removeBook(isbn) {
-    fetch(`${BASE_URL}:${SERVER_PORT}/books/${user.id}/${isbn}/library`, {
-      method: 'DELETE',
-    })
-      .then(() =>
-        fetch(`${BASE_URL}:${SERVER_PORT}/isbn/${user.id}/${isbn}/sell`, {
-          method: 'DELETE',
-        }),
-      )
-      .then(() => fetchBookFromDb());
+  async function removeBook(isbn) {
+    await apiService.removeBookFromLibrary(user.id, isbn);
+    await apiService.removeBookFromISBNList(user.id, isbn);
+    await getBooks(user.id);
   }
 
   if (!fontsLoaded) {

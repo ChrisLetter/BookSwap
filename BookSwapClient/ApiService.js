@@ -26,22 +26,34 @@ apiService.login = (user) => {
     .catch((err) => console.log('login', err));
 };
 
-apiService.getUserLibraryBooks = (userId) => {
-  return fetch(`${BASE_URL}:${SERVER_PORT}/books/${userId}/library`)
+// used for getting books both from the library and from the wish list,
+// specify "library" or "wishList" in the location parameter.
+apiService.getUserBooks = (userId, location) => {
+  return fetch(`${BASE_URL}:${SERVER_PORT}/books/${userId}/${location}`)
     .then((res) => res.json())
     .catch((err) => console.log('getUserLibraryBooks', err));
 };
 
-apiService.removeBookFromLibrary = (userId, isbn) => {
-  return fetch(`${BASE_URL}:${SERVER_PORT}/books/${userId}/${isbn}/library`, {
-    method: 'DELETE',
-  }).catch((err) => console.log('removeBookFromLibrary', err));
+// used for removing books both from the library and from the wish list,
+// specify "library" or "wishList" in the location parameter.
+apiService.removeUserBook = (userId, isbn, location) => {
+  return fetch(
+    `${BASE_URL}:${SERVER_PORT}/books/${userId}/${isbn}/${location}`,
+    {
+      method: 'DELETE',
+    },
+  ).catch((err) => console.log('removeBookFromLibrary', err));
 };
 
-apiService.removeBookFromISBNList = (userId, isbn) => {
-  return fetch(`${BASE_URL}:${SERVER_PORT}/isbn/${userId}/${isbn}/sell`, {
-    method: 'DELETE',
-  }).catch((err) => console.log('removeBookFromISBNList', err));
+// used for removing books from the ISBN list, specify buy or sell in the
+// location parameter, based on the list that you want to target.
+apiService.removeBookFromISBNList = (userId, isbn, location) => {
+  return fetch(
+    `${BASE_URL}:${SERVER_PORT}/isbn/${userId}/${isbn}/${location}`,
+    {
+      method: 'DELETE',
+    },
+  ).catch((err) => console.log('removeBookFromISBNList', err));
 };
 
 // used for searching books scanning the ISBN code
@@ -61,7 +73,7 @@ apiService.searchBooksByFormGoogle = (url, key) => {
 };
 
 // used for saving books both in the library and in the wish list,
-// specify library or wish list in the location parameter.
+// specify "library" or "wishList" in the location parameter.
 apiService.addBook = (userId, location, bookInfos) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/books/${userId}/${location}`, {
     method: 'POST',

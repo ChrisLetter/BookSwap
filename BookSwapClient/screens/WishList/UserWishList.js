@@ -2,63 +2,36 @@ import React, { useState, useEffect, useContext } from 'react';
 import { View, StyleSheet, FlatList, Text } from 'react-native';
 import { IconButton, Colors } from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
-
+import apiService from '../../ApiService';
 import { UserContext } from '../../AuthContext';
-import { BASE_URL, SERVER_PORT } from '@env';
 import BookCard from '../../components/BookCard';
 import {
   useFonts,
-  Rosario_300Light,
-  Rosario_400Regular,
-  Rosario_500Medium,
-  Rosario_600SemiBold,
-  Rosario_700Bold,
-  Rosario_300Light_Italic,
   Rosario_400Regular_Italic,
-  Rosario_500Medium_Italic,
-  Rosario_600SemiBold_Italic,
-  Rosario_700Bold_Italic,
 } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
 
 const WishList = ({ navigation }) => {
   const [fontsLoaded] = useFonts({
-    Rosario_300Light,
-    Rosario_400Regular,
-    Rosario_500Medium,
-    Rosario_600SemiBold,
-    Rosario_700Bold,
-    Rosario_300Light_Italic,
     Rosario_400Regular_Italic,
-    Rosario_500Medium_Italic,
-    Rosario_600SemiBold_Italic,
-    Rosario_700Bold_Italic,
   });
   const { user } = useContext(UserContext);
   const isFocused = useIsFocused();
   const [books, setBooks] = useState(null);
 
-  function fetchBookFromDb() {
-    fetch(`${BASE_URL}:${SERVER_PORT}/books/${user.id}/wishList`)
-      .then((data) => data.json())
-      .then((res) => setBooks(res))
-      .catch((err) => console.log(err));
+  async function getBooks(userId) {
+    const fetchedBooks = await apiService.getUserBooks(userId, 'wishList');
+    setBooks(fetchedBooks);
   }
 
   useEffect(() => {
-    if (isFocused) fetchBookFromDb();
-  }, [isFocused]);
+    getBooks(user.id);
+  }, [isFocused, user.id]);
 
-  function removeBook(isbn) {
-    fetch(`${BASE_URL}:${SERVER_PORT}/books/${user.id}/${isbn}/wishList`, {
-      method: 'DELETE',
-    })
-      .then(() =>
-        fetch(`${BASE_URL}:${SERVER_PORT}/isbn/${user.id}/${isbn}/buy`, {
-          method: 'DELETE',
-        }),
-      )
-      .then(() => fetchBookFromDb());
+  async function removeBook(isbn) {
+    await apiService.removeUserBook(user.id, isbn, 'wishList');
+    await apiService.removeBookFromISBNList(user.id, isbn, 'buy');
+    await getBooks(user.id);
   }
 
   if (!fontsLoaded) {

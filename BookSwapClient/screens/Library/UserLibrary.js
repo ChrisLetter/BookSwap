@@ -19,7 +19,7 @@ const UserLibrary = ({ navigation }) => {
   const isFocused = useIsFocused();
 
   async function getBooks(userId) {
-    const fetchedBooks = await apiService.getUserLibraryBooks(userId);
+    const fetchedBooks = await apiService.getUserBooks(userId, 'library');
     setBooks(fetchedBooks);
   }
 
@@ -28,8 +28,8 @@ const UserLibrary = ({ navigation }) => {
   }, [isFocused, user.id]);
 
   async function removeBook(isbn) {
-    await apiService.removeBookFromLibrary(user.id, isbn);
-    await apiService.removeBookFromISBNList(user.id, isbn);
+    await apiService.removeUserBook(user.id, isbn, 'library');
+    await apiService.removeBookFromISBNList(user.id, isbn, 'sell');
     await getBooks(user.id);
   }
 

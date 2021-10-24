@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { Button } from 'react-native-paper';
 
@@ -16,7 +16,7 @@ const InsertedSuccessfully = ({ navigation }) => {
         mode="contained"
         onPress={() => navigation.navigate('Your Wish List')}
         style={styles.buttonGoToLibrary}
-        labelStyle={{ fontSize: 16 }}
+        labelStyle={styles.label}
       >
         Back to the Wish List
       </Button>
@@ -24,7 +24,7 @@ const InsertedSuccessfully = ({ navigation }) => {
         mode="contained"
         onPress={() => navigation.navigate('Add a New Book')}
         style={styles.buttonAddAnotherOne}
-        labelStyle={{ fontSize: 16 }}
+        labelStyle={styles.label}
       >
         Add another one
       </Button>
@@ -66,5 +66,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 2,
     elevation: 5,
+  },
+  label: {
+    fontSize: 16,
   },
 });

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import apiService from '../../ApiService';
 import { UserContext } from '../../AuthContext';
 import { TextInput, Button } from 'react-native-paper';
@@ -17,6 +17,7 @@ const Register = () => {
     setEmail('');
     setUserPassword('');
     if (res.error) {
+      // eslint-disable-next-line no-alert
       alert(`${res.message}`);
     } else {
       const { accessToken, id } = res;
@@ -52,7 +53,7 @@ const Register = () => {
         mode="contained"
         onPress={handleSubmit}
         style={styles.buttonRegister}
-        labelStyle={{ fontSize: 16 }}
+        labelStyle={styles.label}
       >
         Register
       </Button>
@@ -82,5 +83,8 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 5,
     backgroundColor: '#5D3FD3',
+  },
+  label: {
+    fontSize: 16,
   },
 });

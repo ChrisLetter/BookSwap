@@ -4,35 +4,12 @@ import apiService from '../../ApiService';
 import { UserContext } from '../../AuthContext';
 import { TextInput, Button } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
-import {
-  useFonts,
-  Rosario_300Light,
-  Rosario_400Regular,
-  Rosario_500Medium,
-  Rosario_600SemiBold,
-  Rosario_700Bold,
-  Rosario_300Light_Italic,
-  Rosario_400Regular_Italic,
-  Rosario_500Medium_Italic,
-  Rosario_600SemiBold_Italic,
-  Rosario_700Bold_Italic,
-} from '@expo-google-fonts/rosario';
+import { useFonts, Rosario_500Medium } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
 import LoadingLogin from '../../components/LoadingLogin';
 
 const Login = ({ navigation }) => {
-  const [fontsLoaded] = useFonts({
-    Rosario_300Light,
-    Rosario_400Regular,
-    Rosario_500Medium,
-    Rosario_600SemiBold,
-    Rosario_700Bold,
-    Rosario_300Light_Italic,
-    Rosario_400Regular_Italic,
-    Rosario_500Medium_Italic,
-    Rosario_600SemiBold_Italic,
-    Rosario_700Bold_Italic,
-  });
+  const [fontsLoaded] = useFonts({ Rosario_500Medium });
   const { login } = useContext(UserContext);
   const [email, setEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
@@ -41,12 +18,13 @@ const Login = ({ navigation }) => {
   const handleSubmit = async (e) => {
     setIsLoading(true);
     const user = { email, userPassword };
-    console.log('client');
     const res = await apiService.login(user);
     if (res.error) {
+      // eslint-disable-next-line no-alert
       alert(`${res.message}`);
       setEmail('');
       setUserPassword('');
+      setIsLoading(false);
     } else {
       const { accessToken, id } = res;
       setTimeout(() => {
@@ -91,7 +69,7 @@ const Login = ({ navigation }) => {
                 mode="contained"
                 onPress={handleSubmit}
                 style={styles.buttonLogin}
-                labelStyle={{ fontSize: 16 }}
+                labelStyle={styles.label}
               >
                 login
               </Button>
@@ -100,7 +78,7 @@ const Login = ({ navigation }) => {
                 mode="contained"
                 onPress={() => navigation.navigate('Register')}
                 style={styles.buttonRegister}
-                labelStyle={{ fontSize: 16 }}
+                labelStyle={styles.label}
               >
                 Register
               </Button>
@@ -166,5 +144,8 @@ const styles = StyleSheet.create({
   },
   lottieContainer: {
     alignItems: 'center',
+  },
+  label: {
+    fontSize: 16,
   },
 });

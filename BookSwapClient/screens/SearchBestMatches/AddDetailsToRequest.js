@@ -1,68 +1,21 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
-import {
-  IconButton,
-  Colors,
-  Button,
-  RadioButton,
-  Switch,
-  TextInput,
-} from 'react-native-paper';
-import { useIsFocused } from '@react-navigation/native';
-import { Picker } from '@react-native-picker/picker';
-
+import React, { useState, useEffect, useContext } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { Button, Switch, TextInput } from 'react-native-paper';
 import AppLoading from 'expo-app-loading';
-
-import {
-  useFonts,
-  Rosario_300Light,
-  Rosario_400Regular,
-  Rosario_500Medium,
-  Rosario_600SemiBold,
-  Rosario_700Bold,
-  Rosario_300Light_Italic,
-  Rosario_400Regular_Italic,
-  Rosario_500Medium_Italic,
-  Rosario_600SemiBold_Italic,
-  Rosario_700Bold_Italic,
-} from '@expo-google-fonts/rosario';
-
+import apiService from './../../ApiService';
+import { useFonts, Rosario_500Medium } from '@expo-google-fonts/rosario';
 import { UserContext } from '../../AuthContext';
-import { BASE_URL, SERVER_PORT } from '@env';
 
 const AddDetailsToRequest = ({ route, navigation }) => {
-  const [fontsLoaded] = useFonts({
-    Rosario_300Light,
-    Rosario_400Regular,
-    Rosario_500Medium,
-    Rosario_600SemiBold,
-    Rosario_700Bold,
-    Rosario_300Light_Italic,
-    Rosario_400Regular_Italic,
-    Rosario_500Medium_Italic,
-    Rosario_600SemiBold_Italic,
-    Rosario_700Bold_Italic,
-  });
+  const [fontsLoaded] = useFonts({ Rosario_500Medium });
   const { user } = useContext(UserContext);
   const [Username, setUsername] = useState(null);
 
-  async function fetchUsernameFromDb() {
-    let response = await fetch(
-      `${BASE_URL}:${SERVER_PORT}/username/${user.id}`,
-    );
-    let json = await response.json();
-    setUsername(json);
-  }
-
   useEffect(() => {
+    async function fetchUsernameFromDb() {
+      let response = await apiService.getUsername(user.id);
+      setUsername(response);
+    }
     fetchUsernameFromDb();
   }, [user]);
 
@@ -72,6 +25,7 @@ const AddDetailsToRequest = ({ route, navigation }) => {
     UserMatch,
     UsernameOtherUser,
   } = route.params;
+
   const [monetaryCompensationYesOrNo, setMonetaryCompensationYesOrNo] =
     useState(false);
   const [AskOrGiveMoney, setAskOrGiveMoney] = useState(true);
@@ -97,23 +51,9 @@ const AddDetailsToRequest = ({ route, navigation }) => {
       status: 'pending',
       timeStamp: Date.now(),
     };
-    fetch(`${BASE_URL}:${SERVER_PORT}/requests/${user.id}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestFromUser),
-    })
-      .then(() => {
-        fetch(`${BASE_URL}:${SERVER_PORT}/requests/${UserMatch}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(requestFromUser),
-        });
-      })
-      .catch((err) => console.log(err))
+    apiService.sendRequest(user.id, requestFromUser);
+    apiService
+      .sendRequest(UserMatch, requestFromUser)
       .then(navigation.navigate('Request Sent'));
   }
 
@@ -122,7 +62,7 @@ const AddDetailsToRequest = ({ route, navigation }) => {
   } else {
     return (
       <View style={styles.container}>
-        <View style={styles.monetaryCompensContainer}>
+        <View style={styles.monetaryCompensationContainer}>
           {monetaryCompensationYesOrNo === true ? (
             <View style={styles.toggleContainer}>
               {AskOrGiveMoney ? (
@@ -153,8 +93,8 @@ const AddDetailsToRequest = ({ route, navigation }) => {
                 <Button
                   mode="contained"
                   onPress={() => setMonetaryCompensationYesOrNo(true)}
-                  style={styles.buttonAddMonCompens}
-                  labelStyle={{ fontSize: 16 }}
+                  style={styles.buttonMonetaryCompensation}
+                  labelStyle={styles.label}
                 >
                   Add compensation
                 </Button>
@@ -178,7 +118,7 @@ const AddDetailsToRequest = ({ route, navigation }) => {
           mode="contained"
           onPress={() => sendRequest()}
           style={styles.buttonSendReq}
-          labelStyle={{ fontSize: 16 }}
+          labelStyle={styles.label}
         >
           send request
         </Button>
@@ -194,7 +134,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  monetaryCompensContainer: {
+  monetaryCompensationContainer: {
     height: 180,
   },
   toggleContainer: {
@@ -208,7 +148,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Rosario_500Medium',
     fontSize: 18,
   },
-  buttonAddMonCompens: {
+  buttonMonetaryCompensation: {
     marginHorizontal: 20,
     backgroundColor: '#5D3FD3',
     marginTop: 20,
@@ -250,5 +190,8 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     alignItems: 'center',
+  },
+  label: {
+    fontSize: 16,
   },
 });

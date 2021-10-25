@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { Button } from 'react-native-paper';
 
-const RequestSent = ({ route, navigation }) => {
+const RequestSent = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <LottieView
@@ -16,7 +16,7 @@ const RequestSent = ({ route, navigation }) => {
         mode="contained"
         onPress={() => navigation.navigate('Best Matches')}
         style={styles.searchAnotherMatch}
-        labelStyle={{ fontSize: 16 }}
+        labelStyle={styles.label}
       >
         Search other matches
       </Button>
@@ -47,5 +47,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 2,
     elevation: 5,
+  },
+  label: {
+    fontSize: 16,
   },
 });

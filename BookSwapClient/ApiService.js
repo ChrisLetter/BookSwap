@@ -98,13 +98,29 @@ apiService.addBookToISBNList = (userId, isbn, location) => {
 apiService.getUsersFromISBNList = (isbn) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/isbn/${isbn}`)
     .then((data) => data.json())
-    .catch((err) => console.log('addBookToISBNList', err));
+    .catch((err) => console.log('getUsersFromISBNList', err));
 };
 
 apiService.getBestMatches = (userId) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/bestMatches/${userId}`)
     .then((data) => data.json())
-    .catch((err) => console.log('addBookToISBNList', err));
+    .catch((err) => console.log('getBestMatches', err));
+};
+
+apiService.getUsername = (userId) => {
+  return fetch(`${BASE_URL}:${SERVER_PORT}/username/${userId}`)
+    .then((data) => data.json())
+    .catch((err) => console.log('getUsername', err));
+};
+
+apiService.sendRequest = (userId, requestInfos) => {
+  return fetch(`${BASE_URL}:${SERVER_PORT}/requests/${userId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(requestInfos),
+  }).catch((err) => console.log('addBook', err));
 };
 
 export default apiService;

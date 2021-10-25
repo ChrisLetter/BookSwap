@@ -27,7 +27,7 @@ apiService.login = (user) => {
 };
 
 // used for getting books both from the library and from the wish list,
-// specify "library" or "wishList" in the location parameter.
+// specify "library" or "wishList" in the location parameter (or "all" to get all of them).
 apiService.getUserBooks = (userId, location) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/books/${userId}/${location}`)
     .then((res) => res.json())
@@ -93,6 +93,11 @@ apiService.addBookToISBNList = (userId, isbn, location) => {
       method: 'POST',
     },
   ).catch((err) => console.log('addBookToISBNList', err));
+};
+apiService.getBooksFromISBNList = (isbn) => {
+  return fetch(`${BASE_URL}:${SERVER_PORT}/isbn/${isbn}`)
+    .then((data) => data.json())
+    .catch((err) => console.log('addBookToISBNList', err));
 };
 
 export default apiService;

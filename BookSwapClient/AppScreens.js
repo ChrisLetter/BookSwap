@@ -345,7 +345,7 @@ export default function AppScreens() {
     }
   }
 
-  setInterval(controlForRequests, 800);
+  setInterval(controlForRequests, 2000);
 
   async function controlForMessages() {
     if (user.id !== '') {
@@ -364,7 +364,7 @@ export default function AppScreens() {
     }
   }
 
-  setInterval(controlForMessages, 200);
+  setInterval(controlForMessages, 2000);
 
   if (!fontsLoaded) {
     return <AppLoading />;

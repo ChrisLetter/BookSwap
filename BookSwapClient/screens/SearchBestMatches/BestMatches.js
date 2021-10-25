@@ -4,44 +4,21 @@ import {
   Text,
   StyleSheet,
   FlatList,
-  Button,
   TouchableOpacity,
 } from 'react-native';
-import { IconButton, Colors } from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AppLoading from 'expo-app-loading';
 import LoadingSearching from '../../components/LoadingSearching';
-
-import {
-  useFonts,
-  Rosario_300Light,
-  Rosario_400Regular,
-  Rosario_500Medium,
-  Rosario_600SemiBold,
-  Rosario_700Bold,
-  Rosario_300Light_Italic,
-  Rosario_400Regular_Italic,
-  Rosario_500Medium_Italic,
-  Rosario_600SemiBold_Italic,
-  Rosario_700Bold_Italic,
-} from '@expo-google-fonts/rosario';
+import apiService from './../../ApiService';
+import { useFonts, Rosario_500Medium } from '@expo-google-fonts/rosario';
 
 import { UserContext } from '../../AuthContext';
 import { BASE_URL, SERVER_PORT } from '@env';
 
 const BestMatches = ({ navigation }) => {
   const [fontsLoaded] = useFonts({
-    Rosario_300Light,
-    Rosario_400Regular,
     Rosario_500Medium,
-    Rosario_600SemiBold,
-    Rosario_700Bold,
-    Rosario_300Light_Italic,
-    Rosario_400Regular_Italic,
-    Rosario_500Medium_Italic,
-    Rosario_600SemiBold_Italic,
-    Rosario_700Bold_Italic,
   });
   const { user } = useContext(UserContext);
 
@@ -55,17 +32,15 @@ const BestMatches = ({ navigation }) => {
 
   async function fetchBookFromDb() {
     try {
-      let response = await fetch(
-        `${BASE_URL}:${SERVER_PORT}/books/${user.id}/all`,
-      );
-      let json = await response.json();
-      setAllBooksCurrentUser(json);
-      let booksToSell = await json.booksToSell
-        .map((books) => books.ISBN)
-        .filter((whatever) => !userBooksLibrary.includes(whatever));
-      let booksWishList = await json.booksToBuy
-        .map((books) => books.ISBN)
-        .filter((whatever) => !userBooksWishList.includes(whatever));
+      let response = await apiService.getUserBooks(user.id, 'all');
+      setAllBooksCurrentUser(response);
+      let booksToSell = await response.booksToSell
+        .map((book) => book.ISBN)
+        .filter((isbnCode) => !userBooksLibrary.includes(isbnCode));
+      // I need this filter, because every time that the user focus on the page,
+      // I will refetch to search the best matches, so in order to avoid
+      // adding the same books again and again to the userBooksLibrary (and
+      // to the UserBooksWishList), I need to filter them.
       booksToSell.map((isbn) =>
         fetch(`${BASE_URL}:${SERVER_PORT}/isbn/${isbn}`)
           .then((data) => data.json())
@@ -74,6 +49,9 @@ const BestMatches = ({ navigation }) => {
           })
           .catch((err) => console.log(err)),
       );
+      let booksWishList = await response.booksToBuy
+        .map((book) => book.ISBN)
+        .filter((isbnCode) => !userBooksWishList.includes(isbnCode));
       booksWishList.map((isbn) =>
         fetch(`${BASE_URL}:${SERVER_PORT}/isbn/${isbn}`)
           .then((data) => data.json())
@@ -153,6 +131,7 @@ const BestMatches = ({ navigation }) => {
       <View style={styles.container}>
         {!isLoading ? (
           <View style={styles.container}>
+            {console.log(userBooksLibrary)}
             {matchesFound !== null && matchesFound.length > 0 ? (
               <FlatList
                 data={matchesFound}

@@ -1,97 +1,54 @@
-import React, { useState, useEffect, useContext } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Image,
-  SafeAreaView,
-} from 'react-native';
-import { IconButton, Colors, Button } from 'react-native-paper';
-import { useIsFocused } from '@react-navigation/native';
-import { Picker } from '@react-native-picker/picker';
-
-import { UserContext } from '../../AuthContext';
-import { BASE_URL, SERVER_PORT } from '@env';
+import React, { useState, useEffect } from 'react';
+import { View, Text, ScrollView, StyleSheet, FlatList } from 'react-native';
+import { Button } from 'react-native-paper';
 import BookCard from '../../components/BookCard';
 import AppLoading from 'expo-app-loading';
-
+import apiService from './../../ApiService';
 import {
   useFonts,
-  Rosario_300Light,
   Rosario_400Regular,
-  Rosario_500Medium,
-  Rosario_600SemiBold,
-  Rosario_700Bold,
-  Rosario_300Light_Italic,
   Rosario_400Regular_Italic,
-  Rosario_500Medium_Italic,
-  Rosario_600SemiBold_Italic,
-  Rosario_700Bold_Italic,
 } from '@expo-google-fonts/rosario';
 
 const SendRequest = ({ route, navigation }) => {
   const [fontsLoaded] = useFonts({
-    Rosario_300Light,
     Rosario_400Regular,
-    Rosario_500Medium,
-    Rosario_600SemiBold,
-    Rosario_700Bold,
-    Rosario_300Light_Italic,
     Rosario_400Regular_Italic,
-    Rosario_500Medium_Italic,
-    Rosario_600SemiBold_Italic,
-    Rosario_700Bold_Italic,
   });
-  const { user } = useContext(UserContext);
-
-  const isFocused = useIsFocused();
-  const {
-    booksCurrUser,
-    UserMatch,
-    userBooksLibrary,
-    userBooksWishList,
-    Username,
-  } = route.params.UsersInfo;
-  const [otherUserBooks, setOtherUserBooks] = useState(null);
+  const { booksCurrUser, UserMatch, Username } = route.params.UsersInfo;
   const [matchesFromLibraryToSell, setMatchesFromLibraryToSell] = useState([]);
   const [matchesFromWishList, setMatchesFromWishList] = useState([]);
 
-  async function fetchBookOfOtherUser() {
-    try {
-      let response = await fetch(
-        `${BASE_URL}:${SERVER_PORT}/books/${UserMatch}/all`,
-      );
-      let json = await response.json();
-      setOtherUserBooks(json);
-      let matchesFromLibraryToSell = json.booksToBuy.filter((books) =>
-        userBooksLibrary.includes(books.ISBN),
-      );
-      let matchesFromWishList = json.booksToSell.filter((books) =>
-        userBooksWishList.includes(books.ISBN),
-      );
-      setMatchesFromWishList(matchesFromWishList);
-      setMatchesFromLibraryToSell(matchesFromLibraryToSell);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
   useEffect(() => {
-    if (UserMatch) fetchBookOfOtherUser();
-  }, []);
+    async function fetchBookOfOtherUser(otherUserId) {
+      let response = await apiService.getUserBooks(otherUserId, 'all');
+      const IsbnLibraryUser = booksCurrUser.booksToSell.map(
+        (book) => book.ISBN,
+      );
+      const IsbnWishListUser = booksCurrUser.booksToBuy.map(
+        (book) => book.ISBN,
+      );
+      let matchesLibrary = response.booksToBuy.filter((books) =>
+        IsbnLibraryUser.includes(books.ISBN),
+      );
+      let matchesWishList = response.booksToSell.filter((books) =>
+        IsbnWishListUser.includes(books.ISBN),
+      );
+      setMatchesFromWishList(matchesWishList);
+      setMatchesFromLibraryToSell(matchesLibrary);
+    }
+    fetchBookOfOtherUser(UserMatch);
+  }, [UserMatch, booksCurrUser.booksToSell, booksCurrUser.booksToBuy]);
 
-  function removeBookfromWishList(book) {
+  function removeBookFromWishList(book) {
     setMatchesFromWishList((prev) =>
-      prev.filter((allbooks) => allbooks.ISBN !== book.ISBN),
+      prev.filter((allBooks) => allBooks.ISBN !== book.ISBN),
     );
   }
 
-  function removeBookfromLibraryToSell(book) {
+  function removeBookFromLibraryToSell(book) {
     setMatchesFromLibraryToSell((prev) =>
-      prev.filter((allbooks) => allbooks.ISBN !== book.ISBN),
+      prev.filter((allBooks) => allBooks.ISBN !== book.ISBN),
     );
   }
 
@@ -121,13 +78,13 @@ const SendRequest = ({ route, navigation }) => {
               {Username} has these books to offer you
             </Text>
             <FlatList
-              style={styles.flatlist}
+              style={styles.flatList}
               data={matchesFromWishList}
               keyExtractor={(item) => item.ISBN}
               renderItem={({ item }) => (
                 <BookCard
                   bookObj={item}
-                  removeBtn={() => removeBookfromWishList(item)}
+                  removeBtn={() => removeBookFromWishList(item)}
                 />
               )}
             />
@@ -137,13 +94,13 @@ const SendRequest = ({ route, navigation }) => {
           <View style={styles.flatListContainer}>
             <Text style={styles.text}>You can offer him these books</Text>
             <FlatList
-              style={styles.flatlist}
+              style={styles.flatList}
               data={matchesFromLibraryToSell}
               keyExtractor={(item) => item.ISBN}
               renderItem={({ item }) => (
                 <BookCard
                   bookObj={item}
-                  removeBtn={() => removeBookfromLibraryToSell(item)}
+                  removeBtn={() => removeBookFromLibraryToSell(item)}
                 />
               )}
             />
@@ -155,7 +112,7 @@ const SendRequest = ({ route, navigation }) => {
             mode="contained"
             onPress={() => addDetails()}
             style={styles.buttonAddDetails}
-            labelStyle={{ fontSize: 16 }}
+            labelStyle={styles.label}
           >
             Add details
           </Button>
@@ -176,7 +133,7 @@ const styles = StyleSheet.create({
   flatListContainer: {
     alignItems: 'center',
   },
-  flatlist: {
+  flatList: {
     paddingBottom: 10,
   },
   container: {
@@ -201,5 +158,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 2,
     elevation: 5,
+  },
+  label: {
+    fontSize: 16,
   },
 });

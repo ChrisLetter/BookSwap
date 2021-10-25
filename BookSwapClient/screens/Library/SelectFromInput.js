@@ -59,7 +59,7 @@ const SelectFromInput = ({ route, navigation }) => {
   }
 
   // I need this function because the results from the API are not
-  // consistent, some books have 2 ISBN codes (one has 13 digit, another 10),
+  // consistent, some books have 2 ISBN codes (one is 13 digit long, another 10),
   //  with this function I filter them and I keep only the 13 digit one.
   function extractISBN13(arr) {
     const filtered = arr.filter((elem) => elem.identifier.length >= 13);

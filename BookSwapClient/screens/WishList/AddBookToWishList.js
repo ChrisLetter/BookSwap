@@ -1,35 +1,13 @@
-import React, { useContext, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 
-import { UserContext } from '../../AuthContext';
-import {
-  useFonts,
-  Rosario_300Light,
-  Rosario_400Regular,
-  Rosario_500Medium,
-  Rosario_600SemiBold,
-  Rosario_700Bold,
-  Rosario_300Light_Italic,
-  Rosario_400Regular_Italic,
-  Rosario_500Medium_Italic,
-  Rosario_600SemiBold_Italic,
-  Rosario_700Bold_Italic,
-} from '@expo-google-fonts/rosario';
+import { useFonts, Rosario_500Medium } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
 
 const AddBookToWishList = ({ navigation }) => {
   const [fontsLoaded] = useFonts({
-    Rosario_300Light,
-    Rosario_400Regular,
     Rosario_500Medium,
-    Rosario_600SemiBold,
-    Rosario_700Bold,
-    Rosario_300Light_Italic,
-    Rosario_400Regular_Italic,
-    Rosario_500Medium_Italic,
-    Rosario_600SemiBold_Italic,
-    Rosario_700Bold_Italic,
   });
   const [title, setTitle] = useState(null);
   const [authors, setAuthors] = useState(null);
@@ -47,6 +25,7 @@ const AddBookToWishList = ({ navigation }) => {
       setIsbn(null);
     }
   }
+
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
@@ -73,13 +52,12 @@ const AddBookToWishList = ({ navigation }) => {
           value={isbn}
           onChangeText={setIsbn}
           mode="outlined"
-          // TODO set digit input instead of normal keyboard
         />
         <Button
           mode="contained"
           onPress={handleSubmit}
           style={styles.buttonSearch}
-          labelStyle={{ fontSize: 16 }}
+          labelStyle={styles.label}
         >
           Search
         </Button>
@@ -116,5 +94,8 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 5,
     backgroundColor: '#5D3FD3',
+  },
+  label: {
+    fontSize: 16,
   },
 });

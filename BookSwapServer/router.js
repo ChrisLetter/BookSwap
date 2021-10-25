@@ -12,6 +12,7 @@ router.get('/username/:userId', auth.getUsername);
 router.get('/books/:userId/:source', books.getAllBooks);
 router.post('/books/:userId/:source', books.addOneBook);
 router.delete('/books/:userId/:ISBN/:source', books.removeOneBook);
+router.get('/bestMatches/:userId', books.getBestMatches);
 
 router.post('/isbn/:userId/:ISBN/:source', isbn.addUserToTheIsbnList);
 router.delete('/isbn/:userId/:ISBN/:source', isbn.removeUserFromTheIsbnList);

@@ -1,4 +1,5 @@
 const User = require('../models/users.js');
+const ISBNdb = require('../models/isbn');
 
 async function getAllBooks(req, res) {
   const { userId, source } = req.params;
@@ -72,4 +73,40 @@ async function removeOneBook(req, res) {
   }
 }
 
-module.exports = { getAllBooks, addOneBook, removeOneBook };
+async function getBestMatches(req, res) {
+  try {
+    const { userId } = req.params;
+    const allBooks = await User.findOne({ _id: userId });
+    const ISBNbooksToSell = allBooks.booksToSell.map((book) => book.ISBN);
+    const ISBNbooksToBuy = allBooks.booksToBuy.map((book) => book.ISBN);
+    const matches = [];
+
+    for (let isbnCode of ISBNbooksToSell) {
+      const usersList = await ISBNdb.findOne({ ISBN: isbnCode });
+      matches.push(...usersList.UsersThatWantIt);
+    }
+    for (let isbnCode of ISBNbooksToBuy) {
+      const usersList = await ISBNdb.findOne({ ISBN: isbnCode });
+      matches.push(...usersList.UsersThatWantToSellIt);
+    }
+    const freq = {};
+    for (let el of matches) {
+      if (Object.keys(freq).includes(el)) {
+        freq[el] += 1;
+      } else {
+        freq[el] = 1;
+      }
+    }
+    const sorted = Object.entries(freq).sort(([, a], [, b]) => b - a);
+    for (let el of sorted) {
+      const { username } = await User.findOne({ _id: el[0] });
+      el.push(username);
+    }
+    res.status(201).send({ sorted });
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
+}
+
+module.exports = { getAllBooks, addOneBook, removeOneBook, getBestMatches };

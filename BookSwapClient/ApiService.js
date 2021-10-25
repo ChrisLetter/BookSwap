@@ -94,8 +94,15 @@ apiService.addBookToISBNList = (userId, isbn, location) => {
     },
   ).catch((err) => console.log('addBookToISBNList', err));
 };
-apiService.getBooksFromISBNList = (isbn) => {
+
+apiService.getUsersFromISBNList = (isbn) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/isbn/${isbn}`)
+    .then((data) => data.json())
+    .catch((err) => console.log('addBookToISBNList', err));
+};
+
+apiService.getBestMatches = (userId) => {
+  return fetch(`${BASE_URL}:${SERVER_PORT}/bestMatches/${userId}`)
     .then((data) => data.json())
     .catch((err) => console.log('addBookToISBNList', err));
 };

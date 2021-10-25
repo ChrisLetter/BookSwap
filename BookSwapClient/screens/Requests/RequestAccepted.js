@@ -1,19 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Image,
-  TextInput,
-} from 'react-native';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { Button } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const RequestAccepted = ({ route, navigation }) => {
+const RequestAccepted = ({ navigation }) => {
   return (
     <SafeAreaView>
       <View style={styles.lottieContainer}>
@@ -28,7 +19,7 @@ const RequestAccepted = ({ route, navigation }) => {
         mode="contained"
         onPress={() => navigation.navigate('Chats')}
         style={styles.buttonGoToChat}
-        labelStyle={{ fontSize: 16 }}
+        labelStyle={styles.label}
       >
         go to the chat
       </Button>
@@ -58,5 +49,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 2,
     elevation: 5,
+  },
+  label: {
+    fontSize: 16,
   },
 });

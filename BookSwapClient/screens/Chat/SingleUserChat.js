@@ -1,46 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Image,
-  Button,
-  TextInput,
-} from 'react-native';
+import { View, Text, StyleSheet, FlatList, TextInput } from 'react-native';
 import { IconButton, Colors } from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
 import { UserContext } from '../../AuthContext';
-import { BASE_URL, SERVER_PORT } from '@env';
-import {
-  useFonts,
-  Rosario_300Light,
-  Rosario_400Regular,
-  Rosario_500Medium,
-  Rosario_600SemiBold,
-  Rosario_700Bold,
-  Rosario_300Light_Italic,
-  Rosario_400Regular_Italic,
-  Rosario_500Medium_Italic,
-  Rosario_600SemiBold_Italic,
-  Rosario_700Bold_Italic,
-} from '@expo-google-fonts/rosario';
+import { useFonts, Rosario_500Medium } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
+import apiService from './../../ApiService';
 
 const SingleUserChat = ({ route, navigation }) => {
   const [fontsLoaded] = useFonts({
-    Rosario_300Light,
-    Rosario_400Regular,
     Rosario_500Medium,
-    Rosario_600SemiBold,
-    Rosario_700Bold,
-    Rosario_300Light_Italic,
-    Rosario_400Regular_Italic,
-    Rosario_500Medium_Italic,
-    Rosario_600SemiBold_Italic,
-    Rosario_700Bold_Italic,
   });
   const isFocused = useIsFocused();
   const { otherUser } = route.params;
@@ -49,23 +18,16 @@ const SingleUserChat = ({ route, navigation }) => {
   const [currentMessage, setCurrentMessage] = useState(null);
 
   useEffect(() => {
-    async function fetchMessagesFromDb() {
-      try {
-        let response = await fetch(
-          `${BASE_URL}:${SERVER_PORT}/messages/${user.id}`,
-        );
-        let json = await response.json();
-        const [onlyRelevantMessages] = json.filter(
-          (message) => message.otherUser === otherUser,
-        );
-        setAllMessages(onlyRelevantMessages);
-      } catch (err) {
-        console.log(err);
-      }
+    async function fetchMessagesFromDb(userId) {
+      const res = await apiService.getMessages(userId);
+      const [onlyRelevantMessages] = res.filter(
+        (message) => message.otherUser === otherUser,
+      );
+      setAllMessages(onlyRelevantMessages);
     }
     function checkForNewMessages() {
       if (isFocused) {
-        setInterval(() => fetchMessagesFromDb(), 100);
+        setInterval(() => fetchMessagesFromDb(user.id), 100);
       }
     }
     checkForNewMessages();
@@ -76,42 +38,18 @@ const SingleUserChat = ({ route, navigation }) => {
     return new Date(timestamp).toLocaleTimeString('it-IT', options);
   }
 
-  function sendMessage() {
+  async function sendMessage() {
     const message = {
       userFrom: user.id,
       userTo: otherUser,
       content: currentMessage,
       timeStamp: Date.now(),
     };
-    fetch(`${BASE_URL}:${SERVER_PORT}/messages/${otherUser}/${user.id}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(message),
-    })
-      .then(() => {
-        fetch(`${BASE_URL}:${SERVER_PORT}/messages/${user.id}/${otherUser}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(message),
-        });
-      })
-      .then(() => {
-        fetch(
-          `${BASE_URL}:${SERVER_PORT}/messages/${otherUser}/${user.id}/true/notification`,
-          {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          },
-        );
-      })
-      .then(() => setCurrentMessage(null))
-      .catch((err) => console.log(err));
+    await apiService.sendMessages(otherUser, user.id, message);
+    await apiService.sendMessages(user.id, otherUser, message);
+    await apiService
+      .toggleNotificationMessage(otherUser, user.id, 'true')
+      .then(() => setCurrentMessage(null));
   }
 
   if (!fontsLoaded) {
@@ -122,7 +60,7 @@ const SingleUserChat = ({ route, navigation }) => {
         <View>
           {allMessages ? (
             <FlatList
-              style={styles.flatlist}
+              style={styles.flatList}
               data={allMessages.msgs}
               keyExtractor={(item) => item.timeStamp.toString()}
               renderItem={({ item }) => (
@@ -264,7 +202,7 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
     elevation: 1,
   },
-  flatlist: {
+  flatList: {
     height: 630,
     overflow: 'scroll',
   },

@@ -224,4 +224,14 @@ apiService.getMessages = (userId) => {
     .catch((err) => console.log('getRequests', err));
 };
 
+apiService.sendMessage = (userId, otherUser, message) => {
+  return fetch(`${BASE_URL}:${SERVER_PORT}/messages/${userId}/${otherUser}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(message),
+  }).catch((err) => console.log('sendMessage', err));
+};
+
 export default apiService;

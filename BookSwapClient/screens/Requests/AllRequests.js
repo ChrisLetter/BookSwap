@@ -34,7 +34,7 @@ const AllRequests = ({ navigation }) => {
 
   function removeNotificationBadgeSender(req) {
     if (req.hasBeenViewed) {
-      apiService.removeNotificationBadgeSender(req);
+      apiService.removeNotificationBadgeSender(req, 'false');
     }
   }
 

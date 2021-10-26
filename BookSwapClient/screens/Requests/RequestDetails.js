@@ -1,81 +1,34 @@
-import React, { useState, useEffect, useContext } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Image,
-  TextInput,
-} from 'react-native';
-import { IconButton, Colors } from 'react-native-paper';
-import { useIsFocused } from '@react-navigation/native';
+import React, { useContext } from 'react';
+import { View, Text, ScrollView, StyleSheet, FlatList } from 'react-native';
 import { UserContext } from '../../AuthContext';
-import { BASE_URL, SERVER_PORT } from '@env';
 import BookCard from '../../components/BookCard';
 import {
   useFonts,
-  Rosario_300Light,
-  Rosario_400Regular,
   Rosario_500Medium,
-  Rosario_600SemiBold,
-  Rosario_700Bold,
-  Rosario_300Light_Italic,
-  Rosario_400Regular_Italic,
   Rosario_500Medium_Italic,
-  Rosario_600SemiBold_Italic,
-  Rosario_700Bold_Italic,
 } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
 import { Button } from 'react-native-paper';
+import apiService from './../../ApiService';
 
 const RequestDetails = ({ route, navigation }) => {
   const [fontsLoaded] = useFonts({
-    Rosario_300Light,
-    Rosario_400Regular,
     Rosario_500Medium,
-    Rosario_600SemiBold,
-    Rosario_700Bold,
-    Rosario_300Light_Italic,
-    Rosario_400Regular_Italic,
     Rosario_500Medium_Italic,
-    Rosario_600SemiBold_Italic,
-    Rosario_700Bold_Italic,
   });
   const { request } = route.params;
   const { user } = useContext(UserContext);
-  const isFocused = useIsFocused();
 
-  function rejectOffer() {
-    fetch(
-      `${BASE_URL}:${SERVER_PORT}/requests/${request.userFrom}/${request.userTo}/sender/true`,
-      {
-        method: 'PUT',
-      },
-    )
-      .then(() =>
-        fetch(
-          `${BASE_URL}:${SERVER_PORT}/requests/${request.userTo}/${request.userFrom}/receiver`,
-          {
-            method: 'DELETE',
-          },
-        ),
-      )
-      .then(() =>
-        fetch(
-          `${BASE_URL}:${SERVER_PORT}/requests/${request.userFrom}/${request.userTo}/rejected/sender/status`,
-          {
-            method: 'PUT',
-          },
-        ),
-      )
+  async function rejectOffer() {
+    await apiService.removeNotificationBadgeSender(request, 'true');
+    await apiService.deleteRequest(request);
+    await apiService
+      .changeStatusRequestSender(request, 'rejected')
       .then(() => navigation.navigate('All Requests'))
-      .then(() => navigation.navigate('Best Matches'))
-      .catch((err) => console.log(err));
+      .then(() => navigation.navigate('Best Matches'));
   }
 
-  function acceptOffer() {
+  async function acceptOffer() {
     const messageUserFrom = {
       userFrom: 'startingMessage',
       userTo: 'startingMessage',
@@ -90,71 +43,31 @@ const RequestDetails = ({ route, navigation }) => {
         'You accepted the request! Discuss with the user the details for concluding the deal',
       timeStamp: Date.now(),
     };
-    fetch(
-      `${BASE_URL}:${SERVER_PORT}/requests/${request.userFrom}/${request.userTo}/inProgress/sender/status`,
-      {
-        method: 'PUT',
-      },
-    )
-      .then(() =>
-        fetch(
-          `${BASE_URL}:${SERVER_PORT}/requests/${request.userTo}/${request.userFrom}/inProgress/receiver/status`,
-          {
-            method: 'PUT',
-          },
-        ),
-      )
-      .then(() =>
-        fetch(
-          `${BASE_URL}:${SERVER_PORT}/messages/${request.userFrom}/${user.id}/${request.userToUsername}`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(messageUserFrom),
-          },
-        ),
-      )
-      .then(() => {
-        fetch(
-          `${BASE_URL}:${SERVER_PORT}/messages/${user.id}/${request.userFrom}/${request.userFromUsername}`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(messageUserTo),
-          },
-        );
-      })
-      .then(() => {
-        fetch(
-          `${BASE_URL}:${SERVER_PORT}/messages/${request.userFrom}/${user.id}/true/notification`,
-          {
-            method: 'PUT',
-          },
-        );
-      })
-      .then(() => {
-        fetch(
-          `${BASE_URL}:${SERVER_PORT}/messages/${user.id}/${request.userFrom}/true/notification`,
-          {
-            method: 'PUT',
-          },
-        );
-      })
-      .then(() => navigation.navigate('RequestAccepted'))
-      .catch((err) => console.log(err));
+    await apiService.changeStatusRequestSender(request, 'inProgress');
+    await apiService.changeStatusRequestReceiver(request, 'inProgress');
+    await apiService.sendStartingMessageSender(
+      request,
+      user.id,
+      messageUserFrom,
+    );
+    await apiService.sendStartingMessageReceiver(
+      request,
+      user.id,
+      messageUserTo,
+    );
+    await apiService.toggleNotificationMessage(
+      request.userFrom,
+      user.id,
+      'true',
+    );
+    await apiService
+      .toggleNotificationMessage(user.id, request.userFrom, 'true')
+      .then(() => navigation.navigate('RequestAccepted'));
   }
 
-  function deleteRequestForMaker() {
-    fetch(
-      `${BASE_URL}:${SERVER_PORT}/requests/${request.userFrom}/${request.userTo}/sender`,
-      {
-        method: 'DELETE',
-      },
-    )
+  async function deleteRequestForMaker() {
+    await apiService
+      .deleteRequestSender(request)
       .then(() => navigation.navigate('All Requests'))
       .then(() => navigation.navigate('Best Matches'));
   }
@@ -174,7 +87,7 @@ const RequestDetails = ({ route, navigation }) => {
               mode="contained"
               onPress={() => deleteRequestForMaker()}
               style={styles.buttonRefuse2}
-              labelStyle={{ fontSize: 16 }}
+              labelStyle={styles.label}
             >
               delete the request
             </Button>
@@ -268,7 +181,7 @@ const RequestDetails = ({ route, navigation }) => {
               mode="contained"
               onPress={() => rejectOffer()}
               style={styles.buttonRefuse}
-              labelStyle={{ fontSize: 16 }}
+              labelStyle={styles.label}
             >
               Reject the offer
             </Button>
@@ -276,7 +189,7 @@ const RequestDetails = ({ route, navigation }) => {
               mode="contained"
               onPress={() => acceptOffer()}
               style={styles.buttonAccept}
-              labelStyle={{ fontSize: 16 }}
+              labelStyle={styles.label}
             >
               Accept the offer
             </Button>
@@ -357,5 +270,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 2,
     elevation: 5,
+  },
+  label: {
+    fontSize: 16,
   },
 });

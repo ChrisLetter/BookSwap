@@ -138,13 +138,84 @@ apiService.removeNotificationBadgeReceiver = (req) => {
   ).catch((err) => console.log('removeNotificationBadgeReceiver', err));
 };
 
-apiService.removeNotificationBadgeSender = (req) => {
+apiService.removeNotificationBadgeSender = (req, boolean) => {
   return fetch(
-    `${BASE_URL}:${SERVER_PORT}/requests/${req.userFrom}/${req.userTo}/sender/false`,
+    `${BASE_URL}:${SERVER_PORT}/requests/${req.userFrom}/${req.userTo}/sender/${boolean}`,
     {
       method: 'PUT',
     },
   ).catch((err) => console.log('removeNotificationBadgeSender', err));
+};
+
+apiService.deleteRequest = (request) => {
+  return fetch(
+    `${BASE_URL}:${SERVER_PORT}/requests/${request.userTo}/${request.userFrom}/receiver`,
+    {
+      method: 'DELETE',
+    },
+  ).catch((err) => console.log('deleteRequest', err));
+};
+
+apiService.changeStatusRequestSender = (request, status) => {
+  return fetch(
+    `${BASE_URL}:${SERVER_PORT}/requests/${request.userFrom}/${request.userTo}/${status}/sender/status`,
+    {
+      method: 'PUT',
+    },
+  ).catch((err) => console.log('changeStatusRequest', err));
+};
+
+apiService.changeStatusRequestReceiver = (request, status) => {
+  return fetch(
+    `${BASE_URL}:${SERVER_PORT}/requests/${request.userTo}/${request.userFrom}/${status}/receiver/status`,
+    {
+      method: 'PUT',
+    },
+  ).catch((err) => console.log('changeStatusRequestReceiver', err));
+};
+
+apiService.sendStartingMessageSender = (request, userId, message) => {
+  return fetch(
+    `${BASE_URL}:${SERVER_PORT}/messages/${request.userFrom}/${userId}/${request.userToUsername}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    },
+  ).catch((err) => console.log('sendStartingMessageSender', err));
+};
+
+apiService.sendStartingMessageReceiver = (request, userId, message) => {
+  return fetch(
+    `${BASE_URL}:${SERVER_PORT}/messages/${userId}/${request.userFrom}/${request.userToUsername}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    },
+  ).catch((err) => console.log('sendStartingMessageReceiver', err));
+};
+
+apiService.toggleNotificationMessage = (idUserFrom, idUserTo, direction) => {
+  return fetch(
+    `${BASE_URL}:${SERVER_PORT}/messages/${idUserFrom}/${idUserTo}/${direction}/notification`,
+    {
+      method: 'PUT',
+    },
+  ).catch((err) => console.log('toggleNotificationMessage', err));
+};
+
+apiService.deleteRequestSender = (request) => {
+  return fetch(
+    `${BASE_URL}:${SERVER_PORT}/requests/${request.userFrom}/${request.userTo}/sender`,
+    {
+      method: 'DELETE',
+    },
+  ).catch((err) => console.log('deleteRequest', err));
 };
 
 export default apiService;

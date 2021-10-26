@@ -120,7 +120,31 @@ apiService.sendRequest = (userId, requestInfos) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(requestInfos),
-  }).catch((err) => console.log('addBook', err));
+  }).catch((err) => console.log('sendRequest', err));
+};
+
+apiService.getRequests = (userId) => {
+  return fetch(`${BASE_URL}:${SERVER_PORT}/requests/${userId}`)
+    .then((data) => data.json())
+    .catch((err) => console.log('getRequests', err));
+};
+
+apiService.removeNotificationBadgeReceiver = (req) => {
+  return fetch(
+    `${BASE_URL}:${SERVER_PORT}/requests/${req.userTo}/${req.userFrom}/receiver/true`,
+    {
+      method: 'PUT',
+    },
+  ).catch((err) => console.log('removeNotificationBadgeReceiver', err));
+};
+
+apiService.removeNotificationBadgeSender = (req) => {
+  return fetch(
+    `${BASE_URL}:${SERVER_PORT}/requests/${req.userFrom}/${req.userTo}/sender/false`,
+    {
+      method: 'PUT',
+    },
+  ).catch((err) => console.log('removeNotificationBadgeSender', err));
 };
 
 export default apiService;

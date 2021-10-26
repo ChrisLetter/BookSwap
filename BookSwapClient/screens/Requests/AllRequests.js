@@ -1,62 +1,40 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Image,
-  Button,
-  TextInput,
-} from 'react-native';
-import { IconButton, Colors } from 'react-native-paper';
+import React, { useState, useEffect, useContext } from 'react';
+import { ScrollView, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { UserContext } from '../../AuthContext';
-import { BASE_URL, SERVER_PORT } from '@env';
 import DisplaySingleRequest from '../../components/displaySingleRequest';
+import apiService from './../../ApiService';
 
-const AllRequests = ({ route, navigation }) => {
+const AllRequests = ({ navigation }) => {
   const { user } = useContext(UserContext);
   const isFocused = useIsFocused();
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [madeRequests, setMadeRequests] = useState([]);
 
-  async function controlForRequests() {
-    const response = await fetch(
-      `${BASE_URL}:${SERVER_PORT}/requests/${user.id}`,
-    );
-    const json = await response.json();
-    const filteredIncomingRequests = json.filter(
-      (request) => request.userFrom !== user.id,
-    );
-    const filteredMadeRequests = json.filter(
-      (request) => request.userFrom === user.id,
-    );
-    setIncomingRequests(filteredIncomingRequests);
-    setMadeRequests(filteredMadeRequests);
-  }
-
   useEffect(() => {
-    if (isFocused) controlForRequests();
-  }, [isFocused]);
+    async function controlForRequests(userId) {
+      const response = await apiService.getRequests(userId);
+      const filteredIncomingRequests = response.filter(
+        (request) => request.userFrom !== user.id,
+      );
+      const filteredMadeRequests = response.filter(
+        (request) => request.userFrom === user.id,
+      );
+      setIncomingRequests(filteredIncomingRequests);
+      setMadeRequests(filteredMadeRequests);
+    }
+    controlForRequests(user.id);
+  }, [isFocused, user.id]);
 
   function removeNotificationBadgeReceiver(req) {
     if (!req.hasBeenViewed) {
-      fetch(
-        `${BASE_URL}:${SERVER_PORT}/requests/${req.userTo}/${req.userFrom}/receiver/true`,
-        {
-          method: 'PUT',
-        },
-      ).catch((err) => console.log(err));
+      apiService.removeNotificationBadgeReceiver(req);
     }
   }
 
   function removeNotificationBadgeSender(req) {
     if (req.hasBeenViewed) {
-      fetch(`${BASE_URL}/requests/${req.userFrom}/${req.userTo}/sender/false`, {
-        method: 'PUT',
-      }).catch((err) => console.log(err));
+      apiService.removeNotificationBadgeSender(req);
     }
   }
 

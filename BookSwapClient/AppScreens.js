@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -28,20 +28,9 @@ import AllMessages from './screens/Chat/AllMessages';
 import SingleUserChat from './screens/Chat/SingleUserChat';
 import RequestAccepted from './screens/Requests/RequestAccepted';
 import { BASE_URL, SERVER_PORT } from '@env';
-import {
-  useFonts,
-  Rosario_300Light,
-  Rosario_400Regular,
-  Rosario_500Medium,
-  Rosario_600SemiBold,
-  Rosario_700Bold,
-  Rosario_300Light_Italic,
-  Rosario_400Regular_Italic,
-  Rosario_500Medium_Italic,
-  Rosario_600SemiBold_Italic,
-  Rosario_700Bold_Italic,
-} from '@expo-google-fonts/rosario';
+import { useFonts, Rosario_600SemiBold } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
+import apiService from './ApiService';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -303,68 +292,59 @@ export default function AppScreens() {
   const [numOfReq, setNumOfReq] = useState(null);
   const [numOfMessages, setNumOfMessages] = useState(null);
   const [fontsLoaded] = useFonts({
-    Rosario_300Light,
-    Rosario_400Regular,
-    Rosario_500Medium,
     Rosario_600SemiBold,
-    Rosario_700Bold,
-    Rosario_300Light_Italic,
-    Rosario_400Regular_Italic,
-    Rosario_500Medium_Italic,
-    Rosario_600SemiBold_Italic,
-    Rosario_700Bold_Italic,
   });
 
-  async function controlForRequests() {
-    if (user.id !== '') {
-      let response = await fetch(
-        `${BASE_URL}:${SERVER_PORT}/requests/${user.id}`,
-      );
-      let json = await response.json();
-      let filteredUserTo = json.filter((request) => request.userTo === user.id);
-      let mappedUserTo = filteredUserTo.map((element) => element.hasBeenViewed);
-      let numberOfRequestNotSeenUserTo = mappedUserTo.filter(
-        (el) => el === false,
-      );
-      let filteredUserFrom = json.filter(
-        (request) => request.userFrom === user.id,
-      );
-      let mappedUserFrom = filteredUserFrom.map(
-        (element) => element.hasBeenViewed,
-      );
-      let numberOfRequestNotSeenUserFrom = mappedUserFrom.filter(
-        (el) => el === true,
-      );
-      let numberOfRequestNotSeen = [
-        ...numberOfRequestNotSeenUserFrom,
-        ...numberOfRequestNotSeenUserTo,
-      ];
-      setNumOfReq(
-        numberOfRequestNotSeen.length ? numberOfRequestNotSeen.length : null,
-      );
+  useEffect(() => {
+    async function controlForRequests() {
+      if (user.id !== '') {
+        const response = await apiService.getNumberOfRequests(user.id);
+        let filteredUserTo = response.filter(
+          (request) => request.userTo === user.id,
+        );
+        let mappedUserTo = filteredUserTo.map(
+          (element) => element.hasBeenViewed,
+        );
+        let numberOfRequestNotSeenUserTo = mappedUserTo.filter(
+          (el) => el === false,
+        );
+        let filteredUserFrom = response.filter(
+          (request) => request.userFrom === user.id,
+        );
+        let mappedUserFrom = filteredUserFrom.map(
+          (element) => element.hasBeenViewed,
+        );
+        let numberOfRequestNotSeenUserFrom = mappedUserFrom.filter(
+          (el) => el === true,
+        );
+        let numberOfRequestNotSeen = [
+          ...numberOfRequestNotSeenUserFrom,
+          ...numberOfRequestNotSeenUserTo,
+        ];
+        setNumOfReq(
+          numberOfRequestNotSeen.length ? numberOfRequestNotSeen.length : null,
+        );
+      }
     }
-  }
-
-  setInterval(controlForRequests, 2000);
-
-  async function controlForMessages() {
-    if (user.id !== '') {
-      let response = await fetch(
-        `${BASE_URL}:${SERVER_PORT}/messages/${user.id}`,
-      );
-      let json = await response.json();
-      let messagesWithNotification = json.filter(
-        (msg) => msg.notification === true,
-      );
-      setNumOfMessages(
-        messagesWithNotification.length
-          ? messagesWithNotification.length
-          : null,
-      );
+    async function controlForMessages() {
+      if (user.id !== '') {
+        const response = await apiService.getNumberOfMessages(user.id);
+        let messagesWithNotification = response.filter(
+          (msg) => msg.notification === true,
+        );
+        setNumOfMessages(
+          messagesWithNotification.length
+            ? messagesWithNotification.length
+            : null,
+        );
+      }
     }
-  }
-
-  setInterval(controlForMessages, 2000);
+    function triggerInterval() {
+      setInterval(controlForRequests, 2000);
+      setInterval(controlForMessages, 2000);
+    }
+    triggerInterval();
+  }, [user.id]);
 
   if (!fontsLoaded) {
     return <AppLoading />;

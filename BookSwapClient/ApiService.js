@@ -234,4 +234,16 @@ apiService.sendMessage = (userId, otherUser, message) => {
   }).catch((err) => console.log('sendMessage', err));
 };
 
+apiService.getNumberOfRequests = (userId) => {
+  return fetch(`${BASE_URL}:${SERVER_PORT}/requests/${userId}`)
+    .then((data) => data.json())
+    .catch((err) => console.log('getNumberOfRequests', err));
+};
+
+apiService.getNumberOfMessages = (userId) => {
+  return fetch(`${BASE_URL}:${SERVER_PORT}/messages/${userId}`)
+    .then((data) => data.json())
+    .catch((err) => console.log('getNumberOfMessages', err));
+};
+
 export default apiService;

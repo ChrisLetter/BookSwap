@@ -215,7 +215,13 @@ apiService.deleteRequestSender = (request) => {
     {
       method: 'DELETE',
     },
-  ).catch((err) => console.log('deleteRequest', err));
+  ).catch((err) => console.log('deleteRequestSender', err));
+};
+
+apiService.getMessages = (userId) => {
+  return fetch(`${BASE_URL}:${SERVER_PORT}/messages/${userId}`)
+    .then((data) => data.json())
+    .catch((err) => console.log('getRequests', err));
 };
 
 export default apiService;

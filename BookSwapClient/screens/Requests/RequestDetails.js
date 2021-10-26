@@ -24,8 +24,7 @@ const RequestDetails = ({ route, navigation }) => {
     await apiService.deleteRequest(request);
     await apiService
       .changeStatusRequestSender(request, 'rejected')
-      .then(() => navigation.navigate('All Requests'))
-      .then(() => navigation.navigate('Best Matches'));
+      .then(() => navigation.navigate('All Requests'));
   }
 
   async function acceptOffer() {
@@ -68,8 +67,7 @@ const RequestDetails = ({ route, navigation }) => {
   async function deleteRequestForMaker() {
     await apiService
       .deleteRequestSender(request)
-      .then(() => navigation.navigate('All Requests'))
-      .then(() => navigation.navigate('Best Matches'));
+      .then(() => navigation.navigate('All Requests'));
   }
 
   if (!fontsLoaded) {

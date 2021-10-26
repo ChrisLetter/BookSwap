@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import { useIsFocused } from '@react-navigation/native';
 import { UserContext } from '../../AuthContext';
-import { BASE_URL, SERVER_PORT } from '@env';
+import apiService from './../../ApiService';
 
 const AllMessages = ({ route, navigation }) => {
   const isFocused = useIsFocused();
@@ -17,30 +17,15 @@ const AllMessages = ({ route, navigation }) => {
   const [allMessages, setAllMessages] = useState([]);
 
   useEffect(() => {
-    async function fetchMessagesFromDb() {
-      try {
-        let response = await fetch(
-          `${BASE_URL}:${SERVER_PORT}/messages/${user.id}`,
-        );
-        let json = await response.json();
-        setAllMessages(json);
-      } catch (err) {
-        console.log(err);
-      }
+    async function fetchMessagesFromDb(userId) {
+      const res = await apiService.getMessages(userId);
+      setAllMessages(res);
     }
-    fetchMessagesFromDb();
+    fetchMessagesFromDb(user.id);
   }, [user.id, isFocused]);
 
-  function turnOffTheNotification(otherUser) {
-    fetch(
-      `${BASE_URL}:${SERVER_PORT}/messages/${user.id}/${otherUser}/false/notification`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    );
+  async function turnOffTheNotification(otherUser) {
+    await apiService.toggleNotificationMessage(user.id, otherUser, 'false');
   }
 
   return (

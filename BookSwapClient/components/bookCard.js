@@ -1,46 +1,19 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  LogBox,
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AppLoading from 'expo-app-loading';
 import { IconButton, Colors } from 'react-native-paper';
 
 import {
   useFonts,
-  Rosario_300Light,
-  Rosario_400Regular,
   Rosario_500Medium,
-  Rosario_600SemiBold,
-  Rosario_700Bold,
   Rosario_300Light_Italic,
-  Rosario_400Regular_Italic,
-  Rosario_500Medium_Italic,
-  Rosario_600SemiBold_Italic,
-  Rosario_700Bold_Italic,
 } from '@expo-google-fonts/rosario';
-
-// LogBox.ignoreLogs([
-//   'VirtualizedLists should never be nested', // TODO: Remove when fixed
-// ]);
 
 const BookCard = (props) => {
   const [fontsLoaded] = useFonts({
-    Rosario_300Light,
-    Rosario_400Regular,
     Rosario_500Medium,
-    Rosario_600SemiBold,
-    Rosario_700Bold,
     Rosario_300Light_Italic,
-    Rosario_400Regular_Italic,
-    Rosario_500Medium_Italic,
-    Rosario_600SemiBold_Italic,
-    Rosario_700Bold_Italic,
   });
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -127,7 +100,6 @@ const BookCard = (props) => {
 
 const styles = StyleSheet.create({
   outerCard: {
-    // position: 'relative',
     shadowColor: 'black',
     shadowOffset: { width: 1, height: 2 },
     shadowOpacity: 0.9,
@@ -139,7 +111,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 20,
     marginHorizontal: 20,
-    // margin: 15,
     borderRadius: 5,
     shadowColor: 'black',
     shadowOffset: { width: 1, height: 2 },

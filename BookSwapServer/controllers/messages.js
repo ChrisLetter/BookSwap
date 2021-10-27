@@ -1,4 +1,4 @@
-const User = require('../models/users.js');
+const User = require('../models/users');
 
 async function getAllMessages(req, res) {
   const { idUser } = req.params;

@@ -15,4 +15,4 @@ mongoose.connect(
   },
 );
 
-module.exports = mongoose;
+export = mongoose;

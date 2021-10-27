@@ -35,10 +35,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var User = require('../models/users.js');
+var User = require('../models/users');
 function getRequests(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var userId, books_1, e_1;
+        var userId, books, e_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -48,9 +48,9 @@ function getRequests(req, res) {
                     _a.trys.push([1, 3, , 4]);
                     return [4 /*yield*/, User.findOne({ _id: userId })];
                 case 2:
-                    books_1 = _a.sent();
+                    books = _a.sent();
                     res.status(200);
-                    res.send(books_1.requests.sort(function (a, b) { return b.timeStamp - a.timeStamp; }));
+                    res.send(books.requests.sort(function (a, b) { return b.timeStamp - a.timeStamp; }));
                     return [3 /*break*/, 4];
                 case 3:
                     e_1 = _a.sent();

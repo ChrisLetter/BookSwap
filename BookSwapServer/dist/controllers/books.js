@@ -35,11 +35,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var User = require('../models/users.js');
+var User = require('../models/users');
 var ISBNdb = require('../models/isbn');
 function getAllBooks(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, userId, source, books_1, booksToSell, booksToBuy, e_1;
+        var _a, userId, source, books, booksToSell, booksToBuy, e_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -49,9 +49,9 @@ function getAllBooks(req, res) {
                     _b.trys.push([1, 3, , 4]);
                     return [4 /*yield*/, User.findOne({ _id: userId })];
                 case 2:
-                    books_1 = _b.sent();
-                    booksToSell = books_1.booksToSell;
-                    booksToBuy = books_1.booksToBuy;
+                    books = _b.sent();
+                    booksToSell = books.booksToSell;
+                    booksToBuy = books.booksToBuy;
                     res.status(200);
                     if (source === 'library') {
                         res.send(booksToSell);

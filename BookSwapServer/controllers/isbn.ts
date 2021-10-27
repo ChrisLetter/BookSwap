@@ -1,4 +1,4 @@
-const ISBNdb = require('../models/isbn');
+import ISBNdb = require('../models/isbn');
 
 async function addUserToTheIsbnList(req, res) {
   const { userId, ISBN, source } = req.params;

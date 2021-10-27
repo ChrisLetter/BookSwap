@@ -9,4 +9,4 @@ const ISBNSchema = new Schema({
 
 const ISBNdb = mongoose.model('ISBN', ISBNSchema);
 
-module.exports = ISBNdb;
+export = ISBNdb;

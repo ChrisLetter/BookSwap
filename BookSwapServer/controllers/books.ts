@@ -1,5 +1,6 @@
-const User = require('../models/users');
-const ISBNdb = require('../models/isbn');
+import User = require('../models/users');
+import ISBNdb = require('../models/isbn');
+import { IIsbn } from './../interfaces/interfaces';
 
 async function getAllBooks(req, res) {
   const { userId, source } = req.params;
@@ -79,15 +80,17 @@ async function getBestMatches(req, res) {
     const allBooks = await User.findOne({ _id: userId });
     const ISBNbooksToSell = allBooks.booksToSell.map((book) => book.ISBN);
     const ISBNbooksToBuy = allBooks.booksToBuy.map((book) => book.ISBN);
-    const matches = [];
+    const matches: string[] = [];
 
     for (let isbnCode of ISBNbooksToSell) {
       const usersList = await ISBNdb.findOne({ ISBN: isbnCode });
       matches.push(...usersList.UsersThatWantIt);
     }
     for (let isbnCode of ISBNbooksToBuy) {
-      const usersList = await ISBNdb.findOne({ ISBN: isbnCode });
-      matches.push(...usersList.UsersThatWantToSellIt);
+      const usersList: IIsbn = await ISBNdb.findOne({ ISBN: isbnCode });
+      if (usersList.UsersThatWantToSellIt) {
+        matches.push(...usersList.UsersThatWantToSellIt);
+      }
     }
     const freq = {};
     for (let el of matches) {
@@ -97,7 +100,15 @@ async function getBestMatches(req, res) {
         freq[el] = 1;
       }
     }
-    const sorted = Object.entries(freq).sort(([, a], [, b]) => b - a);
+    const sorted = Object.entries(freq).sort(([, n1], [, n2]) => {
+      if ([n1] > [n2]) {
+        return -1;
+      }
+      if ([n1] < [n2]) {
+        return +1;
+      }
+      return 0;
+    });
     for (let el of sorted) {
       const { username } = await User.findOne({ _id: el[0] });
       el.push(username);

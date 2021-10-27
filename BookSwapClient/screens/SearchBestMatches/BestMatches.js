@@ -23,6 +23,7 @@ const BestMatches = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     async function fetchBooksFromDb() {
       let response = await apiService.getUserBooks(user.id, 'all');
       setAllBooksCurrentUser(response);
@@ -34,14 +35,10 @@ const BestMatches = ({ navigation }) => {
       setMatchesFound(sorted);
     }
     findBestMatches();
-  }, [isFocused, user.id]);
-
-  useEffect(() => {
-    setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
     }, 1200);
-  }, []);
+  }, [isFocused, user.id]);
 
   if (!fontsLoaded) {
     return <AppLoading />;

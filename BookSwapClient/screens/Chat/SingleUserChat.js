@@ -25,12 +25,11 @@ const SingleUserChat = ({ route, navigation }) => {
       );
       setAllMessages(onlyRelevantMessages);
     }
-    function checkForNewMessages() {
-      if (isFocused) {
-        setInterval(() => fetchMessagesFromDb(user.id), 100);
-      }
-    }
-    checkForNewMessages();
+    let timer1 = setInterval(() => fetchMessagesFromDb(user.id), 100);
+
+    return () => {
+      clearTimeout(timer1);
+    };
   }, [isFocused, user.id, otherUser]);
 
   function fromTimeStampToHours(timestamp) {
@@ -45,8 +44,8 @@ const SingleUserChat = ({ route, navigation }) => {
       content: currentMessage,
       timeStamp: Date.now(),
     };
-    await apiService.sendMessages(otherUser, user.id, message);
-    await apiService.sendMessages(user.id, otherUser, message);
+    await apiService.sendMessage(otherUser, user.id, message);
+    await apiService.sendMessage(user.id, otherUser, message);
     await apiService
       .toggleNotificationMessage(otherUser, user.id, 'true')
       .then(() => setCurrentMessage(null));

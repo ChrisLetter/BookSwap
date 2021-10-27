@@ -27,8 +27,8 @@ const Login = ({ navigation }) => {
     } else {
       const { accessToken, id } = res;
       setTimeout(() => {
-        login(accessToken, id);
         setIsLoading(false);
+        login(accessToken, id);
       }, 1400);
     }
   };

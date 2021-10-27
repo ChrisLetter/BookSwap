@@ -27,7 +27,6 @@ import RequestDetails from './screens/Requests/RequestDetails';
 import AllMessages from './screens/Chat/AllMessages';
 import SingleUserChat from './screens/Chat/SingleUserChat';
 import RequestAccepted from './screens/Requests/RequestAccepted';
-import { BASE_URL, SERVER_PORT } from '@env';
 import { useFonts, Rosario_600SemiBold } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
 import apiService from './ApiService';

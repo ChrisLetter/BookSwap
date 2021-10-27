@@ -1,5 +1,4 @@
-import React, { useState, createContext, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState, createContext } from 'react';
 
 const initialState = {
   id: '',

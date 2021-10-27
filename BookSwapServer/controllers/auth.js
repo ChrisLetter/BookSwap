@@ -1,7 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('./../models/users');
-const { SECRET_KEY } = require('../../ignoredFile');
+require('dotenv').config();
+const SECRET_KEY = process.env.SECRET_KEY;
 
 const create = async (req, res) => {
   const { email, userPassword } = req.body;

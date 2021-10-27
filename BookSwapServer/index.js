@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const router = require('./router.js');
-const PORT = 3000;
+require('dotenv').config();
+const PORT = process.env.SERVER_PORT;
 const options = {
   origin: '*',
   credentials: true,

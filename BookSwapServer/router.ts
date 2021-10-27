@@ -43,4 +43,4 @@ router.put(
   messages.toggleNotificationChat,
 );
 
-module.exports = router;
+export = router;

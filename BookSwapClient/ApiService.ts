@@ -1,6 +1,6 @@
 import { BASE_URL, SERVER_PORT } from '@env';
 
-const apiService = {};
+const apiService: { [key: string]: any } = {};
 
 apiService.register = (user) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/register`, {

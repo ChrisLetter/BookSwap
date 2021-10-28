@@ -76,16 +76,13 @@ function Library() {
       <Stack.Screen
         name="Confirm the Book"
         component={ConfirmIsbnScan}
-        options={
-          (headerOptions,
-          {
-            headerTintColor: 'white',
-            headerStyle: {
-              backgroundColor: 'white',
-              shadowColor: 'transparent',
-            },
-          })
-        }
+        options={{
+          headerTintColor: 'white',
+          headerStyle: {
+            backgroundColor: 'white',
+            shadowColor: 'transparent',
+          },
+        }}
       />
       <Stack.Screen
         name="Select a Book From The List"
@@ -103,16 +100,13 @@ function Library() {
       <Stack.Screen
         name="Book Added Successfully"
         component={BookAddedSuccessfully}
-        options={
-          (headerOptions,
-          {
-            headerTintColor: 'white',
-            headerStyle: {
-              backgroundColor: 'white',
-              shadowColor: 'transparent',
-            },
-          })
-        }
+        options={{
+          headerTintColor: 'white',
+          headerStyle: {
+            backgroundColor: 'white',
+            shadowColor: 'transparent',
+          },
+        }}
       />
     </Stack.Navigator>
   );
@@ -155,16 +149,13 @@ function WishList() {
       <Stack.Screen
         name="Inserted Successfully"
         component={InsertedSuccessfully}
-        options={
-          (headerOptions,
-          {
-            headerTintColor: 'white',
-            headerStyle: {
-              backgroundColor: 'white',
-              shadowColor: 'transparent',
-            },
-          })
-        }
+        options={{
+          headerTintColor: 'white',
+          headerStyle: {
+            backgroundColor: 'white',
+            shadowColor: 'transparent',
+          },
+        }}
       />
     </Stack.Navigator>
   );
@@ -207,16 +198,13 @@ function SearchBestMatches() {
       <Stack.Screen
         name="Request Sent"
         component={RequestSent}
-        options={
-          (headerOptions,
-          {
-            headerTintColor: 'white',
-            headerStyle: {
-              backgroundColor: 'white',
-              shadowColor: 'transparent',
-            },
-          })
-        }
+        options={{
+          headerTintColor: 'white',
+          headerStyle: {
+            backgroundColor: 'white',
+            shadowColor: 'transparent',
+          },
+        }}
       />
     </Stack.Navigator>
   );
@@ -246,16 +234,13 @@ function Requests() {
       <Stack.Screen
         name="RequestAccepted"
         component={RequestAccepted}
-        options={
-          (headerOptions,
-          {
-            headerTintColor: 'white',
-            headerStyle: {
-              backgroundColor: 'white',
-              shadowColor: 'transparent',
-            },
-          })
-        }
+        options={{
+          headerTintColor: 'white',
+          headerStyle: {
+            backgroundColor: 'white',
+            shadowColor: 'transparent',
+          },
+        }}
       />
     </Stack.Navigator>
   );
@@ -288,8 +273,8 @@ function Chats() {
 
 export default function AppScreens() {
   const { user } = useContext(UserContext);
-  const [numOfReq, setNumOfReq] = useState(null);
-  const [numOfMessages, setNumOfMessages] = useState(null);
+  const [numOfReq, setNumOfReq] = useState(0);
+  const [numOfMessages, setNumOfMessages] = useState(undefined);
   const [fontsLoaded] = useFonts({
     Rosario_600SemiBold,
   });
@@ -320,9 +305,11 @@ export default function AppScreens() {
           ...numberOfRequestNotSeenUserFrom,
           ...numberOfRequestNotSeenUserTo,
         ];
-        setNumOfReq(
-          numberOfRequestNotSeen.length ? numberOfRequestNotSeen.length : null,
-        );
+        if (numberOfRequestNotSeen.length > 0) {
+          setNumOfReq(numberOfRequestNotSeen.length);
+        } else {
+          setNumOfReq(0);
+        }
       }
     }
     async function controlForMessages() {
@@ -404,7 +391,7 @@ export default function AppScreens() {
             <Tab.Screen
               name="Requests"
               component={Requests}
-              options={{ tabBarBadge: numOfReq }}
+              options={{ tabBarBadge: numOfReq > 0 ? numOfReq : undefined }}
             />
             <Tab.Screen
               name="Chats"

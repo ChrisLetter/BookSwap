@@ -15,7 +15,7 @@ const Login = ({ navigation }) => {
   const [userPassword, setUserPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
     setIsLoading(true);
     const user = { email, userPassword };
     const res = await apiService.login(user);

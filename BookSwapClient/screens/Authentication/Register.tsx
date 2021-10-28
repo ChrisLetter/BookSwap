@@ -10,7 +10,7 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
     const user = { username, email, userPassword };
     const res = await apiService.register(user);
     setUsername('');

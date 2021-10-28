@@ -9,9 +9,9 @@ import AppLoading from 'expo-app-loading';
 
 const AddBookToLibrary = ({ navigation }) => {
   const [fontsLoaded] = useFonts({ Rosario_400Regular_Italic });
-  const [title, setTitle] = useState(null);
-  const [authors, setAuthors] = useState(null);
-  const [isbn, setIsbn] = useState(null);
+  const [title, setTitle] = useState('');
+  const [authors, setAuthors] = useState('');
+  const [isbn, setIsbn] = useState('');
 
   function handleSubmit() {
     if (title === null && authors === null && isbn === null) {
@@ -20,9 +20,9 @@ const AddBookToLibrary = ({ navigation }) => {
       navigation.navigate('Select a Book From The List', {
         FormInfo: { title: title, authors: authors, isbn: isbn },
       });
-      setTitle(null);
-      setAuthors(null);
-      setIsbn(null);
+      setTitle('');
+      setAuthors('');
+      setIsbn('');
     }
   }
 

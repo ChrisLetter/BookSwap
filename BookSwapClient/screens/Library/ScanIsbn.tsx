@@ -3,13 +3,13 @@ import { View, Text, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
 const ScanIsbn = ({ navigation }) => {
-  const [hasPermission, setHasPermission] = useState(null);
+  const [hasPermission, setHasPermission] = useState(null || false);
   const [scanned, setScanned] = useState(false);
 
   useEffect(() => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
+      if (status === 'granted') setHasPermission(true);
     })();
   }, []);
 

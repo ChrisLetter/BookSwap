@@ -6,7 +6,7 @@ import BookCard from '../../components/BookCard';
 import { Button } from 'react-native-paper';
 import { useFonts, Rosario_500Medium } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
-import apiService from './../../ApiService';
+import apiService from '../../ApiService';
 
 const ConfirmIsbnScan = ({ route, navigation }) => {
   const [fontsLoaded] = useFonts({ Rosario_500Medium });

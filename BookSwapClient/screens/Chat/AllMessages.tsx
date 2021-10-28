@@ -9,9 +9,10 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import { useIsFocused } from '@react-navigation/native';
 import { UserContext } from '../../AuthContext';
-import apiService from './../../ApiService';
+import apiService from '../../ApiService';
+import { IConversation } from './../../interfaces/interfaces';
 
-const AllMessages = ({ route, navigation }) => {
+const AllMessages = ({ navigation }) => {
   const isFocused = useIsFocused();
   const { user } = useContext(UserContext);
   const [allMessages, setAllMessages] = useState([]);
@@ -30,9 +31,10 @@ const AllMessages = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
+      {console.log(allMessages)}
       <FlatList
         data={allMessages}
-        keyExtractor={(item) => item.otherUser}
+        keyExtractor={(item: IConversation) => item.otherUser}
         renderItem={({ item }) => (
           <View style={styles.cardContainer}>
             <TouchableOpacity

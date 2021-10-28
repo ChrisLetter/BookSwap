@@ -31,7 +31,6 @@ const AllMessages = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {console.log(allMessages)}
       <FlatList
         data={allMessages}
         keyExtractor={(item: IConversation) => item.otherUser}

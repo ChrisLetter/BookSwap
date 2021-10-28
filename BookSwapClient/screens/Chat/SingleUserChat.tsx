@@ -5,17 +5,27 @@ import { useIsFocused } from '@react-navigation/native';
 import { UserContext } from '../../AuthContext';
 import { useFonts, Rosario_500Medium } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
-import apiService from './../../ApiService';
+import apiService from '../../ApiService';
+import { IConversation } from './../../interfaces/interfaces';
 
-const SingleUserChat = ({ route, navigation }) => {
+const SingleUserChat = ({ route }) => {
   const [fontsLoaded] = useFonts({
     Rosario_500Medium,
   });
+
+  const initialState: IConversation = {
+    lastMessage: 0,
+    msgs: [],
+    notification: false,
+    otherUser: 'user1',
+    otherUsername: 'user2',
+  };
+
   const isFocused = useIsFocused();
   const { otherUser } = route.params;
-  const [allMessages, setAllMessages] = useState([]);
+  const [allMessages, setAllMessages] = useState(initialState);
   const { user } = useContext(UserContext);
-  const [currentMessage, setCurrentMessage] = useState(null);
+  const [currentMessage, setCurrentMessage] = useState('');
 
   useEffect(() => {
     async function fetchMessagesFromDb(userId) {
@@ -33,8 +43,10 @@ const SingleUserChat = ({ route, navigation }) => {
   }, [isFocused, user.id, otherUser]);
 
   function fromTimeStampToHours(timestamp) {
-    const options = { hour: '2-digit', minute: '2-digit' };
-    return new Date(timestamp).toLocaleTimeString('it-IT', options);
+    return new Date(timestamp).toLocaleTimeString('it-IT', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
   }
 
   async function sendMessage() {
@@ -48,7 +60,7 @@ const SingleUserChat = ({ route, navigation }) => {
     await apiService.sendMessage(user.id, otherUser, message);
     await apiService
       .toggleNotificationMessage(otherUser, user.id, 'true')
-      .then(() => setCurrentMessage(null));
+      .then(() => setCurrentMessage(''));
   }
 
   if (!fontsLoaded) {
@@ -57,7 +69,7 @@ const SingleUserChat = ({ route, navigation }) => {
     return (
       <View style={styles.container}>
         <View>
-          {allMessages ? (
+          {allMessages.lastMessage !== 0 ? (
             <FlatList
               style={styles.flatList}
               data={allMessages.msgs}
@@ -103,7 +115,6 @@ const SingleUserChat = ({ route, navigation }) => {
               onChangeText={setCurrentMessage}
             />
             <IconButton
-              style={styles.plusButton}
               icon="send"
               color={Colors.purple600}
               size={25}
@@ -125,7 +136,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   starting: {
-    textAlign: 'center',
+    alignSelf: 'center',
   },
   startingText: {
     fontFamily: 'Rosario_500Medium',

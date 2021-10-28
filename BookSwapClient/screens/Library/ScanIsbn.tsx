@@ -9,7 +9,9 @@ const ScanIsbn = ({ navigation }) => {
   useEffect(() => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
-      if (status === 'granted') setHasPermission(true);
+      if (status === 'granted') {
+        setHasPermission(true);
+      }
     })();
   }, []);
 

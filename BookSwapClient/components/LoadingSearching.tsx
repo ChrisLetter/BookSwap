@@ -3,13 +3,13 @@ import { View, StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const LoadingLogin = (props) => {
+const LoadingSearching = () => {
   return (
     <SafeAreaView>
       <View style={styles.lottieContainer}>
         <LottieView
           style={styles.lottie}
-          source={require('./../assets/readABook.json')}
+          source={require('./../assets/search.json')}
           autoPlay
           loop={true}
         />
@@ -18,7 +18,7 @@ const LoadingLogin = (props) => {
   );
 };
 
-export default LoadingLogin;
+export default LoadingSearching;
 
 const styles = StyleSheet.create({
   lottieContainer: {
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   lottie: {
-    paddingTop: 95,
+    paddingTop: 50,
     height: 350,
   },
 });

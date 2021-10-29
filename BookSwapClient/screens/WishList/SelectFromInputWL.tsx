@@ -7,7 +7,7 @@ import {
 } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
 import BookCard from '../../components/BookCard';
-import apiService from './../../ApiService';
+import apiService from '../../ApiService';
 
 import { REACT_APP_API_KEY } from '@env';
 

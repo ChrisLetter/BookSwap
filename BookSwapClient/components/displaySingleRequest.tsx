@@ -2,10 +2,17 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AppLoading from 'expo-app-loading';
+import { IRequest } from './../interfaces/interfaces';
 
 import { useFonts, Rosario_500Medium } from '@expo-google-fonts/rosario';
 
-const DisplaySingleRequest = (props) => {
+interface IProps {
+  info: IRequest;
+  user?: string;
+  pressing?: () => void;
+}
+
+const DisplaySingleRequest = (props: IProps) => {
   const [fontsLoaded] = useFonts({
     Rosario_500Medium,
   });

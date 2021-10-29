@@ -3,14 +3,20 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AppLoading from 'expo-app-loading';
 import { IconButton, Colors } from 'react-native-paper';
-
+import { IBook, IBookFromGoogleIsbnScan } from './../interfaces/interfaces';
 import {
   useFonts,
   Rosario_500Medium,
   Rosario_300Light_Italic,
 } from '@expo-google-fonts/rosario';
 
-const BookCard = (props) => {
+interface IProps {
+  bookObj: IBook | IBookFromGoogleIsbnScan;
+  removeBtn?: (arg: string) => void;
+  addBtn?: (arg: IBook | IBookFromGoogleIsbnScan) => void;
+}
+
+const BookCard = (props: IProps) => {
   const [fontsLoaded] = useFonts({
     Rosario_500Medium,
     Rosario_300Light_Italic,
@@ -31,37 +37,66 @@ const BookCard = (props) => {
               icon="minus"
               color={Colors.white}
               size={33}
-              onPress={() => props.removeBtn(props.bookObj.ISBN)}
+              onPress={() => {
+                if (
+                  props.removeBtn !== undefined &&
+                  props.bookObj.ISBN !== undefined
+                ) {
+                  props.removeBtn(props.bookObj.ISBN);
+                }
+              }}
             />
             <IconButton
               style={styles.minusButton}
               icon="minus-circle"
               color={Colors.red500}
               size={33}
-              onPress={() => props.removeBtn(props.bookObj.ISBN)}
+              onPress={() => {
+                if (
+                  props.removeBtn !== undefined &&
+                  props.bookObj.ISBN !== undefined
+                ) {
+                  props.removeBtn(props.bookObj.ISBN);
+                }
+              }}
             />
           </TouchableOpacity>
         ) : null}
         {props.addBtn ? (
-          <TouchableOpacity onPress={() => props.addBtn(props.bookObj)}>
+          <TouchableOpacity
+            onPress={() => {
+              if (props.addBtn !== undefined) {
+                props.addBtn(props.bookObj);
+              }
+            }}
+          >
             <LinearGradient
               colors={['#A73FD3', '#5D3FD3']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.card}
             >
-              {props.bookObj.thumbnail || props.bookObj.imageLinks ? (
+              {props.bookObj.thumbnail ? (
                 <View style={styles.imageContainer}>
                   <Image
                     source={{
-                      uri:
-                        props.bookObj.thumbnail ||
-                        props.bookObj.imageLinks.thumbnail,
+                      uri: props.bookObj.thumbnail,
                     }}
                     style={styles.image}
                   />
                 </View>
               ) : null}
+              {props.bookObj.imageLinks ? (
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={{
+                      uri: props.bookObj.imageLinks.thumbnail,
+                    }}
+                    style={styles.image}
+                  />
+                </View>
+              ) : null}
+
               <View style={styles.textContainer}>
                 <Text style={styles.textTitle}>{props.bookObj.title}</Text>
                 <Text style={styles.textAuthor}>{props.bookObj.authors}</Text>
@@ -75,13 +110,21 @@ const BookCard = (props) => {
             end={{ x: 1, y: 1 }}
             style={styles.card}
           >
-            {props.bookObj.thumbnail || props.bookObj.imageLinks ? (
+            {props.bookObj.thumbnail ? (
               <View style={styles.imageContainer}>
                 <Image
                   source={{
-                    uri:
-                      props.bookObj.thumbnail ||
-                      props.bookObj.imageLinks.thumbnail,
+                    uri: props.bookObj.thumbnail,
+                  }}
+                  style={styles.image}
+                />
+              </View>
+            ) : null}
+            {props.bookObj.imageLinks ? (
+              <View style={styles.imageContainer}>
+                <Image
+                  source={{
+                    uri: props.bookObj.imageLinks.thumbnail,
                   }}
                   style={styles.image}
                 />

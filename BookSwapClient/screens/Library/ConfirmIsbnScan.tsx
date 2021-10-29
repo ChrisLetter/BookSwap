@@ -7,14 +7,13 @@ import { Button } from 'react-native-paper';
 import { useFonts, Rosario_500Medium } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
 import apiService from '../../ApiService';
-import { IBookFromGoogleIsbnScan } from '../../interfaces/interfaces';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { LibraryStackParamList } from './../../interfaces/types';
 
 type Props = NativeStackScreenProps<LibraryStackParamList, 'Confirm the Book'>;
 
 const ConfirmIsbnScan = ({ route, navigation }: Props) => {
-  const initialBook: IBookFromGoogleIsbnScan = {
+  const initialBook = {
     imageLinks: { thumbnail: 'thumbnail' },
     title: '',
     authors: [''],

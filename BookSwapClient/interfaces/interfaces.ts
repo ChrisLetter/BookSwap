@@ -21,13 +21,16 @@ export interface IMessage {
 
 export interface IBookFromGoogleIsbnScan {
   imageLinks: { [key: string]: string };
+  ISBN?: string;
   title: string;
   authors: string[];
   publisher: string;
   publishedDate: string;
+  thumbnail?: string;
 }
 
 export interface IBook {
+  imageLinks?: { [key: string]: string };
   ISBN: string;
   authors: string[];
   publishedDate: string;

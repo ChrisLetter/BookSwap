@@ -6,8 +6,8 @@ BookSwap is an open source project that allows users to exchange books. Unlike o
 
 ### Built with:
 
-- Front end - React Native, Expo
-- Back end - Express, MongoDB, Mongoose
+- Front end - TypeScript, React Native, Expo
+- Back end - TypeScript, Express, MongoDB, Mongoose
 - Others - Google Books API, JWT
 
 ## Getting Started:

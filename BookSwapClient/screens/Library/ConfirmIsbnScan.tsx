@@ -8,8 +8,12 @@ import { useFonts, Rosario_500Medium } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
 import apiService from '../../ApiService';
 import { IBookFromGoogleIsbnScan } from '../../interfaces/interfaces';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { LibraryStackParamList } from './../../interfaces/types';
 
-const ConfirmIsbnScan = ({ route, navigation }) => {
+type Props = NativeStackScreenProps<LibraryStackParamList, 'Confirm the Book'>;
+
+const ConfirmIsbnScan = ({ route, navigation }: Props) => {
   const initialBook: IBookFromGoogleIsbnScan = {
     imageLinks: { thumbnail: 'thumbnail' },
     title: '',
@@ -22,7 +26,7 @@ const ConfirmIsbnScan = ({ route, navigation }) => {
   const [book, setBook] = useState(initialBook);
   const { user } = useContext(UserContext);
 
-  async function fetchBookFromISBN(ISBN, key) {
+  async function fetchBookFromISBN(ISBN: string, key: string) {
     const bookFromGoogle = await apiService.searchBooksByIsbnGoogle(ISBN, key);
     setBook(bookFromGoogle.items[0].volumeInfo);
   }

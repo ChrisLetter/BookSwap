@@ -2,8 +2,12 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { Button } from 'react-native-paper';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { LibraryStackParamList } from './../../interfaces/types';
 
-const BookAddedSuccessfully = ({ navigation }) => {
+type Props = NativeStackScreenProps<LibraryStackParamList, 'Confirm the Book'>;
+
+const BookAddedSuccessfully = ({ navigation }: Props) => {
   return (
     <View style={styles.container}>
       <LottieView

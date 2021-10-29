@@ -11,14 +11,18 @@ import {
   Rosario_400Regular_Italic,
 } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { LibraryStackParamList } from './../../interfaces/types';
 
-const UserLibrary = ({ navigation }) => {
+type Props = NativeStackScreenProps<LibraryStackParamList, 'Your Library'>;
+
+const UserLibrary = ({ navigation }: Props) => {
   const [fontsLoaded] = useFonts({ Rosario_400Regular_Italic });
   const { user } = useContext(UserContext);
   const [books, setBooks] = useState(null);
   const isFocused = useIsFocused();
 
-  async function getBooks(userId) {
+  async function getBooks(userId: string) {
     const fetchedBooks = await apiService.getUserBooks(userId, 'library');
     setBooks(fetchedBooks);
   }
@@ -27,7 +31,7 @@ const UserLibrary = ({ navigation }) => {
     getBooks(user.id);
   }, [isFocused, user.id]);
 
-  async function removeBook(isbn) {
+  async function removeBook(isbn: string) {
     await apiService.removeUserBook(user.id, isbn, 'library');
     await apiService.removeBookFromISBNList(user.id, isbn, 'sell');
     await getBooks(user.id);

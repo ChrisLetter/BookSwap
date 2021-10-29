@@ -9,8 +9,15 @@ import AppLoading from 'expo-app-loading';
 import BookCard from '../../components/BookCard';
 import { REACT_APP_API_KEY } from '@env';
 import apiService from '../../ApiService';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { LibraryStackParamList } from './../../interfaces/types';
 
-const SelectFromInput = ({ route, navigation }) => {
+type Props = NativeStackScreenProps<
+  LibraryStackParamList,
+  'Select a Book From The List'
+>;
+
+const SelectFromInput = ({ route, navigation }: Props) => {
   const [fontsLoaded] = useFonts({ Rosario_400Regular_Italic });
   const { user } = useContext(UserContext);
   const { title, authors, isbn } = route.params.FormInfo;
@@ -23,10 +30,10 @@ const SelectFromInput = ({ route, navigation }) => {
   // in this function, based on the input of the user, I create the correct
   // url to query the google book database
   async function fetchBookFromUserInput(
-    titleInput,
-    authorInput,
-    isbnInput,
-    key,
+    titleInput: string,
+    authorInput: string,
+    isbnInput: string,
+    key: string,
   ) {
     let url = 'https://www.googleapis.com/books/v1/volumes?q=';
     if (titleInput !== null) {
@@ -53,20 +60,26 @@ const SelectFromInput = ({ route, navigation }) => {
     const result = await apiService.searchBooksByFormGoogle(url, key);
     const filteredResult = result.items
       .slice(0, 15)
-      .map((book) => book.volumeInfo)
-      .filter((test) => test.industryIdentifiers !== undefined);
+      // Here I set book to be any because the object that I get back from the
+      // google books API is huge. From here I then select the property that
+      // I am interested in an create a new object. That's why I don't bother to
+      // define an interface for it.
+      .map((book: any) => book.volumeInfo)
+      .filter((bookInfo: any) => bookInfo.industryIdentifiers !== undefined);
     setBooks(filteredResult);
   }
 
   // I need this function because the results from the API are not
   // consistent, some books have 2 ISBN codes (one is 13 digit long, another 10),
   //  with this function I filter them and I keep only the 13 digit one.
-  function extractISBN13(arr) {
+  function extractISBN13(arr: { [key: string]: string }[]) {
     const filtered = arr.filter((elem) => elem.identifier.length >= 13);
     return filtered[0].identifier;
   }
 
-  async function InsertBookInDb(item) {
+  // same as above. I set any because the object that I got back is huge
+  // I then create a new object with the properties that I am interested in.
+  async function InsertBookInDb(item: any) {
     const BookInfo = {
       title: item.title,
       authors: item.authors,

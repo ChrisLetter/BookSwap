@@ -8,11 +8,9 @@ import { useFonts, Rosario_500Medium } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
 import LoadingLogin from '../../components/LoadingLogin';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { AuthStackParamList } from './../../interfaces/types';
 
-type RootStackParamList = {
-  Register: undefined;
-};
-type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
+type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 
 const Login = ({ navigation }: Props) => {
   const [fontsLoaded] = useFonts({ Rosario_500Medium });

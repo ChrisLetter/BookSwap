@@ -6,8 +6,12 @@ import {
   Rosario_400Regular_Italic,
 } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { LibraryStackParamList } from './../../interfaces/types';
 
-const AddBookToLibrary = ({ navigation }) => {
+type Props = NativeStackScreenProps<LibraryStackParamList, 'Insert A New Book'>;
+
+const AddBookToLibrary = ({ navigation }: Props) => {
   const [fontsLoaded] = useFonts({ Rosario_400Regular_Italic });
   const [title, setTitle] = useState('');
   const [authors, setAuthors] = useState('');

@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { LibraryStackParamList } from './../../interfaces/types';
 
-const ScanIsbn = ({ navigation }) => {
+type Props = NativeStackScreenProps<LibraryStackParamList, 'ScanISBN'>;
+
+const ScanIsbn = ({ navigation }: Props) => {
   const [hasPermission, setHasPermission] = useState(null || false);
   const [scanned, setScanned] = useState(false);
 
@@ -15,7 +19,7 @@ const ScanIsbn = ({ navigation }) => {
     })();
   }, []);
 
-  const handleBarCodeScanned = ({ data }) => {
+  const handleBarCodeScanned = ({ data }: any) => {
     setScanned(true);
     navigation.navigate('Confirm the Book', {
       scannedISBN: data,

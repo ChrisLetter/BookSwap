@@ -9,20 +9,20 @@ const AddBookToWishList = ({ navigation }) => {
   const [fontsLoaded] = useFonts({
     Rosario_500Medium,
   });
-  const [title, setTitle] = useState(null);
-  const [authors, setAuthors] = useState(null);
-  const [isbn, setIsbn] = useState(null);
+  const [title, setTitle] = useState('');
+  const [authors, setAuthors] = useState('');
+  const [isbn, setIsbn] = useState('');
 
   function handleSubmit() {
-    if (title === null && authors === null && isbn === null) {
+    if (!title && !authors && !isbn) {
       Alert.alert('Please enter some valid input in the field');
     } else {
       navigation.navigate('Select one Book', {
         FormInfo: { title: title, authors: authors, isbn: isbn },
       });
-      setTitle(null);
-      setAuthors(null);
-      setIsbn(null);
+      setTitle('');
+      setAuthors('');
+      setIsbn('');
     }
   }
 

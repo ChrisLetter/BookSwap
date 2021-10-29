@@ -1,5 +1,6 @@
 import { BASE_URL, SERVER_PORT } from '@env';
-import { IRegisterUser, ILoginrUser } from './interfaces/interfaces';
+import { IRegisterUser, ILoginrUser, IBook } from './interfaces/interfaces';
+
 const apiService: { [key: string]: any } = {};
 
 apiService.register = (user: IRegisterUser) => {
@@ -82,7 +83,7 @@ apiService.searchBooksByFormGoogle = (url: string, key: string) => {
 
 // used for saving books both in the library and in the wish list,
 // specify "library" or "wishList" in the location parameter.
-apiService.addBook = (userId: string, location: string, bookInfos) => {
+apiService.addBook = (userId: string, location: string, bookInfos: IBook) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/books/${userId}/${location}`, {
     method: 'POST',
     headers: {
@@ -94,7 +95,11 @@ apiService.addBook = (userId: string, location: string, bookInfos) => {
 
 // used for saving books in the ISBN list, specify buy or sell in the
 // location parameter, based on the list that you want to target.
-apiService.addBookToISBNList = (userId, isbn, location) => {
+apiService.addBookToISBNList = (
+  userId: string,
+  isbn: string,
+  location: string,
+) => {
   return fetch(
     `${BASE_URL}:${SERVER_PORT}/isbn/${userId}/${isbn}/${location}`,
     {
@@ -103,25 +108,25 @@ apiService.addBookToISBNList = (userId, isbn, location) => {
   ).catch((err) => console.log('addBookToISBNList', err));
 };
 
-apiService.getUsersFromISBNList = (isbn) => {
+apiService.getUsersFromISBNList = (isbn: string) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/isbn/${isbn}`)
     .then((data) => data.json())
     .catch((err) => console.log('getUsersFromISBNList', err));
 };
 
-apiService.getBestMatches = (userId) => {
+apiService.getBestMatches = (userId: string) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/bestMatches/${userId}`)
     .then((data) => data.json())
     .catch((err) => console.log('getBestMatches', err));
 };
 
-apiService.getUsername = (userId) => {
+apiService.getUsername = (userId: string) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/username/${userId}`)
     .then((data) => data.json())
     .catch((err) => console.log('getUsername', err));
 };
 
-apiService.sendRequest = (userId, requestInfos) => {
+apiService.sendRequest = (userId: string, requestInfos) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/requests/${userId}`, {
     method: 'POST',
     headers: {
@@ -131,7 +136,7 @@ apiService.sendRequest = (userId, requestInfos) => {
   }).catch((err) => console.log('sendRequest', err));
 };
 
-apiService.getRequests = (userId) => {
+apiService.getRequests = (userId: string) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/requests/${userId}`)
     .then((data) => data.json())
     .catch((err) => console.log('getRequests', err));
@@ -146,7 +151,7 @@ apiService.removeNotificationBadgeReceiver = (req) => {
   ).catch((err) => console.log('removeNotificationBadgeReceiver', err));
 };
 
-apiService.removeNotificationBadgeSender = (req, boolean) => {
+apiService.removeNotificationBadgeSender = (req, boolean: string) => {
   return fetch(
     `${BASE_URL}:${SERVER_PORT}/requests/${req.userFrom}/${req.userTo}/sender/${boolean}`,
     {
@@ -164,7 +169,7 @@ apiService.deleteRequest = (request) => {
   ).catch((err) => console.log('deleteRequest', err));
 };
 
-apiService.changeStatusRequestSender = (request, status) => {
+apiService.changeStatusRequestSender = (request, status: string) => {
   return fetch(
     `${BASE_URL}:${SERVER_PORT}/requests/${request.userFrom}/${request.userTo}/${status}/sender/status`,
     {
@@ -173,7 +178,7 @@ apiService.changeStatusRequestSender = (request, status) => {
   ).catch((err) => console.log('changeStatusRequest', err));
 };
 
-apiService.changeStatusRequestReceiver = (request, status) => {
+apiService.changeStatusRequestReceiver = (request, status: string) => {
   return fetch(
     `${BASE_URL}:${SERVER_PORT}/requests/${request.userTo}/${request.userFrom}/${status}/receiver/status`,
     {
@@ -182,7 +187,7 @@ apiService.changeStatusRequestReceiver = (request, status) => {
   ).catch((err) => console.log('changeStatusRequestReceiver', err));
 };
 
-apiService.sendStartingMessageSender = (request, userId, message) => {
+apiService.sendStartingMessageSender = (request, userId: string, message) => {
   return fetch(
     `${BASE_URL}:${SERVER_PORT}/messages/${request.userFrom}/${userId}/${request.userToUsername}`,
     {
@@ -195,7 +200,7 @@ apiService.sendStartingMessageSender = (request, userId, message) => {
   ).catch((err) => console.log('sendStartingMessageSender', err));
 };
 
-apiService.sendStartingMessageReceiver = (request, userId, message) => {
+apiService.sendStartingMessageReceiver = (request, userId: string, message) => {
   return fetch(
     `${BASE_URL}:${SERVER_PORT}/messages/${userId}/${request.userFrom}/${request.userToUsername}`,
     {
@@ -208,7 +213,11 @@ apiService.sendStartingMessageReceiver = (request, userId, message) => {
   ).catch((err) => console.log('sendStartingMessageReceiver', err));
 };
 
-apiService.toggleNotificationMessage = (idUserFrom, idUserTo, direction) => {
+apiService.toggleNotificationMessage = (
+  idUserFrom: string,
+  idUserTo: string,
+  direction: string,
+) => {
   return fetch(
     `${BASE_URL}:${SERVER_PORT}/messages/${idUserFrom}/${idUserTo}/${direction}/notification`,
     {
@@ -226,13 +235,13 @@ apiService.deleteRequestSender = (request) => {
   ).catch((err) => console.log('deleteRequestSender', err));
 };
 
-apiService.getMessages = (userId) => {
+apiService.getMessages = (userId: string) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/messages/${userId}`)
     .then((data) => data.json())
-    .catch((err) => console.log('getRequests', err));
+    .catch((err) => console.log('getMessages', err));
 };
 
-apiService.sendMessage = (userId, otherUser, message) => {
+apiService.sendMessage = (userId: string, otherUser: string, message) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/messages/${userId}/${otherUser}`, {
     method: 'POST',
     headers: {
@@ -242,13 +251,13 @@ apiService.sendMessage = (userId, otherUser, message) => {
   }).catch((err) => console.log('sendMessage', err));
 };
 
-apiService.getNumberOfRequests = (userId) => {
+apiService.getNumberOfRequests = (userId: string) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/requests/${userId}`)
     .then((data) => data.json())
     .catch((err) => console.log('getNumberOfRequests', err));
 };
 
-apiService.getNumberOfMessages = (userId) => {
+apiService.getNumberOfMessages = (userId: string) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/messages/${userId}`)
     .then((data) => data.json())
     .catch((err) => console.log('getNumberOfMessages', err));

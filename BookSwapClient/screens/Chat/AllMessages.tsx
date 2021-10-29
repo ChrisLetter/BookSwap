@@ -12,20 +12,25 @@ import { UserContext } from '../../AuthContext';
 import apiService from '../../ApiService';
 import { IConversation } from './../../interfaces/interfaces';
 
-const AllMessages = ({ navigation }) => {
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { ChatStackParamList } from './../../interfaces/types';
+
+type Props = NativeStackScreenProps<ChatStackParamList, 'Messages'>;
+
+const AllMessages = ({ navigation }: Props) => {
   const isFocused = useIsFocused();
   const { user } = useContext(UserContext);
   const [allMessages, setAllMessages] = useState([]);
 
   useEffect(() => {
-    async function fetchMessagesFromDb(userId) {
+    async function fetchMessagesFromDb(userId: string) {
       const res = await apiService.getMessages(userId);
       setAllMessages(res);
     }
     fetchMessagesFromDb(user.id);
   }, [user.id, isFocused]);
 
-  async function turnOffTheNotification(otherUser) {
+  async function turnOffTheNotification(otherUser: string) {
     await apiService.toggleNotificationMessage(user.id, otherUser, 'false');
   }
 

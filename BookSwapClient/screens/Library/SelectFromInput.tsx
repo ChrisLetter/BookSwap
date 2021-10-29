@@ -11,6 +11,7 @@ import { REACT_APP_API_KEY } from '@env';
 import apiService from '../../ApiService';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { LibraryStackParamList } from './../../interfaces/types';
+import { IBook } from '../../interfaces/interfaces';
 
 type Props = NativeStackScreenProps<
   LibraryStackParamList,
@@ -77,10 +78,10 @@ const SelectFromInput = ({ route, navigation }: Props) => {
     return filtered[0].identifier;
   }
 
-  // same as above. I set any because the object that I got back is huge
+  // Same as above. I set item as any because the object that I got back from the google API is huge.
   // I then create a new object with the properties that I am interested in.
   async function InsertBookInDb(item: any) {
-    const BookInfo = {
+    const BookInfo: IBook = {
       title: item.title,
       authors: item.authors,
       ISBN: extractISBN13(item.industryIdentifiers),

@@ -7,8 +7,12 @@ import { useFonts, Rosario_500Medium } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
 import apiService from '../../ApiService';
 import { IConversation } from './../../interfaces/interfaces';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { ChatStackParamList } from './../../interfaces/types';
 
-const SingleUserChat = ({ route }) => {
+type Props = NativeStackScreenProps<ChatStackParamList, 'Chat'>;
+
+const SingleUserChat = ({ route }: Props) => {
   const [fontsLoaded] = useFonts({
     Rosario_500Medium,
   });
@@ -28,10 +32,10 @@ const SingleUserChat = ({ route }) => {
   const [currentMessage, setCurrentMessage] = useState('');
 
   useEffect(() => {
-    async function fetchMessagesFromDb(userId) {
+    async function fetchMessagesFromDb(userId: string) {
       const res = await apiService.getMessages(userId);
       const [onlyRelevantMessages] = res.filter(
-        (message) => message.otherUser === otherUser,
+        (message: IConversation) => message.otherUser === otherUser,
       );
       setAllMessages(onlyRelevantMessages);
     }
@@ -42,7 +46,7 @@ const SingleUserChat = ({ route }) => {
     };
   }, [isFocused, user.id, otherUser]);
 
-  function fromTimeStampToHours(timestamp) {
+  function fromTimeStampToHours(timestamp: number) {
     return new Date(timestamp).toLocaleTimeString('it-IT', {
       hour: '2-digit',
       minute: '2-digit',

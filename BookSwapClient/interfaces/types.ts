@@ -1,3 +1,5 @@
+import { IConversation } from './interfaces';
+
 export type LibraryStackParamList = {
   'Your Library': undefined;
   'Insert A New Book': undefined;
@@ -12,4 +14,12 @@ export type LibraryStackParamList = {
 export type AuthStackParamList = {
   Login: undefined;
   Register: undefined;
+};
+
+export type ChatStackParamList = {
+  Messages: undefined;
+  Chat: {
+    messages: IConversation;
+    otherUser: string;
+  };
 };

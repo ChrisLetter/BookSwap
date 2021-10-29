@@ -30,7 +30,7 @@ export interface IBookFromGoogleIsbnScan {
 export interface IBook {
   ISBN: string;
   authors: string[];
-  publishedData: string;
+  publishedDate: string;
   publisher: string;
   thumbnail: string;
   title: string;

@@ -9,6 +9,7 @@ import {
   Rosario_400Regular,
   Rosario_400Regular_Italic,
 } from '@expo-google-fonts/rosario';
+import { IBook } from '../../interfaces/interfaces';
 
 const SendRequest = ({ route, navigation }) => {
   const [fontsLoaded] = useFonts({
@@ -42,13 +43,13 @@ const SendRequest = ({ route, navigation }) => {
 
   function removeBookFromWishList(book) {
     setMatchesFromWishList((prev) =>
-      prev.filter((allBooks) => allBooks.ISBN !== book.ISBN),
+      prev.filter((allBooks: IBook) => allBooks.ISBN !== book.ISBN),
     );
   }
 
   function removeBookFromLibraryToSell(book) {
     setMatchesFromLibraryToSell((prev) =>
-      prev.filter((allBooks) => allBooks.ISBN !== book.ISBN),
+      prev.filter((allBooks: IBook) => allBooks.ISBN !== book.ISBN),
     );
   }
 
@@ -80,7 +81,7 @@ const SendRequest = ({ route, navigation }) => {
             <FlatList
               style={styles.flatList}
               data={matchesFromWishList}
-              keyExtractor={(item) => item.ISBN}
+              keyExtractor={(item: IBook) => item.ISBN}
               renderItem={({ item }) => (
                 <BookCard
                   bookObj={item}
@@ -96,7 +97,7 @@ const SendRequest = ({ route, navigation }) => {
             <FlatList
               style={styles.flatList}
               data={matchesFromLibraryToSell}
-              keyExtractor={(item) => item.ISBN}
+              keyExtractor={(item: IBook) => item.ISBN}
               renderItem={({ item }) => (
                 <BookCard
                   bookObj={item}

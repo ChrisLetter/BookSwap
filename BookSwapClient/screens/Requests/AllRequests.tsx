@@ -3,7 +3,8 @@ import { ScrollView, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { UserContext } from '../../AuthContext';
 import DisplaySingleRequest from '../../components/displaySingleRequest';
-import apiService from './../../ApiService';
+import apiService from '../../ApiService';
+import { IRequest } from '../../interfaces/interfaces';
 
 const AllRequests = ({ navigation }) => {
   const { user } = useContext(UserContext);
@@ -40,7 +41,7 @@ const AllRequests = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      {incomingRequests.map((req) => (
+      {incomingRequests.map((req: IRequest) => (
         <DisplaySingleRequest
           info={req}
           pressing={() => {
@@ -52,7 +53,7 @@ const AllRequests = ({ navigation }) => {
           key={req.timeStamp}
         />
       ))}
-      {madeRequests.map((req) => (
+      {madeRequests.map((req: IRequest) => (
         <DisplaySingleRequest
           info={req}
           user={user.id}

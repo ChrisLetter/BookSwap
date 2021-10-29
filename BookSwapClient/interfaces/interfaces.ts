@@ -26,3 +26,28 @@ export interface IBookFromGoogleIsbnScan {
   publisher: string;
   publishedDate: string;
 }
+
+export interface IBook {
+  ISBN: string;
+  authors: string[];
+  publishedData: string;
+  publisher: string;
+  thumbnail: string;
+  title: string;
+}
+
+export interface IRequest {
+  askingMoney: boolean;
+  booksAsked: IBook[];
+  booksOffered: IBook[];
+  comment: string;
+  hasBeenViewed: boolean;
+  monetaryCompensation: boolean;
+  monetaryCompensationValue: string;
+  status: string;
+  timeStamp: number;
+  userFrom: string;
+  userFromUsername: string;
+  userTo: string;
+  userToUsername: string;
+}

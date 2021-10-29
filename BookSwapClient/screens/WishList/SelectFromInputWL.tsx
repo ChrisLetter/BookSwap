@@ -31,24 +31,24 @@ const SelectFromInputWL = ({ route, navigation }: Props) => {
     key: string,
   ) {
     let url = 'https://www.googleapis.com/books/v1/volumes?q=';
-    if (titleInput !== null) {
+    if (titleInput !== '') {
       titleInput = titleInput.split(' ').join('+');
       url += `intitle:${titleInput}`;
     }
-    if (authorInput !== null && titleInput !== null) {
+    if (authorInput !== '' && titleInput !== '') {
       authorInput = authorInput.split(' ').join('+');
       url += `+inauthor:${authorInput}`;
     }
-    if (authorInput !== null && titleInput === null) {
+    if (authorInput !== '' && titleInput === '') {
       authorInput = authorInput.split(' ').join('+');
       url += `inauthor:${authorInput}`;
     }
-    if (isbnInput !== null && titleInput === null && authorInput === null) {
+    if (isbnInput !== '' && titleInput === '' && authorInput === '') {
       url += `isbn:${isbnInput}`;
     }
     if (
-      (isbnInput !== null && titleInput !== null) ||
-      (isbnInput !== null && authorInput !== null)
+      (isbnInput !== '' && titleInput !== '') ||
+      (isbnInput !== '' && authorInput !== '')
     ) {
       url += `+isbn:${isbnInput}`;
     }

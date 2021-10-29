@@ -10,7 +10,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AppLoading from 'expo-app-loading';
 import LoadingSearching from '../../components/LoadingSearching';
-import apiService from './../../ApiService';
+import apiService from '../../ApiService';
 import { useFonts, Rosario_500Medium } from '@expo-google-fonts/rosario';
 import { UserContext } from '../../AuthContext';
 
@@ -19,7 +19,7 @@ const BestMatches = ({ navigation }) => {
   const { user } = useContext(UserContext);
   const isFocused = useIsFocused();
   const [allBooksCurrentUser, setAllBooksCurrentUser] = useState([]);
-  const [matchesFound, setMatchesFound] = useState(null);
+  const [matchesFound, setMatchesFound] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const BestMatches = ({ navigation }) => {
       <View style={styles.container}>
         {!isLoading ? (
           <View style={styles.container}>
-            {matchesFound !== null && matchesFound.length > 0 ? (
+            {matchesFound.length > 0 ? (
               <FlatList
                 data={matchesFound}
                 keyExtractor={(item) => item[0]}

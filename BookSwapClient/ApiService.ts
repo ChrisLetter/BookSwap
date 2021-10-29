@@ -1,5 +1,11 @@
 import { BASE_URL, SERVER_PORT } from '@env';
-import { IRegisterUser, ILoginUser, IBook } from './interfaces/interfaces';
+import {
+  IRegisterUser,
+  ILoginUser,
+  IBook,
+  IRequest,
+  IMessage,
+} from './interfaces/interfaces';
 
 const apiService: { [key: string]: any } = {};
 
@@ -126,7 +132,7 @@ apiService.getUsername = (userId: string) => {
     .catch((err) => console.log('getUsername', err));
 };
 
-apiService.sendRequest = (userId: string, requestInfos) => {
+apiService.sendRequest = (userId: string, requestInfos: IRequest) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/requests/${userId}`, {
     method: 'POST',
     headers: {
@@ -142,7 +148,7 @@ apiService.getRequests = (userId: string) => {
     .catch((err) => console.log('getRequests', err));
 };
 
-apiService.removeNotificationBadgeReceiver = (req) => {
+apiService.removeNotificationBadgeReceiver = (req: IRequest) => {
   return fetch(
     `${BASE_URL}:${SERVER_PORT}/requests/${req.userTo}/${req.userFrom}/receiver/true`,
     {
@@ -151,7 +157,7 @@ apiService.removeNotificationBadgeReceiver = (req) => {
   ).catch((err) => console.log('removeNotificationBadgeReceiver', err));
 };
 
-apiService.removeNotificationBadgeSender = (req, boolean: string) => {
+apiService.removeNotificationBadgeSender = (req: IRequest, boolean: string) => {
   return fetch(
     `${BASE_URL}:${SERVER_PORT}/requests/${req.userFrom}/${req.userTo}/sender/${boolean}`,
     {
@@ -160,7 +166,7 @@ apiService.removeNotificationBadgeSender = (req, boolean: string) => {
   ).catch((err) => console.log('removeNotificationBadgeSender', err));
 };
 
-apiService.deleteRequest = (request) => {
+apiService.deleteRequest = (request: IRequest) => {
   return fetch(
     `${BASE_URL}:${SERVER_PORT}/requests/${request.userTo}/${request.userFrom}/receiver`,
     {
@@ -169,7 +175,7 @@ apiService.deleteRequest = (request) => {
   ).catch((err) => console.log('deleteRequest', err));
 };
 
-apiService.changeStatusRequestSender = (request, status: string) => {
+apiService.changeStatusRequestSender = (request: IRequest, status: string) => {
   return fetch(
     `${BASE_URL}:${SERVER_PORT}/requests/${request.userFrom}/${request.userTo}/${status}/sender/status`,
     {
@@ -178,7 +184,10 @@ apiService.changeStatusRequestSender = (request, status: string) => {
   ).catch((err) => console.log('changeStatusRequest', err));
 };
 
-apiService.changeStatusRequestReceiver = (request, status: string) => {
+apiService.changeStatusRequestReceiver = (
+  request: IRequest,
+  status: string,
+) => {
   return fetch(
     `${BASE_URL}:${SERVER_PORT}/requests/${request.userTo}/${request.userFrom}/${status}/receiver/status`,
     {
@@ -187,7 +196,11 @@ apiService.changeStatusRequestReceiver = (request, status: string) => {
   ).catch((err) => console.log('changeStatusRequestReceiver', err));
 };
 
-apiService.sendStartingMessageSender = (request, userId: string, message) => {
+apiService.sendStartingMessageSender = (
+  request: IRequest,
+  userId: string,
+  message: IMessage,
+) => {
   return fetch(
     `${BASE_URL}:${SERVER_PORT}/messages/${request.userFrom}/${userId}/${request.userToUsername}`,
     {
@@ -200,7 +213,11 @@ apiService.sendStartingMessageSender = (request, userId: string, message) => {
   ).catch((err) => console.log('sendStartingMessageSender', err));
 };
 
-apiService.sendStartingMessageReceiver = (request, userId: string, message) => {
+apiService.sendStartingMessageReceiver = (
+  request: IRequest,
+  userId: string,
+  message: IMessage,
+) => {
   return fetch(
     `${BASE_URL}:${SERVER_PORT}/messages/${userId}/${request.userFrom}/${request.userToUsername}`,
     {
@@ -226,7 +243,7 @@ apiService.toggleNotificationMessage = (
   ).catch((err) => console.log('toggleNotificationMessage', err));
 };
 
-apiService.deleteRequestSender = (request) => {
+apiService.deleteRequestSender = (request: IRequest) => {
   return fetch(
     `${BASE_URL}:${SERVER_PORT}/requests/${request.userFrom}/${request.userTo}/sender`,
     {
@@ -241,7 +258,11 @@ apiService.getMessages = (userId: string) => {
     .catch((err) => console.log('getMessages', err));
 };
 
-apiService.sendMessage = (userId: string, otherUser: string, message) => {
+apiService.sendMessage = (
+  userId: string,
+  otherUser: string,
+  message: IMessage,
+) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/messages/${userId}/${otherUser}`, {
     method: 'POST',
     headers: {

@@ -1,6 +1,7 @@
+import { Request, Response } from 'express';
 import ISBNdb = require('../models/isbn');
 
-async function addUserToTheIsbnList(req, res) {
+async function addUserToTheIsbnList(req: Request, res: Response) {
   const { userId, ISBN, source } = req.params;
   try {
     source === 'sell'
@@ -21,7 +22,7 @@ async function addUserToTheIsbnList(req, res) {
   }
 }
 
-async function removeUserFromTheIsbnList(req, res) {
+async function removeUserFromTheIsbnList(req: Request, res: Response) {
   const { userId, ISBN, source } = req.params;
   try {
     source === 'sell'
@@ -40,7 +41,7 @@ async function removeUserFromTheIsbnList(req, res) {
   }
 }
 
-async function getAllUsersOfISBN(req, res) {
+async function getAllUsersOfISBN(req: Request, res: Response) {
   const ISBN = req.params.ISBN;
   try {
     const usersList = await ISBNdb.findOne({ ISBN: ISBN });

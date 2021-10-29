@@ -1,10 +1,11 @@
+import { Request, Response } from 'express';
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 import User = require('./../models/users');
 require('dotenv').config();
 const SECRET_KEY = process.env.SECRET_KEY;
 
-const create = async (req, res) => {
+const create = async (req: Request, res: Response) => {
   const { email, userPassword } = req.body;
   const user = await User.findOne({ email: email });
   if (user) {
@@ -30,7 +31,7 @@ const create = async (req, res) => {
   }
 };
 
-const login = async (req, res) => {
+const login = async (req: Request, res: Response) => {
   const { email, userPassword } = req.body;
   try {
     const { _id, password } = await User.findOne({ email: email });
@@ -48,7 +49,7 @@ const login = async (req, res) => {
   }
 };
 
-const getUsername = async (req, res) => {
+const getUsername = async (req: Request, res: Response) => {
   const { userId } = req.params;
   try {
     const userInfos = await User.findOne({ _id: userId });

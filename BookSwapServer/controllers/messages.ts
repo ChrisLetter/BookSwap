@@ -1,6 +1,8 @@
+import { Request, Response } from 'express';
 import User = require('../models/users');
+import { IConversation } from './../interfaces/interfaces';
 
-async function getAllMessages(req, res) {
+async function getAllMessages(req: Request, res: Response) {
   const { idUser } = req.params;
   try {
     const userInfos = await User.findOne({ _id: idUser });
@@ -12,17 +14,17 @@ async function getAllMessages(req, res) {
   }
 }
 
-async function addMessage(req, res) {
+async function addMessage(req: Request, res: Response) {
   const { idUser, idOtherUser, otherUsername } = req.params;
   const messageInfos = req.body;
   try {
     const allUserInfos = await User.findOne({ _id: idUser });
     const prevUserMsgs = allUserInfos.messages;
     const msgToChange = prevUserMsgs.filter(
-      (msg) => msg.otherUser === idOtherUser,
+      (msg: IConversation) => msg.otherUser === idOtherUser,
     );
     const otherMessagesToKeep = prevUserMsgs.filter(
-      (msg) => msg.otherUser !== idOtherUser,
+      (msg: IConversation) => msg.otherUser !== idOtherUser,
     );
     if (msgToChange.length === 0) {
       const msgToInsert = {
@@ -50,16 +52,16 @@ async function addMessage(req, res) {
   }
 }
 
-async function toggleNotificationChat(req, res) {
+async function toggleNotificationChat(req: Request, res: Response) {
   const { idUser, idOtherUser, trueOrFalse } = req.params;
   try {
     const allUserInfos = await User.findOne({ _id: idUser });
     const prevUserMsgs = allUserInfos.messages;
     const msgToChange = prevUserMsgs.filter(
-      (msg) => msg.otherUser === idOtherUser,
+      (msg: IConversation) => msg.otherUser === idOtherUser,
     );
     const otherMessagesToKeep = prevUserMsgs.filter(
-      (msg) => msg.otherUser !== idOtherUser,
+      (msg: IConversation) => msg.otherUser !== idOtherUser,
     );
     trueOrFalse === 'true'
       ? (msgToChange[0].notification = true)

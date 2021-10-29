@@ -1,18 +1,24 @@
+import { Request, Response } from 'express';
 import User = require('../models/users');
+import { IRequest } from './../interfaces/interfaces';
 
-async function getRequests(req, res) {
+async function getRequests(req: Request, res: Response) {
   const userId = req.params.userId;
   try {
     const books = await User.findOne({ _id: userId });
     res.status(200);
-    res.send(books.requests.sort((a, b) => b.timeStamp - a.timeStamp));
+    res.send(
+      books.requests.sort(
+        (a: IRequest, b: IRequest) => b.timeStamp - a.timeStamp,
+      ),
+    );
   } catch (e) {
     console.log(e);
     res.sendStatus(500);
   }
 }
 
-async function addOneRequest(req, res) {
+async function addOneRequest(req: Request, res: Response) {
   const userId = req.params.userId;
   const requestToInsert = req.body;
   try {
@@ -28,7 +34,7 @@ async function addOneRequest(req, res) {
   }
 }
 
-async function changeViewedPropertyOfRequest(req, res) {
+async function changeViewedPropertyOfRequest(req: Request, res: Response) {
   // TODO: refactor so that it updates without doing a double operation
 
   // HOW TO USE IT : in the url I need to set first of all my target user (idUser), then the other user, finally I have to
@@ -57,7 +63,7 @@ async function changeViewedPropertyOfRequest(req, res) {
   }
 }
 
-async function deleteRequest(req, res) {
+async function deleteRequest(req: Request, res: Response) {
   // TODO: refactor so that it updates without doing a double operation
 
   // HOW TO USE IT : in the url I need to set first of all my target user (idUser), then the other user, finally I have to
@@ -67,7 +73,7 @@ async function deleteRequest(req, res) {
   try {
     const userInfos = await User.findOne({ _id: idUser });
     const temp = userInfos.requests.filter(
-      (request) =>
+      (request: IRequest) =>
         (receiverOrSender === 'receiver'
           ? request.userFrom
           : request.userTo) !== idOtherUser,
@@ -80,7 +86,7 @@ async function deleteRequest(req, res) {
   }
 }
 
-async function changeStatusRequest(req, res) {
+async function changeStatusRequest(req: Request, res: Response) {
   // TODO: refactor so that it updates without doing a double operation
   const { idUser, idOtherUser, status, receiverOrSender } = req.params;
   try {

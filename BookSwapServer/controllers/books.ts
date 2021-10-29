@@ -1,8 +1,9 @@
+import { Request, Response } from 'express';
 import User = require('../models/users');
 import ISBNdb = require('../models/isbn');
-import { IIsbn } from './../interfaces/interfaces';
+import { IIsbn, IBook } from './../interfaces/interfaces';
 
-async function getAllBooks(req, res) {
+async function getAllBooks(req: Request, res: Response) {
   const { userId, source } = req.params;
   try {
     const books = await User.findOne({ _id: userId });
@@ -22,7 +23,7 @@ async function getAllBooks(req, res) {
   }
 }
 
-async function addOneBook(req, res) {
+async function addOneBook(req: Request, res: Response) {
   const { userId, source } = req.params;
   const bookToInsert = req.body;
   try {
@@ -44,7 +45,7 @@ async function addOneBook(req, res) {
   }
 }
 
-async function removeOneBook(req, res) {
+async function removeOneBook(req: Request, res: Response) {
   const { userId, ISBN, source } = req.params;
   try {
     // TODO: refactor so that it updates without doing a double operation
@@ -54,7 +55,7 @@ async function removeOneBook(req, res) {
           { _id: userId },
           {
             booksToSell: dbBooks.booksToSell.filter(
-              (books) => books.ISBN !== ISBN,
+              (books: IBook) => books.ISBN !== ISBN,
             ),
           },
         ).then(() => {})
@@ -62,7 +63,7 @@ async function removeOneBook(req, res) {
           { _id: userId },
           {
             booksToBuy: dbBooks.booksToBuy.filter(
-              (books) => books.ISBN !== ISBN,
+              (books: IBook) => books.ISBN !== ISBN,
             ),
           },
         ).then(() => {});
@@ -74,12 +75,14 @@ async function removeOneBook(req, res) {
   }
 }
 
-async function getBestMatches(req, res) {
+async function getBestMatches(req: Request, res: Response) {
   try {
     const { userId } = req.params;
     const allBooks = await User.findOne({ _id: userId });
-    const ISBNbooksToSell = allBooks.booksToSell.map((book) => book.ISBN);
-    const ISBNbooksToBuy = allBooks.booksToBuy.map((book) => book.ISBN);
+    const ISBNbooksToSell = allBooks.booksToSell.map(
+      (book: IBook) => book.ISBN,
+    );
+    const ISBNbooksToBuy = allBooks.booksToBuy.map((book: IBook) => book.ISBN);
     const matches: string[] = [];
 
     for (let isbnCode of ISBNbooksToSell) {
@@ -92,7 +95,7 @@ async function getBestMatches(req, res) {
         matches.push(...usersList.UsersThatWantToSellIt);
       }
     }
-    const freq = {};
+    const freq: { [key: string]: number } = {};
     for (let el of matches) {
       if (Object.keys(freq).includes(el)) {
         freq[el] += 1;

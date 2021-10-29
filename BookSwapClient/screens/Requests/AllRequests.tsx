@@ -5,21 +5,25 @@ import { UserContext } from '../../AuthContext';
 import DisplaySingleRequest from '../../components/displaySingleRequest';
 import apiService from '../../ApiService';
 import { IRequest } from '../../interfaces/interfaces';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RequestsStackParamList } from './../../interfaces/types';
 
-const AllRequests = ({ navigation }) => {
+type Props = NativeStackScreenProps<RequestsStackParamList, 'All Requests'>;
+
+const AllRequests = ({ navigation }: Props) => {
   const { user } = useContext(UserContext);
   const isFocused = useIsFocused();
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [madeRequests, setMadeRequests] = useState([]);
 
   useEffect(() => {
-    async function controlForRequests(userId) {
+    async function controlForRequests(userId: string) {
       const response = await apiService.getRequests(userId);
       const filteredIncomingRequests = response.filter(
-        (request) => request.userFrom !== user.id,
+        (request: IRequest) => request.userFrom !== user.id,
       );
       const filteredMadeRequests = response.filter(
-        (request) => request.userFrom === user.id,
+        (request: IRequest) => request.userFrom === user.id,
       );
       setIncomingRequests(filteredIncomingRequests);
       setMadeRequests(filteredMadeRequests);
@@ -27,13 +31,13 @@ const AllRequests = ({ navigation }) => {
     controlForRequests(user.id);
   }, [isFocused, user.id]);
 
-  function removeNotificationBadgeReceiver(req) {
+  function removeNotificationBadgeReceiver(req: IRequest) {
     if (!req.hasBeenViewed) {
       apiService.removeNotificationBadgeReceiver(req);
     }
   }
 
-  function removeNotificationBadgeSender(req) {
+  function removeNotificationBadgeSender(req: IRequest) {
     if (req.hasBeenViewed) {
       apiService.removeNotificationBadgeSender(req, 'false');
     }

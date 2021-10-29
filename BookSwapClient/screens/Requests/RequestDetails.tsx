@@ -10,8 +10,15 @@ import {
 import AppLoading from 'expo-app-loading';
 import { Button } from 'react-native-paper';
 import apiService from '../../ApiService';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RequestsStackParamList } from './../../interfaces/types';
 
-const RequestDetails = ({ route, navigation }) => {
+type Props = NativeStackScreenProps<
+  RequestsStackParamList,
+  'Details of the Request'
+>;
+
+const RequestDetails = ({ route, navigation }: Props) => {
   const [fontsLoaded] = useFonts({
     Rosario_500Medium,
     Rosario_500Medium_Italic,

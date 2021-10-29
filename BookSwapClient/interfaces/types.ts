@@ -1,4 +1,4 @@
-import { IConversation } from './interfaces';
+import { IConversation, IRequest } from './interfaces';
 
 export type LibraryStackParamList = {
   'Your Library': undefined;
@@ -31,4 +31,13 @@ export type WishListStackParamList = {
     FormInfo: { title: string; authors: string; isbn: string };
   };
   'Inserted Successfully': undefined;
+};
+
+export type RequestsStackParamList = {
+  'All Requests': undefined;
+  'Details of the Request': {
+    request: IRequest;
+  };
+  RequestAccepted: undefined;
+  Chat: undefined;
 };

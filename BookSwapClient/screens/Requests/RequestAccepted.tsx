@@ -3,8 +3,12 @@ import { View, StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { Button } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RequestsStackParamList } from './../../interfaces/types';
 
-const RequestAccepted = ({ navigation }) => {
+type Props = NativeStackScreenProps<RequestsStackParamList, 'RequestAccepted'>;
+
+const RequestAccepted = ({ navigation }: Props) => {
   return (
     <SafeAreaView>
       <View style={styles.lottieContainer}>
@@ -17,7 +21,7 @@ const RequestAccepted = ({ navigation }) => {
       </View>
       <Button
         mode="contained"
-        onPress={() => navigation.navigate('Chats')}
+        onPress={() => navigation.navigate('Chat')}
         style={styles.buttonGoToChat}
         labelStyle={styles.label}
       >

@@ -10,8 +10,12 @@ import {
   Rosario_400Regular_Italic,
 } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { WishListStackParamList } from './../../interfaces/types';
 
-const WishList = ({ navigation }) => {
+type Props = NativeStackScreenProps<WishListStackParamList, 'Your Wish List'>;
+
+const WishList = ({ navigation }: Props) => {
   const [fontsLoaded] = useFonts({
     Rosario_400Regular_Italic,
   });
@@ -19,7 +23,7 @@ const WishList = ({ navigation }) => {
   const isFocused = useIsFocused();
   const [books, setBooks] = useState(null);
 
-  async function getBooks(userId) {
+  async function getBooks(userId: string) {
     const fetchedBooks = await apiService.getUserBooks(userId, 'wishList');
     setBooks(fetchedBooks);
   }
@@ -28,7 +32,7 @@ const WishList = ({ navigation }) => {
     getBooks(user.id);
   }, [isFocused, user.id]);
 
-  async function removeBook(isbn) {
+  async function removeBook(isbn: string) {
     await apiService.removeUserBook(user.id, isbn, 'wishList');
     await apiService.removeBookFromISBNList(user.id, isbn, 'buy');
     await getBooks(user.id);

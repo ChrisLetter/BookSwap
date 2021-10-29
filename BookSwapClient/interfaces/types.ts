@@ -23,3 +23,12 @@ export type ChatStackParamList = {
     otherUser: string;
   };
 };
+
+export type WishListStackParamList = {
+  'Your Wish List': undefined;
+  'Add a New Book': undefined;
+  'Select one Book': {
+    FormInfo: { title: string; authors: string; isbn: string };
+  };
+  'Inserted Successfully': undefined;
+};

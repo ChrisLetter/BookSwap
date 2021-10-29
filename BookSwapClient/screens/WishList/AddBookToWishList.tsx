@@ -4,8 +4,12 @@ import { TextInput, Button } from 'react-native-paper';
 
 import { useFonts, Rosario_500Medium } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { WishListStackParamList } from './../../interfaces/types';
 
-const AddBookToWishList = ({ navigation }) => {
+type Props = NativeStackScreenProps<WishListStackParamList, 'Add a New Book'>;
+
+const AddBookToWishList = ({ navigation }: Props) => {
   const [fontsLoaded] = useFonts({
     Rosario_500Medium,
   });

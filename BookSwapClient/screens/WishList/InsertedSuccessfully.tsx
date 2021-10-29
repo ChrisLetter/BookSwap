@@ -2,8 +2,15 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { Button } from 'react-native-paper';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { WishListStackParamList } from './../../interfaces/types';
 
-const InsertedSuccessfully = ({ navigation }) => {
+type Props = NativeStackScreenProps<
+  WishListStackParamList,
+  'Inserted Successfully'
+>;
+
+const InsertedSuccessfully = ({ navigation }: Props) => {
   return (
     <View style={styles.container}>
       <LottieView

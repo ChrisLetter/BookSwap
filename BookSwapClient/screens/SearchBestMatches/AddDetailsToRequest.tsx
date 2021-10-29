@@ -5,8 +5,15 @@ import AppLoading from 'expo-app-loading';
 import apiService from '../../ApiService';
 import { useFonts, Rosario_500Medium } from '@expo-google-fonts/rosario';
 import { UserContext } from '../../AuthContext';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { BestMatchesStackParamList } from './../../interfaces/types';
 
-const AddDetailsToRequest = ({ route, navigation }) => {
+type Props = NativeStackScreenProps<
+  BestMatchesStackParamList,
+  'Add Details To The Request'
+>;
+
+const AddDetailsToRequest = ({ route, navigation }: Props) => {
   const [fontsLoaded] = useFonts({ Rosario_500Medium });
   const { user } = useContext(UserContext);
   const [Username, setUsername] = useState({ username: '' });

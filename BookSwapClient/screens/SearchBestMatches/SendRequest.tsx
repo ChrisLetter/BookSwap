@@ -10,8 +10,12 @@ import {
   Rosario_400Regular_Italic,
 } from '@expo-google-fonts/rosario';
 import { IBook } from '../../interfaces/interfaces';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { BestMatchesStackParamList } from './../../interfaces/types';
 
-const SendRequest = ({ route, navigation }) => {
+type Props = NativeStackScreenProps<BestMatchesStackParamList, 'Send Request'>;
+
+const SendRequest = ({ route, navigation }: Props) => {
   const [fontsLoaded] = useFonts({
     Rosario_400Regular,
     Rosario_400Regular_Italic,
@@ -21,18 +25,18 @@ const SendRequest = ({ route, navigation }) => {
   const [matchesFromWishList, setMatchesFromWishList] = useState([]);
 
   useEffect(() => {
-    async function fetchBookOfOtherUser(otherUserId) {
+    async function fetchBookOfOtherUser(otherUserId: string) {
       let response = await apiService.getUserBooks(otherUserId, 'all');
       const IsbnLibraryUser = booksCurrUser.booksToSell.map(
-        (book) => book.ISBN,
+        (book: IBook) => book.ISBN,
       );
       const IsbnWishListUser = booksCurrUser.booksToBuy.map(
-        (book) => book.ISBN,
+        (book: IBook) => book.ISBN,
       );
-      let matchesLibrary = response.booksToBuy.filter((books) =>
+      let matchesLibrary = response.booksToBuy.filter((books: IBook) =>
         IsbnLibraryUser.includes(books.ISBN),
       );
-      let matchesWishList = response.booksToSell.filter((books) =>
+      let matchesWishList = response.booksToSell.filter((books: IBook) =>
         IsbnWishListUser.includes(books.ISBN),
       );
       setMatchesFromWishList(matchesWishList);
@@ -41,13 +45,13 @@ const SendRequest = ({ route, navigation }) => {
     fetchBookOfOtherUser(UserMatch);
   }, [UserMatch, booksCurrUser.booksToSell, booksCurrUser.booksToBuy]);
 
-  function removeBookFromWishList(book) {
+  function removeBookFromWishList(book: IBook) {
     setMatchesFromWishList((prev) =>
       prev.filter((allBooks: IBook) => allBooks.ISBN !== book.ISBN),
     );
   }
 
-  function removeBookFromLibraryToSell(book) {
+  function removeBookFromLibraryToSell(book: IBook) {
     setMatchesFromLibraryToSell((prev) =>
       prev.filter((allBooks: IBook) => allBooks.ISBN !== book.ISBN),
     );

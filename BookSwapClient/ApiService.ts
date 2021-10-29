@@ -1,5 +1,5 @@
 import { BASE_URL, SERVER_PORT } from '@env';
-import { IRegisterUser, ILoginrUser, IBook } from './interfaces/interfaces';
+import { IRegisterUser, ILoginUser, IBook } from './interfaces/interfaces';
 
 const apiService: { [key: string]: any } = {};
 
@@ -15,7 +15,7 @@ apiService.register = (user: IRegisterUser) => {
     .catch((err) => console.log('register', err));
 };
 
-apiService.login = (user: ILoginrUser) => {
+apiService.login = (user: ILoginUser) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/login`, {
     method: 'POST',
     credentials: 'include',

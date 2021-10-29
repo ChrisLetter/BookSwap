@@ -58,7 +58,12 @@ export interface IRegisterUser {
   userPassword: string;
 }
 
-export interface ILoginrUser {
+export interface ILoginUser {
   email: string;
   userPassword: string;
+}
+
+export interface IAllBooks {
+  booksToSell: IBook[];
+  booksToBuy: IBook[];
 }

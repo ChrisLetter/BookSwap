@@ -1,4 +1,4 @@
-import { IConversation, IRequest } from './interfaces';
+import { IConversation, IRequest, IBook, IAllBooks } from './interfaces';
 
 export type LibraryStackParamList = {
   'Your Library': undefined;
@@ -40,4 +40,22 @@ export type RequestsStackParamList = {
   };
   RequestAccepted: undefined;
   Chat: undefined;
+};
+
+export type BestMatchesStackParamList = {
+  'Best Matches': undefined;
+  'Send Request': {
+    UsersInfo: {
+      booksCurrUser: IAllBooks;
+      UserMatch: string;
+      Username: string;
+    };
+  };
+  'Add Details To The Request': {
+    matchesFromWishList: IBook[];
+    matchesFromLibraryToSell: IBook[];
+    UserMatch: string;
+    UsernameOtherUser: string;
+  };
+  'Request Sent': undefined;
 };

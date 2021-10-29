@@ -13,12 +13,22 @@ import LoadingSearching from '../../components/LoadingSearching';
 import apiService from '../../ApiService';
 import { useFonts, Rosario_500Medium } from '@expo-google-fonts/rosario';
 import { UserContext } from '../../AuthContext';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { BestMatchesStackParamList } from './../../interfaces/types';
+import { IAllBooks } from './../../interfaces/interfaces';
 
-const BestMatches = ({ navigation }) => {
+type Props = NativeStackScreenProps<BestMatchesStackParamList, 'Best Matches'>;
+
+const BestMatches = ({ navigation }: Props) => {
+  const intialAllBooks: IAllBooks = {
+    booksToBuy: [],
+    booksToSell: [],
+  };
   const [fontsLoaded] = useFonts({ Rosario_500Medium });
   const { user } = useContext(UserContext);
   const isFocused = useIsFocused();
-  const [allBooksCurrentUser, setAllBooksCurrentUser] = useState([]);
+  const [allBooksCurrentUser, setAllBooksCurrentUser] =
+    useState(intialAllBooks);
   const [matchesFound, setMatchesFound] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 

@@ -2,8 +2,12 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { Button } from 'react-native-paper';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { BestMatchesStackParamList } from './../../interfaces/types';
 
-const RequestSent = ({ navigation }) => {
+type Props = NativeStackScreenProps<BestMatchesStackParamList, 'Request Sent'>;
+
+const RequestSent = ({ navigation }: Props) => {
   return (
     <View style={styles.container}>
       <LottieView

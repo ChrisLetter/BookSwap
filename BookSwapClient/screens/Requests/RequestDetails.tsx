@@ -9,7 +9,7 @@ import {
 } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
 import { Button } from 'react-native-paper';
-import apiService from './../../ApiService';
+import apiService from '../../ApiService';
 
 const RequestDetails = ({ route, navigation }) => {
   const [fontsLoaded] = useFonts({

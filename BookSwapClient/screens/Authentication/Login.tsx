@@ -7,8 +7,14 @@ import LottieView from 'lottie-react-native';
 import { useFonts, Rosario_500Medium } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
 import LoadingLogin from '../../components/LoadingLogin';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-const Login = ({ navigation }) => {
+type RootStackParamList = {
+  Register: undefined;
+};
+type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
+
+const Login = ({ navigation }: Props) => {
   const [fontsLoaded] = useFonts({ Rosario_500Medium });
   const { login } = useContext(UserContext);
   const [email, setEmail] = useState('');

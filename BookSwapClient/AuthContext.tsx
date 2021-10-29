@@ -8,7 +8,7 @@ const initialState: any = {
 
 const UserContext = createContext(initialState);
 
-const UserProvider = ({ children }) => {
+const UserProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState(initialState);
 
   const login = (Accesstoken: string, id: string): void => {

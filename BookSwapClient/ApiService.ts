@@ -1,8 +1,8 @@
 import { BASE_URL, SERVER_PORT } from '@env';
-
+import { IRegisterUser, ILoginrUser } from './interfaces/interfaces';
 const apiService: { [key: string]: any } = {};
 
-apiService.register = (user) => {
+apiService.register = (user: IRegisterUser) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/register`, {
     method: 'POST',
     credentials: 'include',
@@ -14,7 +14,7 @@ apiService.register = (user) => {
     .catch((err) => console.log('register', err));
 };
 
-apiService.login = (user) => {
+apiService.login = (user: ILoginrUser) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/login`, {
     method: 'POST',
     credentials: 'include',
@@ -28,7 +28,7 @@ apiService.login = (user) => {
 
 // used for getting books both from the library and from the wish list,
 // specify "library" or "wishList" in the location parameter (or "all" to get all of them).
-apiService.getUserBooks = (userId, location) => {
+apiService.getUserBooks = (userId: string, location: string) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/books/${userId}/${location}`)
     .then((res) => res.json())
     .catch((err) => console.log('getUserLibraryBooks', err));
@@ -36,7 +36,11 @@ apiService.getUserBooks = (userId, location) => {
 
 // used for removing books both from the library and from the wish list,
 // specify "library" or "wishList" in the location parameter.
-apiService.removeUserBook = (userId, isbn, location) => {
+apiService.removeUserBook = (
+  userId: string,
+  isbn: string,
+  location: string,
+) => {
   return fetch(
     `${BASE_URL}:${SERVER_PORT}/books/${userId}/${isbn}/${location}`,
     {
@@ -47,7 +51,11 @@ apiService.removeUserBook = (userId, isbn, location) => {
 
 // used for removing books from the ISBN list, specify buy or sell in the
 // location parameter, based on the list that you want to target.
-apiService.removeBookFromISBNList = (userId, isbn, location) => {
+apiService.removeBookFromISBNList = (
+  userId: string,
+  isbn: string,
+  location: string,
+) => {
   return fetch(
     `${BASE_URL}:${SERVER_PORT}/isbn/${userId}/${isbn}/${location}`,
     {
@@ -57,7 +65,7 @@ apiService.removeBookFromISBNList = (userId, isbn, location) => {
 };
 
 // used for searching books scanning the ISBN code
-apiService.searchBooksByIsbnGoogle = (ISBN, key) => {
+apiService.searchBooksByIsbnGoogle = (ISBN: string, key: string) => {
   return fetch(
     `https://www.googleapis.com/books/v1/volumes?q=isbn:${ISBN}&key=${key}`,
   )
@@ -66,7 +74,7 @@ apiService.searchBooksByIsbnGoogle = (ISBN, key) => {
 };
 
 // used for searching books filling the form
-apiService.searchBooksByFormGoogle = (url, key) => {
+apiService.searchBooksByFormGoogle = (url: string, key: string) => {
   return fetch(`${url}&key=${key}`)
     .then((data) => data.json())
     .catch((err) => console.log('searchBooksByFormGoogle', err));
@@ -74,7 +82,7 @@ apiService.searchBooksByFormGoogle = (url, key) => {
 
 // used for saving books both in the library and in the wish list,
 // specify "library" or "wishList" in the location parameter.
-apiService.addBook = (userId, location, bookInfos) => {
+apiService.addBook = (userId: string, location: string, bookInfos) => {
   return fetch(`${BASE_URL}:${SERVER_PORT}/books/${userId}/${location}`, {
     method: 'POST',
     headers: {

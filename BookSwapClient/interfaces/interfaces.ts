@@ -51,3 +51,14 @@ export interface IRequest {
   userTo: string;
   userToUsername: string;
 }
+
+export interface IRegisterUser {
+  username: string;
+  email: string;
+  userPassword: string;
+}
+
+export interface ILoginrUser {
+  email: string;
+  userPassword: string;
+}

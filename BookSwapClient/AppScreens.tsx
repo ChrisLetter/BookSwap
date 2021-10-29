@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import { IRequest, IConversation } from './interfaces/interfaces';
 import { UserContext } from './AuthContext';
 
 import Login from './screens/Authentication/Login';
@@ -284,22 +284,22 @@ export default function AppScreens() {
       if (user.id !== '') {
         const response = await apiService.getNumberOfRequests(user.id);
         let filteredUserTo = response.filter(
-          (request) => request.userTo === user.id,
+          (request: IRequest) => request.userTo === user.id,
         );
         let mappedUserTo = filteredUserTo.map(
-          (element) => element.hasBeenViewed,
+          (element: IRequest) => element.hasBeenViewed,
         );
         let numberOfRequestNotSeenUserTo = mappedUserTo.filter(
-          (el) => el === false,
+          (el: boolean) => el === false,
         );
         let filteredUserFrom = response.filter(
-          (request) => request.userFrom === user.id,
+          (request: IRequest) => request.userFrom === user.id,
         );
         let mappedUserFrom = filteredUserFrom.map(
-          (element) => element.hasBeenViewed,
+          (element: IRequest) => element.hasBeenViewed,
         );
         let numberOfRequestNotSeenUserFrom = mappedUserFrom.filter(
-          (el) => el === true,
+          (el: boolean) => el === true,
         );
         let numberOfRequestNotSeen = [
           ...numberOfRequestNotSeenUserFrom,
@@ -316,7 +316,7 @@ export default function AppScreens() {
       if (user.id !== '') {
         const response = await apiService.getNumberOfMessages(user.id);
         let messagesWithNotification = response.filter(
-          (msg) => msg.notification === true,
+          (msg: IConversation) => msg.notification === true,
         );
         setNumOfMessages(
           messagesWithNotification.length
@@ -354,7 +354,7 @@ export default function AppScreens() {
           <Tab.Navigator
             screenOptions={({ route }) => ({
               tabBarIcon: ({ focused, color, size }) => {
-                let iconName;
+                let iconName = '';
 
                 if (route.name === 'Library') {
                   iconName = focused ? 'library-sharp' : 'library-sharp';

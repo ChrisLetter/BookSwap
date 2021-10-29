@@ -8,7 +8,7 @@ import {
 import AppLoading from 'expo-app-loading';
 import BookCard from '../../components/BookCard';
 import { REACT_APP_API_KEY } from '@env';
-import apiService from './../../ApiService';
+import apiService from '../../ApiService';
 
 const SelectFromInput = ({ route, navigation }) => {
   const [fontsLoaded] = useFonts({ Rosario_400Regular_Italic });

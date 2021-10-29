@@ -18,3 +18,11 @@ export interface IMessage {
   userFrom: string;
   userTo: string;
 }
+
+export interface IBookFromGoogleIsbnScan {
+  imageLinks: { [key: string]: string };
+  title: string;
+  authors: string[];
+  publisher: string;
+  publishedDate: string;
+}

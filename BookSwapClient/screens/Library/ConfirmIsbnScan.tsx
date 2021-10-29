@@ -7,11 +7,19 @@ import { Button } from 'react-native-paper';
 import { useFonts, Rosario_500Medium } from '@expo-google-fonts/rosario';
 import AppLoading from 'expo-app-loading';
 import apiService from '../../ApiService';
+import { IBookFromGoogleIsbnScan } from '../../interfaces/interfaces';
 
 const ConfirmIsbnScan = ({ route, navigation }) => {
+  const initialBook: IBookFromGoogleIsbnScan = {
+    imageLinks: { thumbnail: 'thumbnail' },
+    title: '',
+    authors: [''],
+    publisher: '',
+    publishedDate: '',
+  };
   const [fontsLoaded] = useFonts({ Rosario_500Medium });
   const { scannedISBN } = route.params;
-  const [book, setBook] = useState(null);
+  const [book, setBook] = useState(initialBook);
   const { user } = useContext(UserContext);
 
   async function fetchBookFromISBN(ISBN, key) {
@@ -44,7 +52,7 @@ const ConfirmIsbnScan = ({ route, navigation }) => {
   } else {
     return (
       <View style={styles.container}>
-        {book ? (
+        {book.title !== '' ? (
           <View style={styles.container}>
             <Text style={styles.header}>Is this the right book?</Text>
             <BookCard bookObj={book} />

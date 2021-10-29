@@ -3,7 +3,7 @@ import { View, Text, ScrollView, StyleSheet, FlatList } from 'react-native';
 import { Button } from 'react-native-paper';
 import BookCard from '../../components/BookCard';
 import AppLoading from 'expo-app-loading';
-import apiService from './../../ApiService';
+import apiService from '../../ApiService';
 import {
   useFonts,
   Rosario_400Regular,

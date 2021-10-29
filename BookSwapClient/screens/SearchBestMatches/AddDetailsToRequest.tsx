@@ -2,14 +2,14 @@ import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Button, Switch, TextInput } from 'react-native-paper';
 import AppLoading from 'expo-app-loading';
-import apiService from './../../ApiService';
+import apiService from '../../ApiService';
 import { useFonts, Rosario_500Medium } from '@expo-google-fonts/rosario';
 import { UserContext } from '../../AuthContext';
 
 const AddDetailsToRequest = ({ route, navigation }) => {
   const [fontsLoaded] = useFonts({ Rosario_500Medium });
   const { user } = useContext(UserContext);
-  const [Username, setUsername] = useState(null);
+  const [Username, setUsername] = useState({ username: '' });
 
   useEffect(() => {
     async function fetchUsernameFromDb() {
@@ -31,7 +31,7 @@ const AddDetailsToRequest = ({ route, navigation }) => {
   const [AskOrGiveMoney, setAskOrGiveMoney] = useState(true);
   const [monetaryCompensationValue, setMonetaryCompensationValue] =
     useState('');
-  const [comment, setComment] = useState(null);
+  const [comment, setComment] = useState('');
 
   const onToggleSwitch = () => setAskOrGiveMoney(!AskOrGiveMoney);
 

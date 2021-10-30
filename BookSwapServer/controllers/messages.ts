@@ -71,7 +71,7 @@ async function toggleNotificationChat(req: Request, res: Response) {
       { _id: idUser },
       { messages: otherMessagesToKeep },
     ).then(() => {});
-    res.sendStatus(201);
+    res.sendStatus(200);
   } catch (e) {
     console.log(e);
     res.sendStatus(500);

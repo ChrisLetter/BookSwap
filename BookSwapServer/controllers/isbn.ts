@@ -34,7 +34,7 @@ async function removeUserFromTheIsbnList(req: Request, res: Response) {
           { ISBN: ISBN },
           { $pull: { UsersThatWantIt: userId } },
         ).then(() => {});
-    res.sendStatus(201);
+    res.sendStatus(200);
   } catch (e) {
     console.log(e);
     res.sendStatus(500);

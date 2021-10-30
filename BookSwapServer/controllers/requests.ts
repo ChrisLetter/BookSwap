@@ -35,8 +35,6 @@ async function addOneRequest(req: Request, res: Response) {
 }
 
 async function changeViewedPropertyOfRequest(req: Request, res: Response) {
-  // TODO: refactor so that it updates without doing a double operation
-
   // HOW TO USE IT : in the url I need to set first of all my target user (idUser), then the other user, finally I have to
   // specify if the target user is the sender or the receiver of the request and if I want to set hasBeenViewed to True or False
 
@@ -56,7 +54,7 @@ async function changeViewedPropertyOfRequest(req: Request, res: Response) {
       { _id: idUser },
       { requests: userInfos.requests },
     ).then(() => {});
-    res.sendStatus(201);
+    res.sendStatus(200);
   } catch (e) {
     console.log(e);
     res.sendStatus(500);
@@ -64,8 +62,6 @@ async function changeViewedPropertyOfRequest(req: Request, res: Response) {
 }
 
 async function deleteRequest(req: Request, res: Response) {
-  // TODO: refactor so that it updates without doing a double operation
-
   // HOW TO USE IT : in the url I need to set first of all my target user (idUser), then the other user, finally I have to
   // specify if the target user is the sender or the receiver of the request that I want to delete
 
@@ -79,7 +75,7 @@ async function deleteRequest(req: Request, res: Response) {
           : request.userTo) !== idOtherUser,
     );
     User.findOneAndUpdate({ _id: idUser }, { requests: temp }).then(() => {});
-    res.sendStatus(201);
+    res.sendStatus(200);
   } catch (e) {
     console.log(e);
     res.sendStatus(500);
@@ -87,7 +83,6 @@ async function deleteRequest(req: Request, res: Response) {
 }
 
 async function changeStatusRequest(req: Request, res: Response) {
-  // TODO: refactor so that it updates without doing a double operation
   const { idUser, idOtherUser, status, receiverOrSender } = req.params;
   try {
     const userInfos = await User.findOne({ _id: idUser });
@@ -103,7 +98,7 @@ async function changeStatusRequest(req: Request, res: Response) {
       { _id: idUser },
       { requests: userInfos.requests },
     ).then(() => {});
-    res.sendStatus(201);
+    res.sendStatus(200);
   } catch (e) {
     console.log(e);
     res.sendStatus(500);

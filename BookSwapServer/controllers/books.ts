@@ -48,7 +48,6 @@ async function addOneBook(req: Request, res: Response) {
 async function removeOneBook(req: Request, res: Response) {
   const { userId, ISBN, source } = req.params;
   try {
-    // TODO: refactor so that it updates without doing a double operation
     const dbBooks = await User.findOne({ _id: userId });
     source === 'library'
       ? User.findOneAndUpdate(
@@ -67,8 +66,7 @@ async function removeOneBook(req: Request, res: Response) {
             ),
           },
         ).then(() => {});
-    // TODO: set the right status
-    res.sendStatus(201);
+    res.sendStatus(200);
   } catch (e) {
     console.log(e);
     res.sendStatus(500);
@@ -116,7 +114,7 @@ async function getBestMatches(req: Request, res: Response) {
       const { username } = await User.findOne({ _id: el[0] });
       el.push(username);
     }
-    res.status(201).send({ sorted });
+    res.status(200).send({ sorted });
   } catch (e) {
     console.log(e);
     res.sendStatus(500);

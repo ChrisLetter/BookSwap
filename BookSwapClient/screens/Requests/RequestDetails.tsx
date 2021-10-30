@@ -1,5 +1,12 @@
 import React, { useContext } from 'react';
-import { View, Text, ScrollView, StyleSheet, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  FlatList,
+  LogBox,
+} from 'react-native';
 import { UserContext } from '../../AuthContext';
 import BookCard from '../../components/BookCard';
 import {
@@ -12,6 +19,7 @@ import { Button } from 'react-native-paper';
 import apiService from '../../ApiService';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RequestsStackParamList } from './../../interfaces/types';
+LogBox.ignoreAllLogs();
 
 type Props = NativeStackScreenProps<
   RequestsStackParamList,
@@ -82,7 +90,6 @@ const RequestDetails = ({ route, navigation }: Props) => {
   } else {
     return (
       <ScrollView style={styles.container}>
-        {console.log(request)}
         {request.status === 'rejected' ? (
           <View>
             <Text style={styles.mainHeaders}>

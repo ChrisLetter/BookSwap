@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  FlatList,
+  LogBox,
+} from 'react-native';
 import { Button } from 'react-native-paper';
 import BookCard from '../../components/BookCard';
 import AppLoading from 'expo-app-loading';
@@ -12,6 +19,7 @@ import {
 import { IBook } from '../../interfaces/interfaces';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { BestMatchesStackParamList } from './../../interfaces/types';
+LogBox.ignoreAllLogs();
 
 type Props = NativeStackScreenProps<BestMatchesStackParamList, 'Send Request'>;
 
@@ -65,8 +73,6 @@ const SendRequest = ({ route, navigation }: Props) => {
       UsernameOtherUser: Username,
     });
   }
-
-  //TODO: fix scrolling of the two FlatLists
 
   if (!fontsLoaded) {
     return <AppLoading />;

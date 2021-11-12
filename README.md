@@ -35,8 +35,6 @@ BookSwap is an open source project that allows users to exchange books. Unlike o
    ```
 6. Once you run the command "expo start", you can open the app with an emulator or you can scan the QR code with your phone using expo go (you need to download it from the app store or from the play store)
 
-
 ## Screenshots:
 
-<img src="screenshots/login.png?raw=true" height="600"> <img src="screenshots/library.png?raw=true" height="600"> <img src="screenshots/add-new-book.png?raw=true" height="600"> <img src="screenshots/isbn.png?raw=true" height="600"> <img src="screenshots/matches.png?raw=true" height="600"> <img src="screenshots/request-page.png?raw=true" height="600"> <img src="screenshots/chat.jpeg?raw=true" height="600">
-
+<img src="screenshots/login.jpg?raw=true" height="500"> <img src="screenshots/library.jpeg?raw=true" height="500"> <img src="screenshots/wish-list.jpg?raw=true" height="500"> <img src="screenshots/add-new-book.jpg?raw=true" height="500"> <img src="screenshots/isbn.jpeg?raw=true" height="500"> <img src="screenshots/matches.jpeg?raw=true" height="500"> <img src="screenshots/request-page.jpeg?raw=true" height="500"> <img src="screenshots/add-details-to-request.jpeg?raw=true" height="500"> <img src="screenshots/chat.jpeg?raw=true" height="500">

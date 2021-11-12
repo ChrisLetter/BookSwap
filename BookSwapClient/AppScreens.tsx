@@ -69,7 +69,7 @@ function Library() {
         }}
       />
       <Stack.Screen
-        name="ScanISBN"
+        name="Scan ISBN code"
         component={ScanIsbn}
         options={headerOptions}
       />

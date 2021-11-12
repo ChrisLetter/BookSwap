@@ -71,7 +71,7 @@ const AddBookToLibrary = ({ navigation }: Props) => {
         <Button
           icon="camera"
           mode="contained"
-          onPress={() => navigation.navigate('ScanISBN')}
+          onPress={() => navigation.navigate('Scan ISBN code')}
           style={styles.buttonISBN}
           labelStyle={styles.label}
           contentStyle={styles.buttonContent}

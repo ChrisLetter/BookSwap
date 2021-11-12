@@ -6,7 +6,7 @@ export type LibraryStackParamList = {
   'Select a Book From The List': {
     FormInfo: { title: string; authors: string; isbn: string };
   };
-  ScanISBN: undefined;
+  'Scan ISBN code': undefined;
   'Book Added Successfully': undefined;
   'Confirm the Book': { scannedISBN: any };
 };

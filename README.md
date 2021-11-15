@@ -31,7 +31,7 @@ BookSwap is an open source project that allows users to exchange books. Unlike o
    BookSwap/BookSwapServer % nodemon
    ```
    ```
-   BookSwap/BookSwapServer % expo start
+   BookSwap/BookSwapClient % expo start
    ```
 6. Once you run the command "expo start", you can open the app with an emulator or you can scan the QR code with your phone using expo go (you need to download it from the app store or from the play store)
 

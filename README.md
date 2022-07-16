@@ -27,11 +27,13 @@ BookSwap is an open source project that allows users to exchange books. Unlike o
 3. Create a MongoDb database
 4. Install the packages running npm install both in the client and in the server folder
 5. Run the application:
+   ```bash
+   cd BookSwap/BookSwapServer
+   nodemon
    ```
-   BookSwap/BookSwapServer % nodemon
-   ```
-   ```
-   BookSwap/BookSwapClient % expo start
+   ```bash
+   cd BookSwap/BookSwapClient
+   expo start
    ```
 6. Once you run the command "expo start", you can open the app with an emulator or you can scan the QR code with your phone using expo go (you need to download it from the app store or from the play store)
 
